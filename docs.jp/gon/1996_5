@@ -1,0 +1,144 @@
+Windows95/Linux のデュアルブートマシン
+
+１９９６年５月、ハードディスクのクラッシュを期に、ハードディスクを２つ
+のパーティションに分割し、一方に Windows95 を、他方に Linux をインストー
+ルした。
+
+・基本方針
+	gnspool で取得したニューススプールを Windows95 と linux で共用
+	し、どちらの OS で取得しても、両方の OS からアクセスできるよう
+	にする。
+	従来通り会社で使用している .newsrc を使用しＰＣでも既読情報を
+	そのまま使用する。
+
+・Windows 95 でのドライブ構成
+	C: drivespace 3 を使った圧縮ドライブ
+	F: C: のホストドライブ
+	H: 会社のホームディレクトリを mount
+
+・Linux でのディレクトリ構成
+	/dosc:	Windows 95 の F: をマウント。/etc/fstab には
+		/dev/hda1  /dosc vfat defaults,uid=8521 1 1
+		と記述。8521 はユーザ yamasita の UID
+	/hp2d/users/sp/yamasita:      会社のホームディレクトリを NFS mount
+
+・gn/gnspool が使用するディレクトリ／ファイル
+	Windows では
+		NEWSLIB		F:\usr\lib\news
+		NEWSSPOOL	F:\usr\spool\news
+	Linux では
+		NEWSLIB		/dosc/usr/lib/news
+		NEWSSPOOL	/dosc/usr/spool/news
+		
+
+・Windows95 の gnrc
+	ARTICLE_LIMIT	0
+	ARTICLE_LEAVE	800
+	SELECT_LIMIT	100
+	GNUS_FORMAT	YES
+	DOMAINNAME	omronsoft.co.jp
+	AUTOLIST	OFF
+	EDITOR		edit
+	HOST		hsp254
+	NAME		Yasunari GON Yamasita
+	SMTPSERVER      gw.omronsoft.co.jp
+	ORGANIZATION	OMRON SOFTWARE Co., Ltd. Kyoto, Japan.
+	NNTPSERVER	gw
+	PAGER		less -m -c -e
+	RETURN_AFTER_PAGER	0
+	SAVEDIR		c:\yama\news
+	NEWSRC		f:\home\newsrc
+	NEWSSPOOL	f:\usr\spool\news
+	NEWSLIB		f:\usr\lib\news
+	COLUMNS		79
+	SHOW_TRUNCATE	OFF
+	CLS		ON
+	NG_SORT		2
+	USE_SPACE	ON
+	POWER_SAVE	2
+	USER		yamasita
+	DOSFS		OFF
+	UNSUBSCRIBE	ba,bionet,（略）
+	GNSPOOL_LANG    SJIS
+	GNSPOOL_MIME_HEAD	2
+
+・Linux の .gnrc
+	AUTOLIST	OFF
+	GNUS_FORMAT	YES
+	GMT2JST		ON
+	SHOW_TRUNCATE	OFF
+	NG_SORT		2
+	USE_SPACE	ON
+	PAGER		less -e -m
+	DOMAINNAME	omronsoft.co.jp
+	ORGANIZATION	OMRON SOFTWARE Co., Ltd. Kyoto, Japan.
+	UNSUBSCRIBE	ba,bionet,（略）
+	WITH_GNSPOOL	ON
+	NEWSLIB		/dosc/usr/lib/news
+	NEWSSPOOL	/dosc/usr/spool/news
+	GNSPOOL_LANG	SJIS
+
+・Linux での newsrc
+	Windows95 で F:\home\newsrc.gw としておいた newsrc を Linux で
+	も共有するため、~/.newsrc-gw にシンボリックリンク
+	lrwxrwxrwx 1 yamasita   20   Jul  4 12:44 \
+				 .newsrc-gw -> /dosc/home/newsrc.gw
+
+・Windows95 で Mule for Win32 + GNUS を使う
+	(defun gnus-gnspool ()
+	  "GNUS (with gnspool)"
+	  (interactive)
+	  (setq gnus-news-system 'Cnews)
+	  (setq gnus-nntp-server nil)
+	  (setq gnus-local-domain "omronsoft.co.jp")
+	  (setq gnus-startup-file "f:/home/newsrc.gw")
+	  (setq nnspool-inews-program "gninews")
+	  (setq nnspool-spool-directory "f:/usr/spool/news")
+	  (setq nnspool-active-file "f:/usr/lib/news/active")
+	  (setq nnspool-newsgroups-file "f:/usr/lib/news/newsgroups")
+	  (setq nnspool-history-file "f:/usr/lib/news/history")
+	  (setq gnus-nntp-service nil)
+	  (setenv "NEWSSPOOL" "f:/usr/spool/news")
+	  (gnus))
+
+	gninews は MS-C 9.0 でコンパイルした物を、パスのとおったところ
+	に置く。
+
+・Linux で Mule + GNUS を使う
+
+	(defun gnus-gnspool ()
+	  "GNUS (with gnspool)"
+	  (interactive)
+	  (setq gnus-news-system 'Cnews)
+	  (setq gnus-nntp-server nil)
+	  (setq gnus-local-domain "omronsoft.co.jp")
+	  (setq gnus-startup-file "~/.newsrc-gw")
+	  (setq nnspool-inews-program "/usr/local/bin/gninews")
+	  (setq nnspool-spool-directory "/dosc/usr/spool/news")
+	  (setq nnspool-active-file "/dosc/usr/lib/news/active")
+	  (setq nnspool-newsgroups-file "/dosc/usr/lib/news/newsgroups")
+	  (setq nnspool-history-file "/dosc/usr/lib/news/history")
+	  (setq gnus-nntp-service nil)
+	  (setenv "NEWSSPOOL" "/dosc/usr/spool/news")
+	  (gnus))
+
+
+・出勤時（Windows95 の場合）
+	copy c:\yama\newsrc.gw h:\
+	c:\gn\bin\winsock.ms9\gnspool -h gw -y -e -m -p
+
+・出勤時（Linux の場合）
+	cp /dosc/home/newsrc.gw /hp2d/users/sp/yamasita/newsrc.gw
+	gnspool -h gw -y -e -m -p
+
+・退社時（Windows95 の場合）
+	copy h:\newsrc.gw c:\yama
+	c:\gn\bin\winsock.ms9\gnspool -h gw -y
+
+・退社時（Linux の場合）
+	cp /hp2d/users/sp/yamasita/newsrc.gw /dosc/home/newsrc.gw
+	gnspool -h gw -y
+
+Copyright (C) yamasita@omronsoft.co.jp
+	Aug.28,1997
+著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。

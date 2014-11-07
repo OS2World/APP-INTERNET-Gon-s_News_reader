@@ -1,0 +1,13 @@
+X680x0 + Human68k 上で動作する gn について
+
+シャープのパーソナルワークステーション X680x0 上の OS Human68k で動作
+する gn は、
+	・ネットワークコードを持たないオフライン版
+		docs.jp/human68k/offline 参照のこと
+	・Ethernet Starter Pack for X680x0 (ESPX) 対応版
+		docs.jp/human68k/espx 参照のこと
+があります。
+
+Copyright (C) yamasita@omronsoft.co.jp
+	Jul.29,1996
+著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。

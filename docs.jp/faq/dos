@@ -1,0 +1,38 @@
+gn FAQ DOS 系編
+
+Q1.	gn/gnspool はどんな環境で動作しますか？
+
+A1.	以下の環境上で動作します。
+	DOS
+		InetBIOS
+		PC-NFS
+		PathWay
+		Packet
+		LAN WorkPlace
+		PC/TCP
+		SLIM/TCP
+
+	Windows 3.1/95/NT
+		Winsock
+
+	OS/2
+		TCP/IP for OS/2(16bit)
+		EMX(32bit)
+
+
+Q2.	gnrc の USER に設定するユーザ名って何ですか
+
+A2.	あなたのメイルアドレスの @ の左側です。
+	yamasita@omronsoft.co.jp なら yamasita です。
+
+
+Q3.	Windows95 で書いた記事が投稿できません
+
+A3.	Windows95/NT 上で winsock.vc 版の gn を使用すると、エディタの
+	終了を検知できません。16bit 版のエディタを使用してください _o_
+	Windows95/NT 上で GUI 版を使用する場合は、winsock.vc2 版の gn 
+	を使用することをお勧めします。
+----------------------------------------------------------------------
+Copyright (C) yamasita@omronsoft.co.jp
+	Sep.5,1997
+著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。

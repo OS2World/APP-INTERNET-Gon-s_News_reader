@@ -1,0 +1,138 @@
+OS/2 上で動作する gn について
+
+OS/2 の gn には 16bit 版 と 32bit 版 が存在します。
+
+    1. 16bit 版
+        OS/2 1.X のインターフェースを用いたバージョンです。
+        開発環境として以下のソフトウェアを前提としています。
+
+            Microsoft C Version 6.0A
+            OS/2 Programming Toolkit Version 1.3
+	    TCP/IP Version 1.2.1 for OS/2 Programming Toolkit
+
+    2. 32bit 版
+        OS/2 2.0 以降の 32bit インターフェースを用いたバージョ
+        ンです。実行及び開発環境として emx を用います。
+
+どちらも OS/2 Warp Version 3（含 Warp Connect）で動作します。
+それぞれについての説明は、同ディレクトリのファイル
+
+        16bit version : docs.jp/os2/tcpip16
+        32bit version : docs.jp/os2/tcpip32
+
+を参照して下さい。ここでは両者に共通の項目について説明します。
+
+
+1．Unix version との相違
+
+gn for OS/2 の使用方法は gn for Unix とほぼ同じです。
+以下に、相違点のみを記述します。
+
+(1)     使用環境
+        OS/2 自体で sendmail を動かしたりすることは可能であり、何らか
+        のニュースサーバーを移植することも、そんなに困難なことではない
+        と思われますが、現在の OS/2 版は DOS/Windows 版と同様にメール
+        サーバー、ニュースサーバーと連携して動作することを前提としてい
+        ます。
+
+(2)	変数
+	実行前にホームディレクトリを環境変数 HOME に設定します。
+	config.sys に
+	set HOME=c:\home
+	のように記述しておくと良いでしょう。
+
+	実行時には、変数 USER/LOGNAME, NAME, HOST が必要です。
+
+	USER:	アカウント名
+	LOGNAME:USER と同じ
+	NAME:	本名
+	HOST:	PC のホスト名
+
+	OS/2 コマンドプロンプトや config.sys にて
+	set USER=yamasita
+	として設定するか、gnrc にて
+	USER	yamasita
+	のように指定します。
+
+	テンポラリディレクトリの指定として、TMPDIR に加え TMP, TEMP
+	も使えます。優先順位は高い順に TEMP, TMP, TMPDIR です。
+
+(3)	ユーザ認証
+	OS/2 には、ユーザという概念がありません(*)。
+	gn を起動するたびにパスワードを入力しなければなりません。
+
+	ユーザ認証を行なうために pop プロトコルを使用しています。
+	デフォルトでは pop3(110) プロトコルですが、pop2(109)プロトコル
+	を使う場合は、AUTH_POP2 を define してコンパイルします。
+	smtp サーバと同じマシンを pop サーバとして利用します。
+
+        (*) 実際にないわけではなく、ローカルログインなる機能もあるので
+            すが、普通このような用途では使われません。
+
+
+(4)	起動オプション
+	gn に -l オプションはありません。
+
+
+
+2. DOS version との相違
+
+(1)	ファイル名に関する制限
+
+	OS/2 では FAT と HPFS という二つのファイルシステムを
+	選択することができます。FAT ファイルシステム上で gn
+	for OS/2 を使用した場合、
+
+		- ファイル名の先頭に . が使えない
+		- ファイル名が 8.3 形式に縛られる
+
+	という DOS と同じ制限がつきますが、HPFS では上記制限
+        がなくなります。ただし、gn for OS/2 は FAT での稼働も
+        想定して作られているため、デフォルトでは DOS 版と同じ
+        ファイル名を使用します。さらに加えると、今のところ
+        HPFS を使用してもファイル名の先頭に . が使えないという
+        制限があります。これはそのうち撤廃できたらいいいな。
+
+	.gnrc			-> gnrc
+	.gnrc-nntpserver	-> gnrc-nntpserver
+	.newsrc			-> newsrc
+	.newsrc-nntpserver	-> newsrc-nntpserver
+
+	また、
+		aux、con といった予約されたファイル名
+		ファイル名に使えない文字のファイル名
+	も使えません。
+	gnspool で記事を取り寄せる際、
+		comp.unix.aux
+		fj.lang.c++   (FAT での使用時のみ)
+	といったニュースグループの記事を取り寄せようとすると、異常終了
+	します。
+
+
+(4)	ファイル名の長さの制限
+
+        FAT ファイルシステムで使用した場合には DOS 版と同じ制限が付き
+        ますが、HPFS で使用した場合には事実上長さの制限は取り除かれま
+        す。
+
+
+トラブルシューティング
+
+    Connect 以降の Warp では問題ないのですが、それ以前のバージョンでは、
+    services に pop3 のポート番号/サービスが記述されていないので、
+
+        pop3/tcp: Unknown service.
+        pop3 サーバと接続できませんでした
+
+    というエラーメッセージと共に終了してしまいます。この場合 services 
+    ファイル (大抵 \tcpip\etc 又は \mptn\etc ディレクトリにあります)に
+    次の一行を追加してください。
+
+        pop3       110/tcp
+
+
+(C) kiku@yamato.ibm.co.jp (Akira Kikuchi)
+	Aug.27,1996
+Copyright (C) yamasita@omronsoft.co.jp
+	Sep.19,1997
+著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。

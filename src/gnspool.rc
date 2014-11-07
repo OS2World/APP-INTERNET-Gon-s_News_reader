@@ -1,0 +1,146 @@
+//{{NO_DEPENDENCIES}}
+//Microsoft App Studio generated resource script.
+//
+#include "wingnsp.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+
+//////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+IDI_GNSPOOL             ICON    DISCARDABLE     "GNSPOOL.ICO"
+
+//////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_GNSPOOLMENU MENU DISCARDABLE 
+BEGIN
+    POPUP "Help(\036H)"
+    BEGIN
+        MENUITEM "About(\036A)...",             IDM_ABOUT
+    END
+END
+
+
+//////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+ABOUTBOX DIALOG DISCARDABLE  22, 17, 200, 75
+STYLE DS_MODALFRAME | WS_CAPTION
+CAPTION "Version Information"
+FONT 8, "System"
+BEGIN
+    CTEXT           "gnspool",-1,86,15,27,8
+    RTEXT           "Version",-1,65,25,27,8
+    LTEXT           "",IDC_VERSION,100,25,95,8
+    RTEXT           "Date",-1,74,35,18,8
+    LTEXT           "",IDC_DATE,100,35,95,8
+    CTEXT           "Copyright (C) 1990-1996 yamasita@omronsoft.co.jp",-1,7,
+                    45,185,8
+    DEFPUSHBUTTON   "OK",1,80,55,40,14,WS_GROUP
+    ICON            "IDI_GNSPOOL",-1,10,10,18,20
+END
+
+IDD_GETPASSWD DIALOG DISCARDABLE  40, 30, 231, 69
+STYLE WS_POPUP | WS_CAPTION
+CAPTION "Password"
+FONT 8, "System"
+BEGIN
+    CTEXT           "",IDC_PASSWDTEXT,11,5,210,8
+    EDITTEXT        IDC_PASSWD,8,25,215,14,ES_PASSWORD | ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,99,49,32,14,WS_GROUP
+END
+
+IDD_KBINPUT DIALOG DISCARDABLE  40, 30, 331, 80
+STYLE WS_POPUP | WS_CAPTION
+FONT 8, "System"
+BEGIN
+    CTEXT           "",IDC_KBINPUT,5,5,320,8
+    EDITTEXT        IDC_KBTEXT,5,25,320,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,123,55,32,14,WS_GROUP
+    PUSHBUTTON      "CANCEL",IDCANCEL,163,55,45,14,WS_GROUP
+END
+
+IDD_GNSPOOLSEND DIALOG DISCARDABLE  40, 30, 231, 80
+STYLE WS_POPUP | WS_CAPTION
+FONT 8, "System"
+BEGIN
+    CONTROL         "",IDC_NEWSGROUPS,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,
+                    5,15,220,10
+    CONTROL         "",IDC_SUBJECT,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,5,
+                    25,220,10
+    CTEXT           "",IDC_TEXT,35,45,130,8
+    DEFPUSHBUTTON   "",IDOK,14,55,40,14,WS_GROUP
+    PUSHBUTTON      "",IDCANCEL,75,55,57,14,WS_GROUP
+    PUSHBUTTON      "",IDRETRY,153,55,64,14,WS_GROUP
+END
+
+IDD_AUTH DIALOG DISCARDABLE  0, 0, 207, 94
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION
+CAPTION "Authentication"
+FONT 8, "System"
+BEGIN
+    RTEXT           "User:",IDC_STATIC,21,22,19,8
+    EDITTEXT        IDC_AUTHUSR,44,20,160,12,ES_AUTOHSCROLL
+    RTEXT           "Password:",IDC_STATIC,4,51,36,10
+    EDITTEXT        IDC_AUTHPASSWD,44,50,160,12,ES_PASSWORD | ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,40,70,50,14
+    PUSHBUTTON      "CANCEL",IDCANCEL,105,70,50,14
+END
+
+#ifdef APSTUDIO_INVOKED
+//////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "wingnsp.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+/////////////////////////////////////////////////////////////////////////////////////
+#endif    // APSTUDIO_INVOKED
+
+
+#ifndef APSTUDIO_INVOKED
+////////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

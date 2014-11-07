@@ -1,0 +1,173 @@
+gn for MS-DOS + InetBIOS について
+
+gn の MS-DOS+InetBIOS への移植は、ムライ電気工業(株)の
+沢田(sawada@murai-electric.co.jp)どのの協力によってなされました。
+
+１．動作環境
+
+gn を実行するためには以下の環境が必要です。
+
+(1)	InetBIOS が動作する環境
+	例：
+		PC-98 シリーズ
+		MS-DOS
+		ネットワークボード
+		ネットワークドライバ
+		InetBIOS
+
+(2)	リプライメイルを送るための smtp サーバ
+	サーバ上で、sendmail がデーモンとして動作していなければなりません
+
+(3)	ユーザ認証を行なうための pop サーバ
+	MS-DOS 上にはユーザという概念がないため、ユーザ認証を行なうた
+	めに pop プロトコルを使用しています。
+	（gnrc で AUTHSERVER を指定しない限り）smtp サーバと同じマシン
+	を pop サーバとして利用します。
+
+	デフォルトは pop3(110) となっています。pop2(109) を使う場合は、
+	configur 実行時の OPTCFLAGS として、
+		djgpp:	-DAUTH_POP2 を付加
+		MS-C:	/DAUTH_POP2 を付加
+	します。
+
+(4)	ニュースサーバ :-)
+
+(5)	djgpp でコンパイルした gn を使うためには、i386sx 以上の CPU が
+	必要です。
+
+’９５年３月現在、動作が確認できているのは、
+	PC-98RL5(high res.) + MACNICA EXOS-298T + LWP Rel.3.5,Ver 2.3
+		MS-C 6.00A, djgpp
+	PC-9801DA7 + NEC PC-9867 + TCP/IPサポートソフト3.0
+		MS-C 6.00A, djgpp
+	NEC PC-9821Ae + Allied telesis SIC-98E + SLIM/TCP Ver.1.10 + IFORM Ver.1.00
+		MS-C 5.0(Makefile.ms5)
+	PC-386M + CONTEC FA-LANIII(98)S + CONTEC LAN-PAC3(98)S101 Ver.1.00
+		MS-C 6.00A
+	PC-AT compatible + 3com EterLink III (3c509) + ソリトン日本語 TCP
+		MS-C 6.00A
+	FMR70HE3 + DSLINKカード + InetBIOSドライバ Version 1.1 L25
+		MS-C 6.00A
+	FMR70HX3 + DSLINKカード + InetBIOSドライバ Version 1.1 L30
+		MS-C 6.00A
+	FMR-280H + DSLINKカード + InetBIOSドライバ Version 2.1 L10
+		MS-C 6.00A
+	PC9801DA3 + PC-NIU N98 + Net/One TCP-PC Rel16.1J + InetBIOS (アンガマンバス)
+		Turbo-C V2.0/Turbo-C++ V1.01/Borland-C++ V2.0
+	98NoteSX + Access/Note98 + TCP Applications + InetBIOS (アンガマンバス)
+		Turbo-C V2.0/Turbo-C++ V1.01/Borland-C++ V2.0
+	PC-98RX21 + AngeLan AL-9852D + MLDI(又は DUAL)ドライバ + InetBIOS
+
+です。（過去のバージョンで確認したものを含む）
+
+
+２．コンパイル環境
+
+コンパイルには下記のコンパイラが必要です。
+
+(1) MS-C 6.00A(以降)
+	nmake,cl,link など、通常のコンパイルができる環境が必要です。
+
+	MS-C でコンパイルした場合、640KB のメモリの制限から、多数のニュー
+	スグループを購読するニュースサーバと接続した場合メモリ不足によ
+	り正常に動作しない場合があります。docs.jp/dos/readme を参照のこと
+
+
+(2) djgpp 1.09(以降)
+	djgpp 1.09 (以降) の gcc,go32 などの環境が必要です。
+	MS-C 6.00A(以降)に附属する nmake も必要です。
+	ニュースグループ数の制限はありませんが、i386sx 以上の CPU が必
+	要です。
+
+	PC-98 シリーズの場合、
+		９３年１月に fj.binaries.msdos にポストされた
+			dj98nbr2.lzh
+		getch() へのパッチ
+	などが必要になります。
+
+	Visual C++ 1.0 に付属の nmake.exe は使用できません。
+	Visual C++ 1.0 の場合は、付属の nmaker.exe を使用します。
+
+(3) Turbo-C, Turbo-C++, Borland-C++
+	InetBIOS.tc: MS-DOS Ver3.3C + InetBIOS + Turbo-C付属のmake
+	Turbo-C   Ver2.0
+	Turbo-C++ Ver1.01
+	Borland-C++ Ver2.0
+
+	Borland-C++ Ver3.0 では確認していませんが、恐らく問題ないでしょう。
+
+
+３．コンパイル
+
+(1)	何らかの方法で全ソースを DOS 上にコンバートします。
+
+	ソースファイルの漢字コードは、
+	a)djgpp の場合
+		日本語 EUC のままでコンパイルします。
+		SHIFT-JIS に変換してしまうと、一部のメッセージが文字化
+		けする場合があります。
+	b)MS-C の場合
+		EUC のままでも、SHIFT-JIS に変換しても、どちらでも構い
+		ません。
+		ただし、全ファイルのコードを統一しておく必要があります。
+	c)Turbo-C の場合
+		ソースコードの漢字コードを SJIS に必ず変換します。
+		Turbo-C++ 以降は EUC のままでもコンパイルできます。
+
+(2) 	MS-C の場合 copy mkfiles\dos\inetbios.ms6 src\makefile を実行します。
+ 	djgpp の場合 copy mkfiles\dos\inetbios.dj src\makefile を実行します。
+	Turbo-C の場合 copy mkfiles\dos\inetbios.tc src\makefile を実行します。
+
+(3)	nmake configur
+(4)	configur
+(5)	nmake
+	gn.exe が作成されます。
+
+詳しくは docs.jp/install を参照下さい。
+
+４．実行
+
+gn を実行するためにはInetBIOS が動作していることが必要です。
+詳しくはネットワークボードおよび InetBIOS のマニュアルを参照下さい
+
+(1)	変数
+	実行前に以下の環境変数を設定します。
+
+	HOME:		ホームディレクトリ
+	USER:		アカウント名
+	LOGNAME:	USER と同じ
+	NAME:		本名
+	HOST:		PC のホスト名
+	INETBIOS:	HOSTS、SERVICES のあるディレクトリ
+
+	DOS のプロンプトや AUTOEXEC.BAT にて
+	set USER=yamasita
+	として設定すると良いでしょう。
+
+(2)	HOSTS にニュースサーバ、smtp/pop サーバを記述します。
+
+(3)	SERVICES に
+	ftp		21/tcp
+	smtp		25/tcp
+	pop		109/tcp
+	pop3		110/tcp
+	nntp		119/tcp
+	がなければ記述します。
+
+(4)	InetBIOS をロードします。
+
+(5)	画面が２５行でない場合、行数を環境変数 LINES に設定します。
+	例：	98 ハイレゾモードで３１行モード、ファンクションキー表
+		示ありの場合は、
+		set LINES=30
+	DOS/V の場合は configur 時の OPTCFLAGS に /DDOSV を指定してコ
+	ンパイルすると V-Text 対応になります。
+
+(6)	gn を実行します。
+
+(1),(4),(5) は autoexec.bat に記述しておくと良いでしょう。
+
+
+Copyright (C) yamasita@omronsoft.co.jp
+	Feb.25,1997
+著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。

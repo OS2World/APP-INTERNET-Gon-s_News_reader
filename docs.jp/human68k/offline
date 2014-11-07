@@ -1,0 +1,145 @@
+X680x0 + Human68k 上で動作する gn について
+
+以下に MS-DOS 版にならって注意事項を記述します。
+
+１．動作環境
+
+現在動作が確認できているのは
+	X68000初代 + Human68k Ver3.01以上 + command.x
+のみです。X68030 や, TwentyOne.x を組み込んだ環境, fish.x を
+command.x の代わりにシェルとして使っている環境等での確認は行っていま
+せん。
+
+２．コンパイル環境
+
+コンパイルには, GCC が必要です。XC ではコンパイルできません。
+現在確認できているのは(過去のバージョンで確認したものも含む)
+	GCC Version 1.22以上 真里子バージョン Based on 1.42
+	libc 1.1.29以上
+	has Ver3.00以上
+	hlk Ver2.29以上
+	XC Ver2.1 付属の make
+の組み合わせでのコンパイル/リンクです。現在のところ
+	GCC Version 1.29 真里子バージョン Based on 1.42
+	libc 1.1.32A
+	has Ver3.09
+	hlk Ver3.01
+	XC Ver2.1 付属の make
+というのが確認されている中で最新です。また,
+	GNU Make version 3.62(X6_12)
+でも一応大丈夫ですが, cp.x, rm.x が必要です。
+＃本当は必要じゃないはずですが,よくわかってません :-<
+
+３．コンパイル
+
+(1)	何らかの方法で全ソースを Human68k 上にコンバートします。
+	ソースコードの漢字コードを SJIS に必ず変換します。
+
+(2)	copy mkfiles\human68k\nonet src\Makefile を実行します。
+	GNU make を使っている場合は nonetgnu を使って下さい。
+
+(3)	(g)make configur
+
+(4)	configur
+
+(5)	(g)make
+	gn.x, gnspool.x が作成されます。
+
+	GCC Ver1.22 未満でコンパイルすると大量の Warning が出ますが,
+	signed char と unsigned char の違いで出るもので,動作には(たぶ
+	ん?)支障はありません。
+
+詳しくは docs.jp/install を参照下さい。
+
+４．実行
+
+	gn.x, gnspool.x を実行します。
+
+５．メモリの問題
+
+ニュースサーバ上に多数のニュースグループが存在する場合, gn は正常に動
+作しなくなる場合があります。以下に,その対策について記述します。
+
+a) gnrc で UNSUBSCRIBE を指定する
+	gnrc で
+		UNSUBSCRIBE	alt,ba,ca,clari,ddn,finet,pubnet,sfnet,trial
+	のように指定することにより,それらのグループがニュースサーバに
+	存在しないかのように処理し,メモリを節約することが可能になります。
+
+６．Unix version との相違
+
+gn for X680x0 + Human68k の使用方法は gn for Unix とほぼ同じです。
+以下に,相違点のみを記述します。
+
+(1)	環境変数
+	HOME, USER/LOGNAME, NAME, HOST が必要です。
+	Human68k では大文字と小文字の環境変数は別物になるので注意して
+	下さい。
+
+	HOME:	ホームディレクトリ
+	USER:	アカウント名
+	LOGNAME:USER と同じ
+	NAME:	本名
+	HOST:	PC のホスト名
+
+	Human68k プロンプトや AUTOEXEC.BAT にて
+	set USER=yamasita
+	として設定するか, gnrc にて
+	USER	yamasita
+	のように指定しなければなりません。
+	ただし, HOME は gnrc では設定できません。
+
+	テンポラリディレクトリの指定として, TMPDIR に加え TMP, TEMP
+	も使えます。優先順位は高い順に TEMP, TMP, TMPDIR です。
+
+(2)	ファイル名の制限
+	Human68k ではファイル名の長さが18文字＋３文字(先頭の8文字が同じ
+	ものは区別されない)に限定されています。
+	newsrc-mynntpserver を指定する際には, newsrc-mynntpserve
+	というファイルになります。
+	＃ MS-DOS に比べれば全然問題にならないですが :-)
+	また、同様に gnrc-nntpserver も18文字を超えた場合は最初の18文
+	字が有効です。
+
+	Human68k Ver2.x までは '-' を含んだファイル名を正常に扱えない
+	仕様であったために, LHa や tar + gzip で UNIX からファイルを
+	転送する時に gnrc-*, newsrc-* や '-' を含んだニュースグループ
+	を spool するディレクトリが '_' に変わってしまうことがあります。
+	rename するのを忘れないようにして下さい。
+
+	フリーソフトウェアの TwentyOne.x を組み込んだ場合は,ピリオド
+	で始まるファイル名なども有効となりますが,現在のところ動作確認
+	はできていません。
+
+	記事を保存する時のデフォルトのファイル名は
+		Unix:	$SAVEDIR/news.group.name
+	ですが,
+		Human68k:	$SAVEDIR\news\group\name
+	となります。
+
+(3)	起動オプション
+	gn に -l オプションはありません。
+
+７．MIME, jnames の使用について
+
+基本的には docs.jp/mime, docs.jp/jnames をご覧下さい。
+
+Human68k 独自の違うところを述べます。
+
+(1)	make libmimekit.a するときには, strcasecmp.o, strstr.o はリンク不
+	要ですので $(OBJS) から外して下さい。
+
+(2)	make libmimekit.a するときには Makefile か config.h を直して,
+	#define MSDOS をしておいて下さい。
+
+(3)	JNAMES の define では
+	#define JNAMES "d:\\gn\\jnames"
+	のように, \\ を使ってエスケープして下さい。
+
+なお上記２つともを使える Makefile を mkfiles/human68k/nonetful として
+添付しますので参考にして下さい。
+
+Copyright (C) sakanaga@pln.kyoto.omronsoft.co.jp
+Copyright (C) yamasita@omronsoft.co.jp
+	Aug.23,1996
+著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。

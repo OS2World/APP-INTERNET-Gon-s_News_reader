@@ -1,0 +1,232 @@
+Windows + Winsock で動作する gn/gnspool について
+
+１．動作環境
+
+gn/gnspool を実行するためには以下の環境が必要です。
+
+(1)	Winsock 1.1 が動作する環境
+	例：
+		Chameleon TCP/IP
+		Trumpet Winsock
+		Microsoft LAN Manager for DOS Client
+		Lan WorkPlace
+		Core Internet-Connect
+
+	もし、Winsock が使えずかつ他のネットワーク API が使える場合は、
+	そのネットワーク API 用にコンパイルした gnspool と
+	nonet.vc でコンパイルした Windows 用 gn を併用することも可能です。
+
+(2)	リプライメイルを送るための smtp サーバ
+	サーバ上で、sendmail がデーモンとして動作していなければなりません
+
+(3)	ユーザ認証を行なうための pop サーバ
+	MS-DOS 上にはユーザという概念がないため、ユーザ認証を行なうた
+	めに pop プロトコルを使用しています。
+	smtp サーバと同じマシンを pop サーバとして利用します。
+
+	デフォルトは pop3(110) となっています。pop2(109) を使う場合は、
+	configur 実行時の OPTCFLAGS として、/DAUTH_POP2 を付加します。
+
+(4)	ニュースサーバ :-)
+
+’９５年５月現在以下の構成で動作が確認できています。
+	（過去のバージョンで確認したものを含む）
+	PC-AT compatible + 3com EterLink III (3c509) +
+		PC-DOS 6.1/V + IBM Windows 3.10B +
+		Chameleon 3.11J
+	PC-AT compatible + 3com EterLink III (3c509) +
+		PC-DOS 6.1/V + IBM Windows 3.10B +
+		ODI + odipkt 3.0 +
+		Trumpet Winsock Version Alpha #18
+	PC-AT compatible + 3com EterLink III (3c509) +
+		PC-DOS 6.1/V + IBM Windows 3.10B +
+		ODI + odipkt 3.0 +
+		Core Internet-Connect Release 1
+	PC-AT compatible + 3com EterLink III (3c509) +
+		PC-DOS 6.1/V + IBM Windows 3.10B +
+		LAN Manager for DOS Client 2.2a
+	PC-AT compatible + 3com EterLink III (3c509) +
+		PC-DOS 6.1/V + IBM Windows 3.10B +
+		LAN WorkPlace for DOS 4.1J +
+		LWP188J LWP189J（Nifty FNWN:LIB10 にあります）
+	DECpc 450D2LP + 3COM Etherlink II/TP +
+		PC-DOS 6.1/J + MS-WINDOWS 3.1 +
+		Chameleon TCP(with Netware)
+	IBM ThinkPad 230Cs + Xircom CreditCard Ethernet Adapter +
+		PC-DOS 6.3/V + IBM Windows 3.10B +
+		Core Internet-Connect Release 1.1
+	PC-AT compatible + 3com EterLink III (3c509) +
+		ソリトン日本語 TCP + ALMail 付属の Inetsock.dll +
+		MS-C 6.00A
+	GATEWAY2000 HandBook486DX2 + DLINK DE-600 +
+		PC-DOS 6.3B/V + IBM Windows 3.10B +
+		Trumpet Winsock Version 2.0 Revision B
+
+	PC-AT compatible + 3com EterLink III (3c509) +
+		Windows NT Workstation 3.5
+
+２．コンパイル環境
+
+コンパイルには下記のコンパイラ／ライブラリが必要です。
+
+(1)	Microsoft(R) Visual C++ Version 1.0(or later ?)
+(2)	Windows Sockets API 1.1, C header file/C link library
+		ftp.microsoft.com
+		Nifty FWINDEV:LIB3
+		などにあります。
+	’９４年６月に comp.binaries.ms-windows にポストされた
+	inetcon1.zip にも含まれています。
+
+３．コンパイル
+
+(1)	何らかの方法で全ソースを DOS 上にコンバートします。
+
+	ソースファイルの漢字コードは、EUC のままでも、SHIFT-JIS に変換
+	しても、どちらでも構いません。
+	ただし、全ファイルのコードを統一しておく必要があります。
+
+(2) 	copy mkfiles\dos\winsock.vc src\makefile を実行します。
+
+(3)	nmake configur
+
+(4)	configur
+
+(5)	nmake
+	gn.exe/gnspool.exe が作成されます。
+
+
+４．実行
+
+(1)	Winsock が動作すること
+	gn/gnspool を実行するためには Winsock が動作していることが必要
+	です。詳しくは Winsock などのマニュアルを参照下さい
+
+(2)	変数の設定
+	Windows 起動前に環境変数 HOME を設定します。
+	AUTOEXEC.BAT に
+	set HOME=c:\home
+	のように記述しておくと良いでしょう。
+
+	実行時には、変数 USER/LOGNAME, NAME が必要です。
+
+	USER:	アカウント名
+	LOGNAME:USER と同じ
+	NAME:	本名
+
+	Windows 起動前や AUTOEXEC.BAT にて
+	set USER=yamasita
+	として環境変数に設定するか、gnrc にて
+	USER	yamasita
+	のように指定します。
+
+(3)	実行
+	プログラムマネージャの適当なグループに gn.exe/gnspool.exe を登
+	録し、ダブルクリックにて実行します。
+	起動オプションを付加したい場合は、プログラムマネージャの
+	「アイコン」メニューから「登録内容の変更」を選択し、「コマンド
+	ライン」で、C:\BIN\GN.EXE -h nntpserver のように指定します。
+
+Bugs:
+	終了時に program manager がアクティブになる (Why?)
+
+５．他の版との相違
+	docs.jp/dos/readme の「２．Unix version との相違」に加え、以下
+	の相違があります。
+
+	・起動オプション -V はありません
+
+	・ページャを内蔵しています（後述）
+
+	・gnrc などでの	PAGER、RETURN_AFTER_PAGER の指定は無視します
+
+	・Windows スタイルのメニューがあります
+
+	・ダイアログウィンドウで各種入力をおこないます
+
+	・確認入力もポップアップウィンドウでおこないます
+
+	・各モードの |(pipe) !(shell) コマンドはありません
+
+	・gnrc の AUTOLIST は 0 にしても効果がありません
+
+	・環境変数／gnrc のオプション WIN_LINES,WIN_COLUMNS,WIN_EDITOR
+	  が指定できるようになります。
+	  これらはそれぞれ LINES,COLUMNS,EDITOR と同じ機能で、WINDOWS
+	  の場合だけ意味を持ち、かつ LINES,COLUMNS,EDITOR より優先度の
+	  高い指定です。
+	  gnrc を DOS と Windows で共有する際、
+	  	  EDITOR edlin
+		  WIN_EDITOR notepad
+	  と記述すると、エディタとして
+	  DOS の場合は edlin を、Windows の場合は notepad を使用します。
+
+	・環境変数／gnrc のオプション (WIN_)LINES/COLUMNS を指定すると、
+	  その大きさのウィンドウを開きます。
+	  LINES/COLUMNS の指定が大き過ぎると、ディスプレイの大きさにあ
+	  わせた大きさのウィンドウを開きます。
+	  LINES/COLUMNS を指定しないと Windows が設定するデフォルトの
+	  大きさで開きます
+	  configur 時の LINES/COLUMNS の指定は無視します
+
+	・（configur 時に USE_FGETS をしてしなくても）
+	  コマンド行頭のスペースキーが CR と同じ意味になります
+
+	・マウスの左ボタンをダブルクリックすることによって、
+	  ニュースグループ、サブジェクト、記事を選択することができます。
+
+	・ニュースグループ、サブジェクト、記事が表示されていない場所で、
+	  マウスの左ボタンをクリックすると、space キーを押したものとし
+	  て扱います。
+
+６．Windows アプリケーションとしてみた gn
+	・あるまじき（？）コマンド入力が可能です
+	・help メニューには、本来のヘルプがありません。
+	・カナショートカットキーは使えません
+	・ＣＰＵを独占し過ぎます X-<
+	・初期化ファイルが gn.ini ではなく gnrc です
+
+７．ページャ
+
+Windows 版は、ページャを内蔵しています。
+このページャが持つコマンドは
+	キー	機能
+	-------+---------
+	space	１画面下（記事の最後が表示されている場合はページャ終了）
+	b	１画面上
+	CR,j	１行下
+	k	１行上
+	G	最後
+	q	ページャ終了
+だけです。
+マウスの左ボタンをクリックすると、space キーを押したとみなされます。
+
+デフォルトでは、記事の最後が表示されている場合にさらに下に行こうとする
+（spece/CR/j/左ボタン/スクロールバーで下/下向きスクロールアロー）と、
+記事を抜けますが、gnrc に
+WIN_PAGER_FLAG 1
+としておくと、右ボタンをクリックするか q[CR] を入力しない限りページャ
+を抜けないようになります。
+
+Bugs:
+	このページャは最下行が複数行に渡る場合、正常に表示されない場合
+	がある。
+	ニュースグループモードでニュースグループ名が長い場合、スクロー
+	ルアップしてしまって上の方のニュースグループが見えない場合があ
+	る。サブジェクトモード、アーティクルモードもしかり。
+
+	LAN WorkPlace と Core Internet-Connect は getservbyname() が正
+	常に動作しないので、サービス番号を得る独自のルーチンを持ってい
+	る。システムの services は見ないため、標準と異なるポートを使い
+	たくても使えない。undef BUG_GETSERVBYNAME すれば使えるようにな
+	る（はず）。
+
+	Windows NT では、エディタの終了待ちができないことがある。
+	（＝ポストできないX-<）
+	Windows 3.1 用のエディタを使用すれば良い。
+
+Todo:
+	copy & paste
+
+Copyright (C) yamasita@omronsoft.co.jp
+	Aug.29,1995
+著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。

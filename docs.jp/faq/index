@@ -1,0 +1,28 @@
+gn FAQ インデックス
+
+Sorry. Under Construction!
+
+	FAQ を見る前に、まずは
+	・ docs.jp にある各種ドキュメント
+	・ src にある gn.md, gnspool.md
+	・ （バイナリとともに配布された gn.man gnspool.man）
+	をご覧下さい。上記と重複する内容は FAQ には含まれていません。
+
+
+	概要編(docs.jp/faq/about)
+
+	入手編(docs.jp/faq/howtoget)
+	unix 編(docs.jp/faq/unix)
+	DOS 系編(docs.jp/faq/dos)
+
+	ユーザカスタマイズ編(docs.jp/faq/customiz)
+	環境変数編(docs.jp/faq/env)
+	ディレクトリ、ファイル編(docs.jp/faq/dir_file)
+	既読情報編(docs.jp/faq/newsrc)
+	gnspool 編(docs.jp/faq/gnspool)
+
+	メンテされていない旧バージョンの FAQ (docs.jp/faq/old)
+----------------------------------------------------------------------
+Copyright (C) yamasita@omronsoft.co.jp
+	Sep.5,1997
+著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。

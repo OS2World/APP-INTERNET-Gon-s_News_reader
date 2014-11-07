@@ -1,0 +1,29 @@
+gn FAQ 既読情報編
+
+Q1.	２つのサーバにアクセスしていると何度も同じ記事を読まされます
+
+A1.	既読情報を覚えておくファイル（.newsrc）を２つ持って下さい。
+
+	gion というサーバと gw というサーバにアクセスするなら、
+		% touch ~/.newsrc-gion<CR>
+		% touch ~/.newsrc-gw<CR>
+	を前もって実行しておくか、
+	gion にアクセスした後に
+		% mv ~/.newsrc ~/.newsrc-gion<CR>
+	を、gw にアクセスした後に
+		% mv ~/.newsrc ~/.newsrc-gw<CR>
+	とし、それそれのサーバに対する既読情報を別々に保持します。
+
+	DOS 系の場合は HOME という環境変数に設定したディレクトリに cd 
+	し、
+	gion にアクセスした後に
+		% ren newsrc newsrc.gio<CR>
+	を、gw にアクセスした後に
+		% ren newsrc newsrc.gw<CR>
+	とします
+
+
+----------------------------------------------------------------------
+Copyright (C) yamasita@omronsoft.co.jp
+	Sep.5,1997
+著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。

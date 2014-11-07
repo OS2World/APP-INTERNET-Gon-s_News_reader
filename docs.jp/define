@@ -1,0 +1,60 @@
+gn の define
+
+DOS 系のもの --------------------------------------------------
+
+MSDOS:
+DOSV:		DOS/V の bios から行数／桁数を得る
+		ansi.sys を考慮し、桁数は -1 する
+
+HUMAN68K:
+OS2:
+QUICKWIN:	Quick Win（将来のバージョンにおいてはサポートしない）
+WINDOWS:
+
+DOSFS:		ドライブという概念があり、
+		パス区切り（？）が \ のファイルシステム
+
+GNUDOS:		djgpp
+MSC:		MS-C
+MSC9:		MS-C 9.0A
+
+INETBIOS:
+PATHWAY:
+PCNFS:
+PCTCP4:
+SLIMTCP:
+
+WATTCP:
+NO_DNS:		WATTCP 時、DNS がない場合
+NEWWATTCP:	184373 バイトの mscwattcp.zip を使用する場合
+
+AUTH_POP2:	pop2 を使ってユーザ認証を行なう
+AUTH_FTP:	ftp を使ってユーザ認証を行なう
+
+WINSOCK:	Windows Socket API
+
+Unix 系のもの --------------------------------------------------
+
+HPUX:	HP/UX
+MEUX:	ME/UX
+MVUX:	MV/UX
+NECODT:	PC-UX/V
+
+USG:	System-V 系
+SVR4:
+NDIR:	sys/dir.h がなく、dir.h がある場合
+MIME:	MIME ヘッダ
+
+NO_RENAME:	rename() がない場合
+
+その他 --------------------------------------------------
+NO_NET:		ネットワークコードなし
+NO_SAVE:	ファイルへの保存機能コードなし
+NO_SHELL:	コマンド実行機能コードなし
+NO_PIPE:	パイプ機能コードなし
+
+USE_JNAMES:	jnames データベースを使用する
+
+Copyright (C) yamasita@omronsoft.co.jp
+	Jan.31,1996
+著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。

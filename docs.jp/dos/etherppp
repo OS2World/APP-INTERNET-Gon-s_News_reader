@@ -1,0 +1,109 @@
+EtherPPP 上で動作する gn について
+
+HP200LX や Massif II といった AT 互換機の DOS 環境で PPP を使うには
+EtherPPP という PPP ドライバを使うのが定番ですが、これは packet
+driver の一種なのでこの上で gn を動作させることができます。
+docs.jp/dos/packet も併せてご覧ください。
+
+１．動作環境
+
+gn を実行するためには以下の環境が必要です。
+
+(1) EtherPPP
+	Ver1.9.49β 以上が必要です。archie でヒットする EtherPPP で見
+	る場合は 53810 バイトのものを使用してください。
+
+(2) EtherPPP が動作する環境
+	PC-AT 互換機 (PC-98 シリーズなどでは動作しません)
+	モデム
+
+(3) リプライメイルを送るための smtp サーバ
+(4) ユーザ認証を行なうための pop サーバ
+(5) name server
+(6) ニュースサーバ
+	これらについては docs.jp/dos/packet を参照してください。
+
+現在、動作が確認できているのは（過去のバージョンで確認したものを含む）
+	Massif II (DOS/V化) + EtherPPP 1.9.49β
+です。
+
+２．コンパイル環境
+３．コンパイル
+
+	docs.jp/dos/packet を参照してください。
+
+４．実行
+
+(1)	EtherPPP をインストールし、config.ppp, dial.ppp を作成します。
+	詳しくは EtherPPP 附属のドキュメントを参照ください。
+
+	<< config.ppp の例>>
+	ppp trace 0
+	ppp pap user sakanaga *******  <-- **はパスワード
+	ppp quick
+	ppp lcp open
+
+	<< dial.ppp の例>>
+	recv 1000
+	send "at&c1&D2&W\r" <-- 適当なモデムの初期化が必要です
+	recv 3000 "OK\r\n"
+	send "atdt075-***-****\r"  <-- 本当のTelは伏せます
+	recv 20000
+
+(2)	wattcp.cfg を作成します。
+	詳しくは Waterloo TCP ライブラリに附属のドキュメントを参照下さい。
+	なお my_ip= は通常ダイアルアップIP接続の場合 00.00.00.00 として
+	おき、接続の際表示されたアドレスを入れる必要があります。
+
+	<< wattcp.cfg の例>>
+	hostname = Massif
+	my_ip = 00.00.00.00  <-- DialUpの場合
+	netmask = 255.255.255.0
+	nameserver = ***.***.***.***  <-- 本当のIPは伏せます
+	gateway = ***.***.***.***
+	domainlist = "kyoto-inet.or.jp"
+	SOCKDELAY = 20000  <-- 極端ですが :-(
+
+(3)	set wattcp.cfg=dir を実行します。
+
+(4)	EtherPPP をロードします。
+	ppp /p 0x62 /d script
+
+	D-mail には setmyip.com (標準出力からIPアドレスを読んで 
+	wattcp.cfg に書き込むプログラム) があるので,実際は
+	ppp /c 2 /p 0x62 /d script | setmyip
+	とすると良いでしょう。
+	＃ /c 2 は COM2 の指定です。Massif II の内蔵モデムは COM2。
+
+(5)	画面が２５行でない場合、行数を環境変数 LINES に設定します。
+
+(6)	name server がない場合、もしくは各種ホストが name server から
+	引けない場合は hosts を作成し、そのディレクトリを 環境変数
+	hosts に設定します。
+	set hosts=dir
+
+(7)	gnrc と環境変数
+	実行前に環境変数 HOME にホームディレクトリを設定し、そのディ
+	レクトリに gnrc を置きます。
+	gnrc はあらかじめ正しく設定しておきます。
+
+(8)	gn を実行します。
+
+(9)	EtherPPP の常駐を解除します。
+	termin 0x62
+
+以上の操作はバッチファイルに記述しておくと良いでしょう。
+
+５. その他
+	シリアル回線など遅い回線を使用している場合、突然接続が切られて
+	しまうことがあります。頻繁に切られてしまう場合は wattcp.cfg に
+	SOCKDELAY=1200
+	と書いてタイムアウトになるまでの時間を長め（デフォルトは３０秒）
+	にしておくと改善する場合があるようです。
+	Massif II の DOS/V 化については NIFTY-Serve FSNOTE MES14 を
+	ご覧ください。
+
+Copyright (C) sakanaga@pln.kyoto.omronsoft.co.jp
+Copyright (C) yamasita@omronsoft.co.jp
+	Jul.25,1996
+著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。

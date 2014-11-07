@@ -1,0 +1,332 @@
+-*- Mode: text -*-
+
+gn 1.20
+----------------------------------------------------------------------
+Mar.1,1994
+
+Feb.28,1994	src/init.c
+SunOS 4.0.3(Sun3/80) でコンパイルできない不具合修正
+
+Feb.23,1994	src/group.c
+gcc-2.5.8 でコンパイルする時、warning が出ないよう修正
+
+（group.c へのパッチです）
+Feb.23,1994	src/client.c
+WATTCP 時、close 待ち追加
+
+Feb.23,1994	src/post.c
+-DMIME のない場合、漢字のサブジェクトが正しくエンコードされない不具合
+修正
+
+Feb.21,1994	src/init.c cancel.c post.c save.c reply.c gnspool.c
+DOS の場合の mkdir() の引数修正で HUMAN68K 版がコンパイルできなくなっ
+た不具合修正
+
+Feb.21,1994	src/init.c docs.jp/inetbios, packet
+DOS/V V-Text 対応、OS/2 可変サイズ対応
+
+Feb.17,1994	src/init.c
+DOS,OS/2 の場合、テンポラリディレクトリにドライブ名を設定していないと
+必ず a: をアクセスする不具合修正
+
+Feb.17,1994	src/article.c
+アーティクルモードで、Lines: ヘッダのない記事に R が表示される不具合修
+正
+
+Feb.17,1994	src/gncom.c subject.c
+control.* も control と同じ扱いにした。
+
+Feb.10,1994	src/client.c
+WATTCP 時、reply できない不具合修正
+
+Feb.10,1994	src/cancel.c init.c post.c reply.c save.c gnspool.c
+DOS の場合の mkdir() の引数修正
+
+Feb.10,1994	src/inetbios.c
+InetBIOS 使用時、環境変数 TMP がないとエラーになる場合がある不具合修正
+
+Feb.10,1994	src/gnspool.c
+DOS の場合、gnspool 終了時に起動時のディレクトリに復帰するよう修正
+
+Feb.9,1994	src/gncom.c gnspool.c
+DOS で、gnspool と gn を使う場合 gn、gnspool ともにニュースグループの 
+. と . の間が８文字を越えるニュースグループを正常に扱えない不具合修正
+
+Feb.9,1994	src/cancel.c
+INN でキャンセルできない不具合修正
+
+Feb.8,1994	mkfiles/nonet.dj pc-nfs.ms6 pathway.ms6 wattcp.ms6
+冗長な inetbios.h との日付比較削除
+
+Feb.8,1994	mkfiles/nonet.ms6
+nonet.ms6 追加
+
+Feb.7,1994	mkfiles/inetbios.ms6 wattcp.ms6 pc-nfs.ms6 pathway.ms6
+コンパイルオプションから /G2 削除
+
+Feb.7,1994	src/init.c
+OSF/1 対応
+
+Feb.3,1994	src/reply.c
+-DMIME 時、reply すると coredump する不具合修正
+
+Jan.27,1994	src/init.c
+NEWSLIB と NEWSSPOOL に、環境変数や ~ が使えない不具合修正
+
+Jan.26,1994	src/article.c
+アーティクルモードで、U 番号 と記事番号を指定したにもかかわらず、記事
+番号を聞いてくる不具合修正
+
+Jan.18,1994	mkfiles/nonet.x68 docs.jp/x680x0
+		src/article.c gnspool.c group.c init.c subject.c
+X680x0 対応
+
+Jan.12,1994	mkfiles/nonet.dj
+ネットワークコードのない gn/gnspool を djgpp で作成するための makefile
+追加
+
+Jan.6,1994	src/subject.c
+ニュースグループモードで、表示されている最初のグループ番号が０でない場
+合、表示されている最初のグループ番号より小さいグループ番号を入力しその
+グループの記事を全部読むと、グループ番号とグループが一致しなくなる不具
+合修正
+
+Jan.6,1994	src/group.c gncom.c
+ニュースグループモードで u 20- などとした場合、表示されていない部分で
+記事のないグループまで確認入力をおこなう不具合修正
+
+Jan.6,1994	src/follow.c reply.c
+フォロー／リプライ時、先頭に . がある行以後が引用されない不具合修正
+
+Jan.6,1994	src/post.c
+ポスト／フォロー時、先頭に . がある行が正常にポストされない不具合修正
+
+Dec.16,1993	src/gn.h init.c subject.c article.c
+サブジェクトモードの a コマンドで、全部記事を読もうとすると、スレッド
+順ではなく、必ず記事番号順に読んでしまう不具合修正
+
+Dec.16,1993	src/init.c mkfiles/NEWS-OS.6
+setlocale 、 NEWS-OS 6.0 (SVR4) 対応
+
+Dec.16,1993	src/article.c
+クロスポストの記事を読んだ後、サブジェクトモードで N コマンドを使用す
+ると、未読の記事のないグループへ移動する場合がある不具合修正
+
+Dec.16,1993	mkfiles/README os2_16.ms6 os2gn.def os2gnsp.def
+		docs.jp/README os2
+		src/client.c gn.h gnspool.c init.c post.c smtp.c
+OS/2 対応
+
+Dec.14,1993	src/subject.c
+KILL_CONTROL 1 でサブジェクトモードの表示が既読にならない不具合修正
+
+Dec.10,1993	mkfiles/UniOS-U.MIM docs.jp/MIME
+mv UniOS-U.MIME UniOS-U.MIM
+
+Dec.10,1993	mkfiles/SunOS.jna docs.jp/jnames
+mv SunOS.jmaes SunOS.jna
+
+Dec.9,1993	src/init.c gn.md
+gnrc で POSTPROC を指定できるよう修正
+マニュアル追記
+
+Dec.9,1993	src/cancel.c
+キャンセルできない不具合修正
+
+Dec.7,1993	src/article.c gncom.c subject.c gnspool.c
+DOS で gnspool とあわせて使う場合、記事番号が 99999999 を越えると正常
+に動作しなくなる不具合修正
+
+Dec.6,1993	src/article.c gncom.c gnspool.c newsrc.c subject.c
+DOS の場合、記事番号が 32767 を越えると正常に動作しなくなる不具合修正
+
+Dec.6,1993	
+gn.h にあった #include をそれぞれのファイルへ移動
+
+Dec.3,1993	src/article.c subject.c
+POWER_SAVE mode 追加
+
+Dec.3,1993	src/gnspool.c init.c gnspool.md
+gnspool に -l オプション（ローカルで expire のみ行なう）を追加
+
+Dec.2,1993	src/article.c gn.h init.c
+アーティクルモードの U コマンドのデフォルトを可能なら最後に読んだ記事
+とするよう修正
+
+Dec.2,1993	src/gnspool.c
+記事をポスト／リプライメイルを送信する時、ヘッダを表示し、
+確認しながら実行する機能追加
+
+Dec.1,1993	src/gnspool.c group.c gncom.c
+DESCRIPTION ON の場合は、NEWSLIB/newsgroups を作成する機能追加
+
+Dec.1,1993	mkfiles/* docs.jp/*
+DOS 関連のファイル名を全部小文字に変更
+
+Nov.30,1993	src/gn.c gnspool.c init.c
+		mkfiles/*
+gn.c と gnspool.c に重複していた、外部変数定義、変数の初期化を init.c 
+に移動した
+
+Nov.30,1993	src/gnspool.c, group.c gncom.c
+gnspool 実行時、既に全ての記事がローカルディスクにある場合は GROUP コ
+マンドを発行しないようにした
+
+Nov.30,1993	src/gnspool.c
+expire 時、NEWSSPOOL は rmdir しないよう修正
+
+Nov.29,1993	src/gnspool.c
+連続していない既読も expire するよう修正
+
+Nov.29,1993	docs.jp/MIME
+MIME_HEAD ON 時、元記事のヘッダが JIS7 なのか MIME なのか区別がつかな
+い旨追記
+
+Nov.28,1993	src/gn.c gnspool.c gn.h init.c gn.md
+		docs.jp/MS-DOS
+gnrc のキーワード IGNORE 追加
+マニュアル追記
+
+Nov.26,1993	src/newsrc.c
+newsrc が DOS <=> Unix 共用可能なよう、行末が CR LF でも正常に処理する
+よう修正
+
+Nov.25,1993	mkfiles/InetBOIS.* *.ms6
+clobber のエントリ修正
+
+Nov.25,1993	src/init.c mkfiles/HPUX
+HP-UX 対応
+
+Nov.24,1993	src/newsrc.c
+unsub のニュースグループの既読記事が、spool から完全に消えている時、
+newsrc に保存しないようにした。
+
+Nov.19,1993
+gnspool 追加
+
+Nov.19,1993	src/inetbios.c
+GUNDOS -> GNUDOS
+
+Nov.18,1993	src/subject.c
+Subject: ヘッダがない記事がいつまでたっても既読にならない不具合修正
+
+Nov.17,1993	src/group.c init.c gncom.c gn.h
+		mkfiles/*
+共通ルーチン（何との？）を gncom.c に集めた
+
+Nov.16,1993	src/kanji.c
+（俗にいう）kanji-out を ESC ( J から ESC ( B に変更
+あわせて、コメントの嘘:-)修正
+
+Nov.16,1993	src/gn.c gn.h init.c follow.c reply.c gn.md
+rn ライクな引用タグ生成機能追加
+マニュアル追記
+
+Nov.16,1993	src/gn.c gn.h init.c group.c subject.c article.c post.c
+		referenc.c
+localspool 機能追加
+
+Nov.16,1993	src/gn.c gn.h init.c subject.c article.c post.c
+		cancel.c reply.c gn.md
+		docs.jp/README MIME mkfiles/UniOS-U.MIME
+MIME ヘッダ対応
+マニュアル追記
+
+Nov.15,1993	src/gn.c group.c
+open_server() を group.c から gn.c へ移動
+
+Nov.12,1993	src/gn.h subject.c gn.md
+gnrc のキーワード KILL_CONTROL にニュースグループが control なら 
+Control: ヘッダを表示する機能追加
+
+Nov.10,1993	src/post.c
+ポストの最後に CRLF を２回送っていた不具合修正
+
+Nov.10,1993	src/save.c
+記事をファイルに保存する時、コマンドラインでファイル名を指定すると 
+$HOME からの相対になっていたのを savedir からの相対になるよう修正
+
+Nov.4,1993	src/subject.c
+subject_mode_command() へ渡す引数は long なのに、int で受け取っていた
+不具合修正
+
+Nov.4,1993	src/article.c
+クロスポストの記事番号を保持する変数を int -> long に修正
+
+Nov.4,1993	src/group.c
+未読の記事がない状態で c 0 / u 0 を実行した場合に core dump する不具合
+修正
+
+Nov.4,1993	src/gn.md
+グループモードで、存在しないニュースグループ名を入力した場合について追
+記
+
+gn 1.11
+----------------------------------------------------------------------
+Nov.1,1993
+
+Nov.1,1993	src/article.c newsrc.c save.c
+不要変数削除
+
+Oct.20,1993	src/init.c
+. で始まるニュースグループ X-< への対応
+
+Oct.20,1993	src/subject.c gn.md
+SELECT_LIMIT = 0 の時は、ニュースグループ選択時のチェックなしとした。
+
+Oct.18,1993	src/init.c gn.md
+ARTICLE_LIMIT = 0 の時は、起動時のチェックなしとした。
+
+Oct.16,1993	src/gn.[ch] subject.c init.c gn.md
+gnrc のキーワード SELECT_LIMIT を追加し、ニュースグループ選択時の確認
+入力と、起動時の確認入力とを別の値で確認入力指定ができるようにした。
+
+Oct.16,1993	src/gn.[ch] follw.c config.hd subject.c jfrom.c init.c
+		mkfiles/SunOS.jnames docs.jp/jnames
+jnames ライブラリ対応
+
+Oct.13,1993	src/follow.c post.c
+なんとなく post_file() を follow.c から post.c に移動
+
+Oct.13,1993	src/post.c
+ポスト時、ニュースグループ、サブジェクトに CR のみを入力した場合、
+ポストを中止するかどうか聞いてくる機能追加
+
+Oct.1,1993	src/gn.[ch] subject.c article.c init.c gn.md
+モード毎に字下げする gnrc のキーワード SHOW_INDENT 追加
+
+Sep.30,1993	src/gn.h follow.c cancel.c
+put_server を使う define をまとめて USE_PUT_SERVER と定義
+
+Sep.30,1993	src/article.c cancel.c client.c gn.[ch] group.c
+		    inetbois.c init.c newsrc.c repley.c subject.c
+		mkfiles/InetBIOS.tc
+Turbo-C(Borland-C) 対応
+
+Sep.30,1993	mkfiles/InetBIOS.ms6
+.o -> .obj / -> \
+
+Sep.21,1993	docs.jp/FAQ
+ポスト編 Q2/A2, Q3/A3 追加
+
+Sep.20,1993	src/client.c docs.jp/Packet
+wattcp 時にローカルに持った hosts を見る機能追加
+
+Sep.18,1993	docs.jp/Copyrigh.t bin-dist
+バイナリで配布する際の注意事項追記
+
+Sep.8,1993	src/gn.h auth.c cancel.c follow.c smtp.c client.c
+		docs.jp/README MS-DOS Packet
+Crynwr Packet Driver 対応
+
+Sep.8,1993	src/auth.c smtp.c client.c
+重複していたネットワーク関連のコードの統一
+
+Sep.8,1993	init.c
+SIGWINCH が来てもサイズが変わっていない場合は書き直ししないように修正
+
+Sep.8,1993	docs.jp/Change.log -> docs.jp/log/1.00-1.10
+1.00 〜 1.10 の変更履歴を docs.jp/log/1.00-1.10 とした。
+
+gn 1.10
+----------------------------------------------------------------------

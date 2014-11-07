@@ -1,0 +1,44 @@
+gn FAQ unix 編
+
+Q1.	gn はどんなＷＳで動作しますか？
+
+A1.	ほとんどのＷＳ上で動作します。
+	これまでに
+		Sun Micro Systems:	Sun3/SPARC STATION series
+					SunOS 4.x 5.x
+		HP:			HP700 series
+		NEC:			EWS 4800 series
+		Sony:			News series
+					NewsOS 4.x 6.x
+		SGI:			IRIX 5.3
+		IBM:			RS/6000
+		Hitachi:		3050 series
+		OMRON:			LUNA series
+		other:			LINUX,FreeBSD,NetBSD,BSD/OS
+	など、多くのＷＳ／ＯＳで動作した実績があります。
+	詳しくは docs.jp/unix/readme を参照のこと
+
+Q2.	インストールは簡単ですか？
+
+A2.	簡単です。
+	SunOS, HP-UX, NEWS-OS, IRIX, HI-UX, EWS/UX, UXP/DS,
+	CAIOS-UX, AIX, FreeBSD, NetBSD, BSD/OS, Linux, DG/UX, UniOS
+	では、mkgn というスクリプト一発です。
+	詳しくは docs.jp/install, docs.jp/unix/readme を参照のこと
+
+
+Q3.	プロバイダ上のアドレスを使うには？
+
+A3.	~/.gnrc-nntpserver に
+	USER       = プロバイダ上のユーザ名
+	DOMAINNAME = プロバイダ上のドメイン名
+	NAME       = あなたのフルネーム
+	と書きます。
+	USER, DOMAINNAME, NAME は必ず ~/.gnrc-nntpserver に記述してく
+	ださい。
+	~/.gnrc に書くと、同名の環境変数があった場合上書きされてしまい
+	ます。
+----------------------------------------------------------------------
+Copyright (C) yamasita@omronsoft.co.jp
+	Sep.5,1997
+著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。

@@ -1,0 +1,125 @@
+MS-DOS 上で動作する gn について
+
+gn は以下の７つのネットワークドライバ（？）上で動作します。
+	InetBIOS
+	PC-NFS
+	PathWay
+	Packet
+	LAN WorkPlace
+	PC/TCP
+	SLIM/TCP
+このディレクトリにそのドライバ名でドキュメントがありますので参照下さい。
+また、ネットワークコードなしの gn もあります。
+
+以下は、共通の項目について記述します。
+
+１．メモリの問題
+
+MS-C などコンベンショナルメモリだけを使うコンパイラの場合 640KB のメモ
+リしか使えません。
+ニュースサーバ上に多数のニュースグループが存在する場合、gn は正常に動
+作しなくなる場合があります。
+
+以下に、その対策について記述します。
+
+a) gnrc で UNSUBSCRIBE を指定する
+	gnrc で
+		UNSUBSCRIBE	alt,ba,ca,clari,ddn,finet,pubnet,sfnet,trial
+	のように指定することにより、それらのグループがニュースサーバに
+	存在しないかのように処理し、メモリを節約することが可能になりま
+	す。
+
+b) MS-C でコンパイルした gnspool と
+   djgpp でコンパイルした gn を併用する方法
+	・packet driver をＡＴ互換機で使用する
+	・PathWay を９８で使用する
+	のように、
+		ネットワークドライバは djgpp に対応していない
+		しかし、マシンは djgpp に対応している
+	場合、MS-C でコンパイルした gnspool を使って記事をローカルマシ
+	ンに取り寄せ、djgpp でコンパイルした gn を使って記事を読み書き
+	することにより、コンベンショナルメモリの制限から解放されます。
+
+c) nntp_server:/usr/lib/news/nntp_access を改変する方法
+	ニュースサーバの nntp_access に
+		hsl098	read	post	!all,fj
+	のような記述を行ない、見えるニュースグループを制限することによ
+	り、メモリを節約することが可能になります。
+
+d) 誰かが、EMS を使うようにしてくれるのを待つ :-p
+
+
+２．Unix version との相違
+
+gn for MS-DOS の使用方法は gn for Unix とほぼ同じです。
+以下に、相違点のみを記述します。
+
+(1)	変数
+	実行前にホームディレクトリを環境変数 HOME に設定します。
+	AUTOEXEC.BAT に
+	set HOME=c:\home
+	のように記述しておくと良いでしょう。
+
+	実行時には、変数 USER/LOGNAME, NAME, HOST が必要です。
+
+	USER:	アカウント名
+	LOGNAME:USER と同じ
+	NAME:	本名
+	HOST:	PC のホスト名
+
+	DOS のプロンプトや AUTOEXEC.BAT にて
+	set USER=yamasita
+	として設定するか、gnrc にて
+	USER	yamasita
+	のように指定します。
+
+	テンポラリディレクトリの指定として、TMPDIR に加え TMP, TEMP
+	も使えます。優先順位は高い順に TEMP, TMP, TMPDIR です。
+
+(2)	ユーザ認証
+	MS-DOS には、ユーザという概念がありません。
+	gn を起動するたびにパスワードを入力しなければなりません。
+
+	ユーザ認証を行なうために pop プロトコルを使用しています。
+	デフォルトでは pop3(110) プロトコルですが、pop2(109)プロトコル
+	を使う場合は、AUTH_POP2 を define してコンパイルします。
+	（gnrc で AUTHSERVER を指定しない限り）smtp サーバと同じマシン
+	を pop サーバとして利用します。
+
+(3)	ファイル名の規則の制限
+	MS-DOS ではファイル名の先頭に . を使うことができません。
+	.gnrc			-> gnrc
+	.gnrc-nntpserver	-> gnrc-nntpserver
+	.newsrc			-> newsrc
+	.newsrc-nntpserver	-> newsrc-nntpserver
+
+	また、
+		aux、con といった予約されたファイル名
+		ファイル名に使えない文字のファイル名
+	も使えません。
+	gnspool で記事を取り寄せる際、
+		comp.unix.aux
+		fj.lang.c++
+	といったニュースグループの記事を取り寄せようとすると、異常終了
+	します。
+
+
+(4)	ファイル名の長さの制限
+	MS-DOS ではファイル名の長さが８文字＋３文字に限定されています。
+	newsrc-nntpserver を指定する際には、newsrc-n というファイルに
+	なります。また、同様に gnrc-nntpserver も gnrc-nnt となります。
+	- や _ を使わずに、. を使って、newsrc.nnt とすると、ホスト名と
+	して３文字まで使えます。
+
+	記事を保存する時のデフォルトのファイル名は
+		Unix:	$SAVEDIR/news.group.name
+	ですが、
+		DOS:	$SAVEDIR\news\group\name
+	となります。
+
+(5)	起動オプション
+	gn に -l オプションはありません。
+
+Copyright (C) yamasita@omronsoft.co.jp
+	Sep.19,1997
+著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。

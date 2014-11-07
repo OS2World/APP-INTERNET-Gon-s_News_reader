@@ -1,0 +1,19 @@
+このディレクトリは、Windows 95/NT で動作する gn の Makefile のテンプレー
+トを収めています。
+インストールするシステムに一番近いテンプレートを ../../src/Makefile に
+コピーし、
+	make configur
+	configur
+	make
+	make install
+して下さい。
+詳しくは docs.jp の各種ドキュメントを参照下さい。
+
+winsock.vc2	: WINDOWS + WINSOCK + Visual C++ 2.0
+winsock.ms9	: Windows95(DOS) + WINSOCK + Visual C++ 2.0 (MS-C 9.0A)
+
+nonet.ms9	: Windows95(DOS) + MS-C 9.0A + nmake（ネットワークコードなし）
+
+Copyright (C) yamasita@omronsoft.co.jp
+	Jul.7,1997
+著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。

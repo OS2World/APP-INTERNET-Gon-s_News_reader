@@ -1,0 +1,54 @@
+このディレクトリは、unix 系の Makefile を納めています。
+src/ で mkgn を実行することにより機種に合わせた Makefile が作成され
+半自動的に gn, gnspool をコンパイルすることが可能です。
+
+詳しくは docs.jp の各種ドキュメントを参照下さい。
+
+common		: 各機種共通
+linux		: Linux
+	マニュアルを gzip する
+unios-u		: OMRON LUNA UniOS-U/sigma
+	gnspool 未対応
+unios-u.gns	: OMRON LUNA UniOS-U/sigma
+	libndir.a が必要
+
+old ディレクトリには、旧バージョンで使用していた各機種用の Makefile の
+テンプレートを収めています。
+mkgn が対応していない場合などには、インストールするシステムに一番近い
+テンプレートを src/Makefile にコピーし、
+	make configur
+	configur
+	make
+	make install
+して下さい。
+
+caios-ux	: CASIO SX-V Series Version.8
+dgux		: DATA GENERAL AV DG/UX
+			gnspinews 対応
+ews4800		: EWS4800 RISC 5.2
+freebsd		: FreeBSD 2.0.5R
+hiux		: HI-UX
+hpux		: HP-UX Release 9.0
+irix		: IRIX 5.3
+meux		: ME-UX C00版
+news-os		: Sony NEWS NEWS-OS 4.x(4.3BSD)
+news-os.6	: Sony NEWS NEWS-OS 6.0(SVR4)
+pc-uxv		: NEC PC-98 日本語OpenDesktop PC-UX/V(Rel3.2B)
+solaris		: SunOS 5.x
+			gnspinews 対応
+sunos		: SUN micro systems SPARC Station SunOS 4.x
+sunos.jna	: SUN micro systems SPARC Station SunOS 4.x
+			jnames 対応
+unios-b		: OMRON LUNA UniOS-B,Mach
+unios-b.mim	: OMRON LUNA UniOS-B,Mach
+			MIME 対応
+unios-u.mim	: OMRON LUNA UniOS-U/sigma
+			gnspool, MIME 対応。libndir.a が必要
+
+なお
+old/mvux	: DATA GENERAL MV MV/UX
+はは configur に対応していません
+
+Copyright (C) yamasita@omronsoft.co.jp
+	Sep.8,1997
+著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。

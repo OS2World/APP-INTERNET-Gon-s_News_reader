@@ -1,0 +1,150 @@
+gn について
+
+gn は、上はミニコンで動作する Unix から、下はパームトップパソコンで動
+作する MS-DOS まで、ほとんど同じユーザインタフェイスで使用することがで
+きる NNTP *1 対応の軽いニュースリーダです。
+
+*1 NNTP: NetNews を扱うプロトコル
+
+初心者に使いやすいように、数字もしくは簡単なコマンドを入力するだけで使
+えるようになっています。作者が英語を知らないため、メッセージが日本語な
+のも敷居を下げる効果があるでしょう。
+
+
+通常の（？）ニュースリーダの
+	ニュースグループ -> 記事
+というネストに対して、gn は
+	ニュースグループ -> サブジェクト -> 記事
+というネストをとり、さらにはスレッド *2 にも対応しているため、同一の話
+題を簡単に追いかけることができます。
+
+*2 スレッド: 記事の親子関係を順に読むことのできる機能
+
+そのほか、一般的な（？）ニュースリーダとしての機能を一通り持っており、
+さらには、コントロールメッセージ *3 を選択的に読むというニュースシステ
+ム管理者向けの機能も備えています。
+
+*3 コントロールメッセージ: ニュースグループの管理などに使用される記事
+
+gn は以下のプラットホームの上で動作します。
+	・Unix 系のＯＳ(SunOS,NEWS-OS,UniOS,Linux...)
+	・OS/2 J2.1 with OS/2 Toolkit TCP/IP for OS/2
+	・OS/2 with EMX
+	・Windows(3.1/95/NT) + Winsock
+	・DOS + InetBIOS, PC-NFS toolkit, PathWay, Packet, LANWorkPlace,
+		PC/TCP, SLIM/TCP
+	・X680x0 + Human68k
+
+上記各種プラットホームの上で、ほとんど同じユーザインタフェイスで使うこ
+とができるため、ユーザ教育に手間がかかりません。企業内／学内での標準ニュー
+スリーダにいかがでしょう。
+
+
+ニュースリーダ本体の gn の他に、いくつかのツールを添付しています。
+
+gnspool:	.newsrc *4 に従って未読の記事をローカルディスクに取り
+		寄せるプログラム。
+		gnspool と gn とを併せて使用すると、NNTP サーバと接続
+		せずに NetNews を読むことができます。
+
+		*4 .newsrc: どの記事を読んだかを管理しているファイル
+
+gninews:	gnspool と gn 以外のニュースリーダを組合せて使う場合、
+		そのニュースリーダで書いた記事を gnspool に渡すための
+		プログラム。オフラインで書いた記事を gnspool を使って
+		ポストするときに使います。
+
+gnmail:		メイルを gnspool に渡すためのプログラム。オフラインで
+		書いたメイルを gnspool を使って送信するときに使います。
+
+gnloops:	gnspool で取寄せた記事を、他のニュースサーバに転送する
+		プログラム。直接接続されていないサーバ同士で記事を交換
+		したり、記事配送の信頼性の向上を図ることができます。
+
+
+このディレクトリには、各種ドキュメントを収めています。
+構成は下記のとおりです。
+
+readme:		本ファイル
+change.log:	変更履歴
+copyrigh.t:	著作権などについて
+define:		memo
+history:	gn の歴史とトピックス
+wanted:		募集
+bin-dist:	gn をバイナリで配布する際の注意事項について
+install:	インストールの手引
+info:		gn の情報交換について
+new:		新しくなったこと
+mime:		MIME について
+jnames:		JNAMES (日本語データベース)の利用について
+
+faq/index:	よく出る質問と回答(index)
+	faq/about:	概要編
+	faq/howtoget:	入手編
+	faq/unix:	unix 編
+	faq/dos:	DOS 系編
+	faq/customiz:	ユーザカスタマイズ編
+	faq/env:	環境変数編
+	faq/dir_file:	ディレクトリ、ファイル編
+	faq/newsrc:	既読情報編
+	faq/gnspool:	gnspool 編
+	faq/old:	メンテされていない旧バージョンの FAQ
+
+gon/readme:	山下は gn/gnspool をどのように使っているか
+	gon/1993:      会社のＰＣで記事をＦＤに落し、
+		       自宅のＰＣでニュースを読む
+	gon/1995:      サブノートＰＣで、ニュースを持ち歩く
+	gon/1996_1:    ＯＳを Windows 95 に入れ換えた
+	gon/1996_5:    Windows95/Linux のデュアルブートマシン
+	gon/1997_4:    メイル／ニュースともオフラインの環境を構築
+	gon/1997_8:    メイルとニュースのマスタマシンを libretto に
+		       移行し NT と併用
+
+
+log/*:		過去の変更履歴
+
+gnloops/readme: gnloops について
+
+gnspool/readme:	gnspool について
+	gnspool/gnus:		gnspool で取り寄せた記事を GNUS で読む方法
+	gnspool/mh:		MH と gnspoolを組合せてメールを送信するには
+	gnspool/mnews:		gnspool で取り寄せた記事を mnews で読む方法
+	gnspool/winvn:		gnspool で取り寄せた記事を winvn で読む方法
+
+
+unix/readme:	Unix 系の OS 上で動作する gn について
+	unix/mvux:	MV/UX について
+
+dos/readme:	MS-DOS へのインストールについて
+	dos/inetbios:	InetBIOS について
+	dos/lanwp:	NOVELL LAN WorkPlace for DOS について
+	dos/packet:	packet driver について
+	dos/pathway:	PathWay について
+	dos/pc-nfs:	PC-NFS について
+	dos/pctcp4:	PC/TCP について
+	dos/slimtcp:	SLIM/TCP について
+
+windows.31/readme:	Windows 3.1  で動作する gn/gnspool について
+	windows.31/winsock.vc:	Windows + Winsock について
+	windows.31/winsock.qw:	Windows + Winsock + QuickWin について
+
+windows.95/readme:	Windows95/NT  で動作する gn/gnspool について
+	windows.95/winsock.vc:	winsock.vc 版 gn を動作させる方法
+
+os2/readme:		OS/2で動作する gn/gnspool について
+	os2/spool:	HPFS にローカルスプールを作る際の注意点
+	os2/tcpip16:	OS/2 上で動作する gn について
+				(16bit interface version)
+	os2/tcpip32:	OS/2 上で動作する gn について
+				(emx/32bit interface version)
+	os2/mime:	MIME 対応について (OS/2 編)
+
+human68k/readme:	X680x0 + Human68k 上で動作する gn について
+	human68k/offline:	オフラインで動作する gn について
+	human68k/espx:		ESPX 上で動作する gn について
+
+ユーザーズマニュアルはとりあえず ../src/gn*.md を御覧下さい。
+
+Copyright (C) yamasita@omronsoft.co.jp
+	Sep.12,1997
+著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。

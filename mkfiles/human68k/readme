@@ -1,0 +1,19 @@
+このディレクトリは、各機種用の Makefile のテンプレートを収めています。
+インストールするシステムに一番近いテンプレートを ../../src/Makefile に
+コピーし、
+	make configur
+	configur
+	make
+	make install
+して下さい。
+詳しくは docs.jp の各種ドキュメントを参照下さい。
+
+nonet		: X680x0 + Human68k （ネットワークコードなし）
+nonetgnu	: 同上 GNU make 対応
+nonetful	: X680x0 + Human68k （ネットワークコードなし）
+			MIME + jnames 対応
+espx:		: X680x0 + Human68k + Ethernet Starter Pack for X680x0 (ESPX)
+
+Copyright (C) yamasita@omronsoft.co.jp
+	Aug.20,1996
+著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。

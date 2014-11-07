@@ -1,0 +1,14 @@
+
+		    gn 1.06 を MV/UX で作られる方へ
+
+			     渡辺健次
+			     佐賀大学
+			watanabe@cc.saga-u.ac.jp
+			  1993年2月3日(水)
+
+オムロンデータゼネラル社のミニコン MV シリーズの OS MV/UX に、
+gn 1.06 を移植しました。MV/UX で gn を作る時は、
+mkfiles/unix/old/mvux を src/Makefile にコピーして make してください。
+
+Makefile 中の NNTPSERVER、DOMAINNAME、ORGANIZATION は、
+あなたのサイトに合わせて修正してください。

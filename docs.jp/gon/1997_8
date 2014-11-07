@@ -1,0 +1,300 @@
+メイルとニュースのマスタマシンを libretto に移行し NT と併用
+
+１９９６年８月、いよいよ出張が多くなり、
+外出の度にメイルや newsrc をコピーするなんてやってられなくなった。
+メイルも newsrc もマスタを libretto に置くことを決意した。
+
+＃以下の記述ではマシン名とＯＳ名という別次元の名称が対比的に出現するが、
+＃深く追求しないこと :-p
+
+
+（１）従来の環境
+	従来、会社では Unix 上で Mule + GNUS/mh-e を使ってメイル／ニュー
+	スにアクセスしていた。
+	メイル／ニュース以外では、Unix を使ったり Windows を使ったりで、
+	会社の机の上には Windows NT マシンがあり、そこに X server をイ
+	ンストールして Unix を使用している。
+
+	モバイル環境では libretto で
+		gnspool(winsock.vc2)
+		gn(winsock.vc2)
+		BOW + Mule + GNUS + gninews(BOW)
+		BOW + Mule + mh-e + MH + gnmail(BOW)
+	を使うようになった（docs.jp/gon/1997_4 参照）。
+	これは、メイル資産が MH のフォーマットであるため、Windows のメ
+	イラ／ニュースリーダへの移行が困難であったためである。
+
+	外出の度にメイルや newsrc をコピーするなんてやってられなくなっ
+	たので、一時期 libretto に外部ＣＲＴとキーボード、マウスを接続
+	して、libretto を会社でのメインマシンにしてみたのだが、、、
+	・libretto の外部ＣＲＴ出力は事実上 800X600 が最高解像度で
+	  Windows NT マシンの 1240X1024 になれていた私には狭く、仕事の
+	  効率が悪くなった。
+	・libretto 50 の CPU は Pentium 75MHz 相当。対する Windows NT 
+	  マシンは DUAL Pentium Pro 200MHz。全然仕事の効率が違う。
+	ということで、結局 libretto を会社でのメインマシンにというもく
+	ろみは失敗に終わった。
+
+（２）会社でのメイル／ニュース環境を Unix から Windows NT に移行
+	最近、Windows NT でも BOW が動作することを知った。
+	NT で BOW + Mule + mh-e + MH/GNUS, gn/gnspool を使えば
+	・過去のメイル資産をそのまま使える。
+	・いちいちコピーしなくとも libretto に取り込んだメイルや
+		newsrc を共有すれば直接アクセスできる。
+	ので、会社でのメイル／ニュースへのアクセス環境を Unix から 
+	Windows NT に移行することにした。
+
+（３）何をどう使うか
+	libretto と Windows NT マシン、２台をどう使うかを整理した。
+
+	libretto:
+		主に外出時にオフラインで使用する。
+		メイル(~/Mail) と newsrc のマスタマシン。
+
+		gnspool(winsock.vc2)
+		gn(winsock.vc2)
+		BOW + Mule + GNUS + gninews(BOW)
+		BOW + Mule + mh-e + MH + gnmail(BOW)
+
+		オフラインの libretto で書いたメイル／ニュースは、帰社
+		時もしくは携帯電話経由などで会社と接続したときに 
+		gnspool を使って発信する。
+		会社もしくは出先でオンライン状態で使用する場合、いちい
+		ち gnspool を使って発信するのは面倒であるが、頻度が低
+		いのでよしとする。
+
+	Windows NT:
+		会社でオンラインで使用する。
+
+		gnspool(winsock.vc2)
+		gn(winsock.vc2)
+		BOW + Mule + GNUS + gninews(BOW)
+		BOW + Mule + mh-e + MH
+
+		必ずオンラインなので、メイルは直接発信する。
+
+	BOW 上では gnspool を使用しない
+		クロスポストされた記事がリンクされ、Windows から見えな
+		いため。
+
+	BOW 上では gn は使用しない
+		winsock.vc2 版の方が使い勝手が良いため。
+
+	メイル(~/Mail）は共有
+		libretto の c:\yama\Mail がマスタ。
+		Windows NT 側からもここを使う。
+
+	newsrc も共有
+		libretto の c:\yama\newsrc.gw がマスタ。
+		Windows NT 側からもこれを使う。
+
+	ニュースはオンラインで読まない
+		ニュースサーバに存在するニュースグループが多いため 
+		active の取得に時間がかかり、特に GNUS では起動に時間
+		がかかるため、オンライン状態であっても gnspool を使っ
+		て読み書きする。
+
+（４）ホームディレクトリの共有
+	libretto の autoexec.bat により $HOME は c:\yama に設定してあ
+	る。このホームディレクトリを共有するため、libretto の c: を NT 
+	の l: にマウントした。
+	NT のコントロールパネル -> システム で環境変数 HOME に l:\yama 
+	を指定することにより、ホームディレクトリ
+		gn 用の newsrc や gnrc
+	を共有可能になった。
+
+（５）libretto に BOW をインストール
+	＃今回インストールしたわけではないが、、、
+	libretto に BOW をインストールしてある。
+	当然 BOW 的なホームディレクトリとして /yama が指定してある。
+
+（６）Windows NT に BOW をインストール
+	NT 用にも BOW を入手し（まだ正式にはサポートされていない）パッ
+	チをあてた後インストールした。
+	libretto の c:\yama は /dfs/l/yama に見えるので、BOW 的なホー
+	ムディレクトリとして /dfs/l/yama を指定した。
+	これで BOW 的にもホームディレクトリ
+		mule 用の ~/.emacs
+		MH 用の ~/Mail や ~/.mh_profile
+	などが共有可能になった
+
+以上で、共有環境が整った。
+共有することで管理が楽である反面、共有するが上に苦労することもいろいろ
+でてきた（後述）。
+
+（７）libretto での gn/gnspool
+	libretto では、winsock.vc2 版の gn/gnspool と、BOW 上でコンパ
+	イルした gninews/gnmail を使用している。
+
+	libretto は、DOS/Windows 系公開用バイナリ作成マシンでもあるた
+	め、コンパイル時に特別なカスタマイズを一切行わず、すべてのカス
+	タマイズを gnrc, gnrc.gw で行っている。
+	なお、BOW 上では gn, gnspool ともに使用しないため .gnrc,
+	.gnrc-gw は作成していない。
+
+	以下 winsock.vc2 版の gn/gnspool で使用している gnrc および 
+	gnrc.gw。デバッグマシンでもあるため、冗長な記述もある。
+	なお、以下の gnrc,gnrc.gw は決してそのまま使わないように。
+	---- gnrc ----------------------------------------
+	ARTICLE_LEAVE	800
+	ARTICLE_LIMIT   0
+	AUTOLIST	OFF
+	CLS		ON
+	COLUMNS		79
+	DESCRIPTION	OFF
+	DISPLAY_LANG	SJIS
+	DOMAINNAME	omronsoft.co.jp
+	DOSFS		OFF
+	EDITOR		edit
+	FILE_LANG	SJIS
+	GMT2JST		ON
+	GNUS_FORMAT	YES
+	HOST		hsp022
+	KILL_CONTROL	1795
+	MAIL_LANG	JIS
+	MIME_HEAD	OFF
+	NAME		Yasunari GON Yamasita
+	NEWSLIB         c:\usr\lib\news
+	NEWSSPOOL       c:\usr\spool\news
+	NG_SORT		2
+	NNTPSERVER	gw
+	NSUBJECT	ON
+	ORGANIZATION	OMRON SOFTWARE Co., Ltd. Kyoto, Japan.
+	PAGER		less -m -c -e
+	POWER_SAVE	2
+	PROCESS_LANG	SJIS
+	RETURN_AFTER_PAGER	0
+	SAVEDIR		c:\yama\news
+	SELECT_LIMIT	100
+	SHOW_TRUNCATE	OFF
+	SMTPSERVER	hsp001
+	USER		yamasita
+	USE_HISTORY	OFF
+	USE_SPACE	ON
+	WIN_COLUMNS	80
+	WIN_EDITOR	notepad
+	WIN_LINES	80
+	--------------------------------------------------
+	---- gnrc.gw -------------------------------------
+	UNSUBSCRIBE	（略）
+	GNSPOOL_LANG    SJIS
+	GNSPOOL_MIME_HEAD	2
+	WITH_GNSPOOL	ON
+	--------------------------------------------------
+
+	gnrc, gnrc.gw は、ホームディレクトリに置いてあるため、この設定
+	を libretto と Windows NT で共有することになる。
+
+（８）libretto での GNUS
+	BOW で
+	ln -s newsrc.gw .newsrc-gw
+	とシンボリックリンクを張り、gn/gnspool と newsrc を共有するよ
+	うにした。
+
+	.emacs には下記を記述し、M-x gnus-gnspool<CR> を実行することに
+	より gnspool で取り寄せた記事をアクセスできるようにした。
+	--------------------------------------------------
+	(defun gnus-gnspool ()
+	  "GNUS (gw)"
+	  (interactive)
+	  (setq gnus-news-system 'Cnews)
+	  (setq gnus-nntp-server nil)
+	  (setq gnus-local-domain "omronsoft.co.jp")
+	  (setq nnspool-inews-program "gninews")
+	  (setq nnspool-spool-directory "/usr/spool/news")
+	  (setq nnspool-active-file "/usr/lib/news/active")
+	  (setq nnspool-history-file "/usr/lib/news/history")
+	  (setq gnus-nntp-service nil)
+	  (setenv "NEWSSPOOL" "/usr/spool/news")
+	  (gnus))
+	--------------------------------------------------
+	newsrc.gw, .newsrc-gw, .emacs は、ホームディレクトリに置いてあ
+	るため、この設定を libretto と Windows NT で共有することになる。
+	ただ、この設定では問題が発生した（後述）。
+
+（９）libretto でのメイル
+	BOW + Mule + mh-e + MH + gnmail を使って、メイルを読み書きする。
+	BOW 標準の MH は、sendmail daemon と通信するように設定されてお
+	り、gnmail 経由での発信には向いていない。そこで mh-6.8.3-JP2c 
+	のソースを入手し、sendmail を起動してメイルを発信するような設
+	定を行ってコンパイル、インストールした。
+	＃ 私は JP2b から JP2c へのパッチの作者でもあったりする。
+	mtstailor には
+	sendmail:	/usr/local/bin/gnmail
+	と書き、発信するメイルを gnmail 経由で gnspool に渡すように設
+	定した。
+
+以上で、libretto 側の設定は完了である。
+次に、Windows NT 側の設定を行うが、共有するがために、いろいろな問題が
+でてきた。
+
+（１０）Windows NT での gn/gnspool
+	libretto と同様、winsock.vc2 版の gn/gnspool と、BOW 上でコン
+	パイルした gninews/gnmail を使用している。
+	gnrc, gnrc.gw, newsrc などは libretto 上のものを共有。
+
+（１１）ニューススプールの共有：断念
+	gnspool が取得する記事も、実体を libretto において NT から共有
+	しようとしたのであるが、、、
+
+	gnspool が取得する記事は gnrc で
+	NEWSLIB         c:\usr\lib\news
+	NEWSSPOOL       c:\usr\spool\news
+	と指定してある。
+	BOW の場合、ln -s /dfs/l/usr/spool/news /usr/spool/news とシン
+	ボリックリンクを張れば問題ないのだが、
+	Windows NT 的に l:\usr\spool\news を c:\usr\spool\news に見え
+	るようにする方法がわからなかった。ショートカットを張ってみたり
+	したのだが、、、、
+	＃何かいい方法ないものだろうか？
+	仕方なく NEWSLIB、NEWSSPOOL は libretto, NT 両方で別々に持つこ
+	ととした。
+
+（１２）NT + GNUS 向けの newsrc
+	libretto 上では Windows95 と BOW で newsrc を共有するよう、前
+	述の通り
+	ln -s newsrc.gw .newsrc-gw
+	とシンボリックリンクが張ってある。
+	ところが、BOW でのシンボリックリンクはレジストリで管理されてお
+	り、libretto 上のシンボリックリンクは、それをマウントした NT 
+	側からは見えないのである。
+	仕方なく .emacs に下線部を追加し、GNUS からも newsrc.gw を直接
+	読み書きするようにし、シンボリックリンクは削除した。
+
+	(defun gnus-gnspool ()
+	  "GNUS (gw)"
+	  (interactive)
+	  (setq gnus-news-system 'Cnews)
+	  (setq gnus-nntp-server nil)
+	  (setq gnus-local-domain "omronsoft.co.jp")
+	  (setq gnus-startup-file "~/newsrc.gw")
+	  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+	  (setq nnspool-inews-program "gninews")
+	  (setq nnspool-spool-directory "/usr/spool/news")
+	  (setq nnspool-active-file "/usr/lib/news/active")
+	  (setq nnspool-history-file "/usr/lib/news/history")
+	  (setq gnus-nntp-service nil)
+	  (setenv "NEWSSPOOL" "/usr/spool/news")
+	  (gnus))
+
+（１３）NT + Mule + mh-e + MH
+	＃ gn/gnspool とは直接関係ないが、、、
+
+	NT は必ずオンラインなので、sendmail daemon と通信するように設
+	定されている BOW 標準の MH を使い、mtstailor で
+	servers:	SMTP サーバのホスト名
+	と SMTP サーバさえ設定してやればいいように思えた。
+
+	ところが、、、ああリンク。
+	refile などの操作時に link() を使用しているのだが、リモートマ
+	シン（libretto）上のファイルはリンクすることができず、refile 
+	がエラーになってしまうのである。
+	仕方がないので、MH のソースを改変し、refile 時 link() に失敗し
+	たときは、ファイルをコピーするようにし、コンパイル／インストー
+	ルした。
+
+以上で、libretto のモバイル環境を、会社でも共有することが可能になった。
+
+Copyright (C) yamasita@omronsoft.co.jp
+	Sep.4,1997
+著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。

@@ -1,0 +1,83 @@
+gnspool で取り寄せた記事を GNUS で読む方法
+
+gnspool が作成するファイルは、基本的に C news のサブセットです。
+よってローカルスプールを見る設定をおこなった GNUS を使って NetNews に
+アクセスすることも可能です。
+
+１）gnspool の実行
+	gnspool を実行し、記事をローカルディスクに取り寄せます。
+
+２）GNUS の設定
+	 基本的な GNUS の設定は完了していることを前提とします。
+
+	 以下のようなコードを .emacs に追加します。
+
+	 (defun gnus-gnspool ()
+	   "GNUS (with gnspool)"
+	     (interactive)
+	     (setq gnus-nntp-server nil)
+	     (setq gnus-nntp-service nil)
+	     (gnus))
+
+	Gnus の場合は
+		(setq gnus-select-method '(nnspool ""))
+	が必要です。
+
+３）GNUS の実行
+	M-x gnus-gnspool[CR]
+	を実行します。
+
+４）ディレクトリの変更
+	gnspool は、
+		・ニュースの記事用に /usr/spool/news を、
+		・ニュースの管理用に /usr/lib/news を
+	使います。
+	変更したい場合は gnrc で NEWSLIB NEWSSPOOLを指定します。
+
+		例）
+		ニュースの記事用に /var/spool/news を、
+		ニュースの管理用に /var/lib/news を使う
+			NEWSSPOOL	/var/spool/news
+			NEWSLIB		/var/lib/news
+
+	NEWSLIB、NEWSSPOOL を変更した場合は、GNUS 側も同じディレクトリ
+	を見るように設定が必要です。
+	詳しくは nnspool.el のはじめの部分をご覧下さい。
+
+		例）
+		(setq nnspool-spool-directory "/var/spool/news")
+		(setq nnspool-active-file "/var/lib/news/active")
+		(setq nnspool-newsgroups-file "/var/lib/news/newsgroups")
+		(setq nnspool-history-file "/var/lib/news/history")
+
+５）ポスト／フォロー
+	src に gninews.c という gnspool 用 inews もどきのソースをお
+	いてあります。このソースをコンパイルし、
+	/usr/local/bin/gninews 等として置き、
+	そのパスを nnspool-inews-program に設定します。
+		例）
+		(setq nnspool-inews-program "/usr/local/bin/gninews")
+	ニュースの記事用のディレクトリを /usr/spool/news 以外にしてい
+	る場合は、あらかじめ環境変数 NEWSSPOOL へ設定が必要です。
+		例）
+		setenv NEWSSPOOL /var/spool/news
+
+６）リプライ／メイル
+	メイルを送る場合は、sendmail.el や mh-e を使用します。
+	オフラインでは使用できません。
+	オフラインの場合、リプライしたくなったら、
+	gnus-summary-mark-as-unread-forward (u) しておいて、後でネット
+	ワークにつないだ時にリプライします。
+
+	inews と同じように、sendmail もどきを作ってもいいのですが、
+	Nemacs/mule のメーラが sendmail を使うとも限らないので、、、
+
+	rmail(sendmail.el) なら、
+	・gnmail.c をコンパイル
+	・出来上がった a.out を /usr/local/bin/gnmail とする
+	・(setq sendmail-program "/usr/local/bin/gnmail")
+	で、できると思いますが、山下は確認していません。
+
+Copyright (C) yamasita@omronsoft.co.jp
+	May.29,1996
+著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。

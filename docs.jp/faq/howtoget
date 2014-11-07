@@ -1,0 +1,47 @@
+gn FAQ 入手編
+
+Q1.	gn のソースコードはどこの ftp サイトで入手できますか？
+
+A1.	ftp.omronsoft.co.jp:/pub/misc/gn にあります。
+
+	gn-1.35.tar.gz:	全ソース、ドキュメント、Makefile を
+			tar でまとめ、gzip で圧縮したもの
+			漢字コードは、日本語 EUC
+
+	gn135.lzh:	全ソース、ドキュメント、Makefile を
+			lha でまとめて圧縮したもの
+			漢字コードは（俗にいう）シフト JIS
+
+	数字部分（1.35 もしくは 135）はバージョン番号です。
+	バージョンアップする度に変わります。
+
+
+Q2.	gn のバイナリはどこの ftp サイトで入手できますか？
+
+A2.	ftp.omronsoft.co.jp:/pub/misc/gn/bin にあります。
+	ここには対応するシステムの名前のサブディレクトリがあり、
+	サブディレクトリ毎に gn,gnspool などのファイルがあります。
+
+	詳しくは /pub/misc/gn/readme.bin を参照して下さい。
+
+
+Q3.	雑誌付録の CD-ROM から入手できますか？
+
+A3.	はい。
+	Internet Magazine
+	Internet User
+	などの付録の CD-ROM に収録されています。
+
+
+Q4.	gn の情報はどこで入手できますか？
+
+A4.	・ http://www.omronsoft.co.jp/~yamasita
+	・ gn Mailing list
+	・ fj.news.reader.gn
+	・ Nifty-serve
+	などで入手することができます。
+	詳しくは docs.jp/info を参照のこと
+----------------------------------------------------------------------
+Copyright (C) yamasita@omronsoft.co.jp
+	Jun.21,1996
+著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。

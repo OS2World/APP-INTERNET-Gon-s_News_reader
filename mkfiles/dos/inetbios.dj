@@ -1,0 +1,279 @@
+#
+# Makefile for gn
+# @(#)inetbios.dj	1.40 Sep.24,1997
+# 著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。
+# (C) sawada@murai-electric.co.jp
+# Copyright (C) yamasita@omronsoft.co.jp
+#
+
+MAIL_KANJI_CODE		= JIS
+PROCESS_KANJI_CODE	= SJIS
+FILE_KANJI_CODE		= SJIS
+DISPLAY_KANJI_CODE	= SJIS
+LINES		= 24
+COLUMNS		= 80
+
+BINDIR		= c:\bin
+MANDIR		= c:\man
+MANEXT		= .1
+
+NEWSSPOOL	= /usr/spool/news
+NEWSLIB		= /usr/lib/news
+
+NEWSRC		= newsrc
+SIGNATURE	= signatur
+AUTHORCOPY	= author_c
+SAVEDIR		= /news
+TMPDIR		= /
+PAGER		= more <
+RETURN_AFTER_PAGER = 1
+EDITOR		= edlin
+
+CC		= gcc
+OPTCFLAGS	= 
+OPTGNOBJS	= 
+OPTGNSPOOLOBJS	= 
+OPTLFLAGS	=
+OPTLIBS		= 
+
+OSDEFINES	= -DMSDOS
+NETWORKDEFINES	= -DINETBIOS
+COMPILERDEFINES	= -DGNUDOS
+DEFINES		= $(OSDEFINES) $(NETDEFINES) $(COMPILORDEFINES)
+HEADER_DEFINES	= -DHAS_STRING_H -DHAS_STDLIB_H -DHAS_IO_H -DHAS_SYS_TYPES_H -DHAS_DIR_H
+CFLAGS		= $(DEFINES) $(HEADER_DEFINES) $(OPTCFLAGS) -w -O
+LFLAGS		= $(OPTLFLAGS)
+LIBS		= $(OPTLIBS)
+######################################################################
+
+.c.o:
+	$(CC) -c $(CFLAGS) $<
+
+all:	gn.exe \
+	gnspool.exe \
+	$(FRC)
+
+GNOBJS=	gn.o \
+	init.o \
+	newsrc.o \
+	group.o \
+	subject.o \
+	article.o \
+	follow.o \
+	reply.o \
+	cancel.o \
+	post.o \
+	referenc.o \
+	save.o \
+	shell.o \
+	nntp.o \
+	smtp.o \
+	auth.o \
+	client.o \
+	inetbios.o \
+	gncom.o \
+	key.o \
+	kanji.o \
+	$(OPTGNOBJS) \
+	$(FRC)
+
+
+gn.exe:	$(GNOBJS)
+	$(CC) -o gn @<<
+$(LFLAGS) $(GNOBJS) $(LIBS)
+<<
+	aout2exe gn
+
+gn.o: \
+	gn.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+init.o: \
+	init.c \
+	version.h \
+	nntp.h \
+	gn.h \
+	config.h \
+	$(FRC)
+
+newsrc.o: \
+	newsrc.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+group.o: \
+	group.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+subject.o: \
+	subject.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+article.o: \
+	article.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+follow.o: \
+	follow.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+reply.o: \
+	reply.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+cancel.o: \
+	cancel.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+post.o: \
+	post.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+referenc.o: \
+	referenc.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+save.o: \
+	save.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+shell.o: \
+	shell.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+nntp.o: \
+	nntp.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+smtp.o: \
+	smtp.c \
+	nntp.h \
+	gn.h \
+	inetbios.h \
+	$(FRC)
+
+auth.o: \
+	auth.c \
+	gn.h \
+	inetbios.h \
+	$(FRC)
+
+client.o: \
+	client.c \
+	nntp.h \
+	gn.h \
+	inetbios.h \
+	$(FRC)
+
+inetbios.o: \
+	inetbios.c \
+	inetbios.h \
+	$(FRC)
+
+gncom.o: \
+	gncom.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+key.o: \
+	key.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+kanji.o: \
+	kanji.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+#-------------------------------------------------------------
+GNSPOOLOBJS=	gnspool.o \
+		init.o \
+		newsrc.o \
+		nntp.o \
+		smtp.o \
+		auth.o \
+		client.o \
+		inetbios.o \
+		gncom.o \
+		key.o \
+		kanji.o \
+		$(OPTGNSPOOLOBJS) \
+		$(FRC)
+
+gnspool.exe:	$(GNSPOOLOBJS)
+	$(CC) -o gnspool @<<
+$(LFLAGS) $(GNSPOOLOBJS) $(LIBS)
+<<
+	aout2exe gnspool
+
+gnspool.o: \
+	gnspool.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+#-------------------------------------------------------------
+configur:	configur.o
+	$(CC) -o configur configur.o
+	aout2exe configur
+#-------------------------------------------------------------
+install:	all \
+	$(BINDIR)\gn.exe \
+	$(BINDIR)\gnspool.exe \
+	$(MANDIR)\gn$(MANEXT) \
+	$(MANDIR)\gnspool$(MANEXT) \
+	$(FRC)
+
+$(BINDIR)\gn.exe:	gn.exe
+	copy $? $@
+
+$(BINDIR)\gnspool.exe:	gnspool.exe
+	copy $? $@
+
+$(MANDIR)\gn$(MANEXT):	gn.man
+	copy $? $@
+
+$(MANDIR)\gnspool$(MANEXT):	gnspool.man
+	copy $? $@
+
+clean:
+	-del *.o
+	-del gn
+	-del gnspool
+	-del configur
+
+clobber:	clean
+	-del gn.exe
+	-del gn.man
+	-del gnspool.exe
+	-del gnspool.man
+	-del config.h
+	-del configur.exe

@@ -1,0 +1,212 @@
+//{{NO_DEPENDENCIES}}
+//Microsoft App Studio generated resource script.
+//
+#include "wingn.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+
+//////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+IDI_GN                  ICON    DISCARDABLE     "GN.ICO"
+
+//////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_GNMENU MENU DISCARDABLE 
+BEGIN
+    POPUP "Help(\036H)"
+    BEGIN
+        MENUITEM "About(\036A)...",             IDM_ABOUT
+    END
+END
+
+
+//////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+ABOUTBOX DIALOG DISCARDABLE  22, 17, 200, 75
+STYLE DS_MODALFRAME | WS_CAPTION
+CAPTION "Version Information"
+FONT 8, "System"
+BEGIN
+    CTEXT           "gn",-1,95,15,9,8
+    RTEXT           "Version",-1,65,25,27,8
+    LTEXT           "",IDC_VERSION,105,25,90,8
+    RTEXT           "Date",-1,74,35,18,8
+    LTEXT           "",IDC_DATE,105,35,90,8
+    CTEXT           "Copyright (C) 1990-1996 yamasita@omronsoft.co.jp",-1,6,
+                    45,187,8
+    DEFPUSHBUTTON   "OK",1,80,55,40,14,WS_GROUP
+    ICON            "IDI_GN",-1,10,10,18,20
+END
+
+IDD_GETPASSWD DIALOG DISCARDABLE  40, 30, 231, 69
+STYLE WS_POPUP | WS_CAPTION
+CAPTION "Password"
+FONT 8, "System"
+BEGIN
+    CTEXT           "",IDC_PASSWDTEXT,11,5,210,8
+    EDITTEXT        IDC_PASSWD,8,25,215,14,ES_PASSWORD | ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,99,49,32,14,WS_GROUP
+END
+
+IDD_SEND DIALOG DISCARDABLE  40, 30, 200, 43
+STYLE WS_POPUP | WS_CAPTION
+FONT 8, "System"
+BEGIN
+    CTEXT           "",IDC_SENDTEXT,5,5,190,8
+    DEFPUSHBUTTON   "",IDOK,10,20,40,14,WS_GROUP
+    PUSHBUTTON      "",IDCANCEL,59,20,57,14,WS_GROUP
+    PUSHBUTTON      "",IDRETRY,125,20,64,14,WS_GROUP
+END
+
+IDD_KBINPUT DIALOG DISCARDABLE  40, 30, 331, 80
+STYLE WS_POPUP | WS_CAPTION
+FONT 8, "System"
+BEGIN
+    CTEXT           "",IDC_KBINPUT,5,5,320,8
+    EDITTEXT        IDC_KBTEXT,5,25,320,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,123,55,32,14,WS_GROUP
+    PUSHBUTTON      "CANCEL",IDCANCEL,163,55,45,14,WS_GROUP
+END
+
+IDD_GROUP_UNSUBSCRIBE_CONF DIALOG DISCARDABLE  0, 0, 237, 59
+STYLE WS_POPUP | WS_CAPTION
+FONT 8, "System"
+BEGIN
+    CTEXT           "",IDC_UNSUBSCRIBE,5,5,225,9
+    DEFPUSHBUTTON   "",IDOK,35,36,50,14
+    PUSHBUTTON      "",IDCANCEL,151,35,50,15
+    PUSHBUTTON      "",IDC_ALL,93,35,50,15
+END
+
+IDD_MAIL DIALOG DISCARDABLE  0, 0, 207, 94
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION
+CAPTION "Mail"
+FONT 8, "System"
+BEGIN
+    LTEXT           "",IDC_MAILTOTEXT,5,10,81,8
+    RTEXT           "To:",IDC_STATIC,23,20,12,8
+    EDITTEXT        IDC_MAILTO,40,20,160,12,ES_AUTOHSCROLL
+    LTEXT           "",IDC_MAILSUBJECTTEXT,5,40,49,8
+    RTEXT           "Subject:",IDC_STATIC,5,50,30,10
+    EDITTEXT        IDC_MAILSUBJECT,40,50,160,12,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,40,70,50,14
+    PUSHBUTTON      "CANCEL",IDCANCEL,105,70,50,14
+END
+
+IDD_POST DIALOG DISCARDABLE  0, 0, 262, 149
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION
+CAPTION "Post"
+FONT 8, "System"
+BEGIN
+    LTEXT           "",IDC_POSTNEWSGROUPSTEXT,5,5,105,8
+    RTEXT           "Newsgroups:",IDC_STATIC,11,15,45,8
+    EDITTEXT        IDC_POSTNEWSGROUPS,65,15,190,12,ES_AUTOHSCROLL
+    LTEXT           "",IDC_POSTSUBJECTTEXT,5,35,121,8
+    RTEXT           "Subject:",IDC_STATIC,26,45,30,8
+    EDITTEXT        IDC_POSTSUBJECT,65,45,190,12,ES_AUTOHSCROLL
+    LTEXT           "",IDC_POSTFOLLOWUPTOTEXT,5,65,217,8
+    RTEXT           "Followup-To:",IDC_STATIC,10,75,46,8
+    EDITTEXT        IDC_POSTFOLLOWUPTO,65,75,190,12,ES_AUTOHSCROLL
+    LTEXT           "",IDC_POSTDISTRIBUTIONTEXT,5,95,129,8
+    RTEXT           "Distribution:",IDC_STATIC,8,105,48,8
+    EDITTEXT        IDC_POSTDISTRIBUTION,66,104,190,12,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,73,130,50,14
+    PUSHBUTTON      "CANCEL",IDCANCEL,138,130,50,14
+END
+
+IDD_POSTN DIALOG DISCARDABLE  0, 0, 263, 179
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION
+CAPTION "Post"
+FONT 8, "System"
+BEGIN
+    LTEXT           "",IDC_POSTNEWSGROUPSTEXT,5,5,105,8
+    RTEXT           "Newsgroups:",IDC_STATIC,11,15,45,8
+    EDITTEXT        IDC_POSTNEWSGROUPS,65,15,190,12,ES_AUTOHSCROLL
+    LTEXT           "",IDC_POSTSUBJECTTEXT,5,35,121,8
+    RTEXT           "Subject:",IDC_STATIC,26,45,30,8
+    EDITTEXT        IDC_POSTSUBJECT,65,45,190,12,ES_AUTOHSCROLL
+    LTEXT           "",IDC_POSTFOLLOWUPTOTEXT,5,65,217,8
+    RTEXT           "Followup-To:",IDC_STATIC,10,75,46,8
+    EDITTEXT        IDC_POSTFOLLOWUPTO,65,75,190,12,ES_AUTOHSCROLL
+    LTEXT           "",IDC_POSTDISTRIBUTIONTEXT,5,95,129,8
+    RTEXT           "Distribution:",IDC_STATIC,8,105,48,8
+    EDITTEXT        IDC_POSTDISTRIBUTION,66,104,190,12,ES_AUTOHSCROLL
+    LTEXT           "",IDC_POSTNSUBJECTTEXT,5,125,129,8
+    RTEXT           "X-Nsubject:",IDC_STATIC,8,135,48,8
+    EDITTEXT        IDC_POSTNSUBJECT,66,134,190,12,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,73,159,50,14
+    PUSHBUTTON      "CANCEL",IDCANCEL,138,159,50,14
+END
+
+IDD_AUTH DIALOG DISCARDABLE  0, 0, 207, 94
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION
+CAPTION "Authentication"
+FONT 8, "System"
+BEGIN
+    RTEXT           "User:",IDC_STATIC,21,22,19,8
+    EDITTEXT        IDC_AUTHUSR,44,20,160,12,ES_AUTOHSCROLL
+    RTEXT           "Password:",IDC_STATIC,4,51,36,10
+    EDITTEXT        IDC_AUTHPASSWD,44,50,160,12,ES_PASSWORD | ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,40,70,50,14
+    PUSHBUTTON      "CANCEL",IDCANCEL,105,70,50,14
+END
+
+#ifdef APSTUDIO_INVOKED
+//////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "wingn.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+/////////////////////////////////////////////////////////////////////////////////////
+#endif    // APSTUDIO_INVOKED
+
+
+#ifndef APSTUDIO_INVOKED
+////////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

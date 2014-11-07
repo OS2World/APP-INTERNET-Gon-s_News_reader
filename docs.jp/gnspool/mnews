@@ -1,0 +1,41 @@
+gnspool で取り寄せた記事を mnews で読む方法
+
+gnspool が作成するファイルは、基本的に C news のサブセットです。
+よってローカルスプールを見る設定をおこなった mnews を使って NetNews に
+アクセスすることも可能です。
+
+１）gninews の作成
+	src に gninews.c という gnspool 用 inews もどきのソースをお
+	いてあります。このソースをコンパイルし、
+	/usr/local/bin/gninews 等として置きます。
+
+２）gnmail の作成
+	a)gninews.c を gnmail.c にコピーします。
+	b)ソースを一部修正します。
+	   strcat(buf,"news.out");
+	         |     ~~~~
+		 V
+	   strcat(buf,"mail.out");
+                       ~~~~
+	c)コンパイルします。
+	d)出来上がった a.out を /usr/local/bin/gnmail とします。
+
+３）mnews のコンパイル
+	config.sh において、以下指定をおこないます。
+        Please input news post program and options.  => /usr/local/bin/gninews
+        Please input mail send program and options.  => /usr/local/bin/gnmail
+        コンパイルオプションで -DLOCAL_POST を指定します。
+
+
+このドキュメントは、
+小峯＠ＮＯＳ（xp7a-ngs@j.asahi-net.or.jp (Komine.H)）どのの記事、
+From: xp7a-ngs@j.asahi-net.or.jp (Komine.H)
+Newsgroups: fj.news.reader.gn
+Subject: Re: [Q] Local spool with gnspool
+Date: 25 Oct 1995 05:29:31 GMT
+Message-ID: <46khvr$ve7@panther.asahi-net.or.jp>
+を参考にしました。
+
+Copyright (C) yamasita@omronsoft.co.jp
+	Nov.9,1995
+著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。

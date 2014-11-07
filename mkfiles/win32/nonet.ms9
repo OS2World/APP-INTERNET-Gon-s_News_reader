@@ -1,0 +1,295 @@
+#
+# Makefile for gn
+# @(#)nonet.ms9	1.40 Sep.24,1997
+# 著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。
+# (C) sawada@murai-electric.co.jp
+# Copyright (C) yamasita@omronsoft.co.jp
+#
+
+MAIL_KANJI_CODE		= JIS
+PROCESS_KANJI_CODE	= SJIS
+FILE_KANJI_CODE		= SJIS
+DISPLAY_KANJI_CODE	= SJIS
+LINES		= 24
+COLUMNS		= 80
+
+BINDIR		= c:\bin
+MANDIR		= c:\man
+MANEXT		= .1
+
+NEWSSPOOL	= /usr/spool/news
+NEWSLIB		= /usr/lib/news
+
+NEWSRC		= newsrc
+SIGNATURE	= signatur
+AUTHORCOPY	= author_c
+SAVEDIR		= /news
+TMPDIR		= /
+PAGER		= more <
+RETURN_AFTER_PAGER = 1
+EDITOR		= edlin
+
+CC		= cl
+OPTCFLAGS	= /DUSE_FGETS
+OPTGNOBJS	= 
+OPTGNSPOOLOBJS	= 
+OPTLFLAGS	= 
+OPTLIBS		= 
+
+OSDEFINES	= /DMSDOS
+NETWORKDEFINES	= /DNO_NET
+COMPILERDEFINES	= /DMSC9
+DEFINES		= $(OSDEFINES) $(NETWORKDEFINES) $(COMPILERDEFINES)
+HEADER_DEFINES	= /DHAS_STRING_H /DHAS_STDLIB_H /DHAS_IO_H -DSYS_TYPES_H /DHAS_CONIO_H /DHAS_DIRECT_H
+CFLAGS		= $(DEFINES) $(HEADER_DEFINES) $(OPTCFLAGS) /nologo
+LFLAGS		= $(OPTLFLAGS) /stack:10240
+LIBS		= $(OPTLIBS)
+######################################################################
+all:	gn.exe \
+	gnspool.exe \
+	gninews.exe \
+	gnmail.exe \
+	$(FRC)
+
+GNOBJS=	gn.obj \
+	init.obj \
+	newsrc.obj \
+	group.obj \
+	subject.obj \
+	article.obj \
+	follow.obj \
+	reply.obj \
+	cancel.obj \
+	post.obj \
+	referenc.obj \
+	save.obj \
+	shell.obj \
+	getopt.obj \
+	nntp.obj \
+	smtp.obj \
+	auth.obj \
+	client.obj \
+	gncom.obj \
+	key.obj \
+	kanji.obj \
+	$(OPTGNOBJS) \
+	$(FRC)
+
+
+gn.exe:	$(GNOBJS)
+	link @<<
+$(GNOBJS)
+/out:gn.exe $(LFLAGS)
+
+$(LIBS)
+
+<<
+
+
+
+gn.obj: \
+	gn.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+init.obj: \
+	init.c \
+	version.h \
+	nntp.h \
+	gn.h \
+	config.h \
+	$(FRC)
+
+newsrc.obj: \
+	newsrc.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+group.obj: \
+	group.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+subject.obj: \
+	subject.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+article.obj: \
+	article.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+follow.obj: \
+	follow.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+reply.obj: \
+	reply.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+cancel.obj: \
+	cancel.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+post.obj: \
+	post.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+referenc.obj: \
+	referenc.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+save.obj: \
+	save.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+shell.obj: \
+	shell.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+getopt.obj: \
+	getopt.c \
+	$(FRC)
+
+nntp.obj: \
+	nntp.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+smtp.obj: \
+	smtp.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+auth.obj: \
+	auth.c \
+	gn.h \
+	$(FRC)
+
+client.obj: \
+	client.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+gncom.obj: \
+	gncom.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+key.obj: \
+	key.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+kanji.obj: \
+	kanji.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+#-------------------------------------------------------------
+GNSPOOLOBJS=	gnspool.obj \
+		init.obj \
+		newsrc.obj \
+		getopt.obj \
+		nntp.obj \
+		smtp.obj \
+		auth.obj \
+		client.obj \
+		gncom.obj \
+		key.obj \
+		kanji.obj \
+		$(OPTGNSPOOLOBJS) \
+		$(FRC)
+
+gnspool.exe:	$(GNSPOOLOBJS)
+	link @<<
+$(GNSPOOLOBJS)
+/out:gnspool.exe $(LFLAGS)
+
+$(LIBS)
+
+<<
+
+gnspool.obj: \
+	gnspool.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+#-------------------------------------------------------------
+gninews.exe:	gninews.obj
+	$(CC) gninews.obj
+#-------------------------------------------------------------
+gnmail.exe:	gnmail.obj
+	$(CC) gnmail.obj
+#-------------------------------------------------------------
+configur:	configur.exe
+configur.exe:	configur.obj
+	$(CC) -o configur.exe configur.obj
+#-------------------------------------------------------------
+install:	all \
+	$(BINDIR)\gn.exe \
+	$(BINDIR)\gnspool.exe \
+	$(BINDIR)\gninews.exe \
+	$(BINDIR)\gnmail.exe \
+	$(MANDIR)\gn$(MANEXT) \
+	$(MANDIR)\gnspool$(MANEXT) \
+	$(FRC)
+
+$(BINDIR)\gn.exe:	gn.exe
+	copy $? $@
+
+$(BINDIR)\gnspool.exe:	gnspool.exe
+	copy $? $@
+
+$(BINDIR)\gninews.exe:	gninews.exe
+	copy $? $@
+
+$(BINDIR)\gnmail.exe:	gnmail.exe
+	copy $? $@
+
+$(MANDIR)\gn$(MANEXT):	gn.man
+	copy $? $@
+
+$(MANDIR)\gnspool$(MANEXT):	gnspool.man
+	copy $? $@
+
+clean:
+	-del *.obj
+	-del *.map
+
+clobber:	clean
+	-del gn.exe
+	-del gn.man
+	-del gnspool.exe
+	-del gnspool.man
+	-del gninews.exe
+	-del gnmail.exe
+	-del config.h
+	-del configur.exe

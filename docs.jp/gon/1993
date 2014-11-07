@@ -1,0 +1,208 @@
+会社のＰＣで記事をＦＤに落し、自宅のＰＣでニュースを読む
+
+使用しているバッチファイルは、できるだけ標準のコマンドだけを使うように
+修正して記述した（ため、チョンボがある可能性あり）
+
+
+１．会社の環境
+	使用しているニュースサーバのホスト名は gw である。
+
+	（１）Ｕｎｉｘ
+		会社では Unix WS 上で gn/GNUS を使用し、ニュースにアク
+		セスしている。
+		PC と .newsrc の共有を考慮し、.newsrc-gw の実体を
+		newsrc.gw とし.newsrc-gw にシンボリックリンクしている。
+	  lrwxrwxrwx  1 yamasita        9 Nov 25 14:30 .newsrc-gw -> newsrc.gw
+	  -rw-------  1 yamasita    45374 Feb 15 09:12 newsrc.gw
+
+	（２）ＰＣ（hostname = hsl091）
+		ハードウェア構成：
+			PC-AT 互換機
+			3COM EtherLink-III
+
+		ソフトウェア構成：
+			PC-DOS 6.1/V
+			Soliton TCP/RFU(InetBIOS)
+
+		ドライブ構成：
+			C: HDD
+				NEWSSPOOL:	c:\tmp\spool
+				NEWSLIB:	c:\tmp\lib
+				HOME:		c:\yama
+			D: 3.5' FDD (1.25MB)
+			S: \sofken\yamasita
+				Soliton RFU を使用し Unix WS の $HOME
+				を mount
+
+
+
+	（３）ＰＣ上の gnrc(c:\yama\gnrc)
+		mkfiles/dos/inetbios.ms6 をそのまま使用してコンパイルして
+		いるため、gnrc でほとんどのカスタマイズをおこなってい
+		る。
+
+		GNUS_FORMAT	YES
+		DOMAINNAME	omronsoft.co.jp
+		KILL_CONTROL	1539
+		AUTOLIST	OFF
+		DESCRIPTION	OFF
+		MAIL_LANG	EUC
+		FILE_LANG	SJIS
+		DISPLAY_LANG	SJIS
+		PROCESS_LANG	SJIS
+		EDITOR	edlin
+		USER	yamasita
+		TMPDIR	c:\tmp
+		HOST	hsl091
+		NAME	Yasunari GON Yamashita
+		SMTPSERVER	hsl040
+		ORGANIZATION	OMRON SOFTWARE Co., Ltd. Kyoto, Japan.
+		NNTPSERVER	gw
+		PAGER		less -m -c -e
+		RETURN_AFTER_PAGER	0
+		SAVEDIR	c:\yama\news
+		NEWSSPOOL	c:\tmp\spool
+		NEWSLIB		c:\tmp\lib
+		UNSUBSCRIBE	ba,bionet,（略）
+
+２．自宅の環境
+	（１）ＰＣ
+		ハードウェア構成：
+			某国産機
+
+		ソフトウェア構成：
+			MS-DOS
+
+		ドライブ構成：
+			A: 3.5' FDD (1.25MB)
+			D: HDD
+				NEWSSPOOL:	d:\spool
+			G: RAM DISK
+				NEWSLIB:	g:\lib
+				HOME:		g:\home
+
+	（２）ＰＣ上の gnrc(g:\home\gnrc)
+		mkfiles/dos/nonet.ms6 をそのまま使用してコンパイルして
+		いるため、gnrc でほとんどのカスタマイズをおこなってい
+		る。
+
+		GNUS_FORMAT	YES
+		DOMAINNAME	omronsoft.co.jp
+		KILL_CONTROL	1539
+		AUTOLIST	OFF
+		MAIL_LANG	EUC
+		FILE_LANG	SJIS
+		DISPLAY_LANG	SJIS
+		PROCESS_LANG	SJIS
+		EDITOR	ng
+		USER	yamasita
+		TMPDIR	g:\
+		NAME	Yasunari GON Yamashita
+		ORGANIZATION	OMRON SOFTWARE Co., Ltd. Kyoto, Japan.
+		PAGER		less -m -c -e
+		SAVEDIR	g:\home
+		NEWSSPOOL	d:\spool
+		NEWSLIB		g:\lib
+
+３．使用しているＦＤ
+	記事を持ち帰るため、２枚の３．５’１．２５ＭＢＦＤを使用してい
+	る。
+	当初は１枚で計画したが、記事が入り切らなかったため、以下の２枚
+	に分割した。
+	それでも入り切らない場合があるので記事は lha で圧縮することに
+	した。
+
+	（１）home/lib FD
+		\home\newsrc、\lib\active を持ち帰るために使用
+		自宅から記事／メイルを会社へ持っていくためにも使用
+	（２）spool FD
+		記事を圧縮した \news.lzh を持ち帰るために使用
+
+４．記事を持ち帰る
+	退社時に会社のＰＣで以下のバッチファイルを実行する
+
+	c:
+	copy s:\sofken\yamasita\newsrc.gw c:\yama
+	gnspool
+
+	cd \tmp
+	del news.lzh
+	lha a -rx news spool/*
+	dir news.lzh
+
+	pause please set spool FD to drive D:
+	del d:\news.lzh
+	copy c:\tmp\news.lzh d:\
+
+	pause please set lib/home FD to drive D:
+	copy c:\tmp\lib\active d:\lib
+	copy c:\yama\newsrc.gw d:\home
+
+５．自宅のＰＣにストア
+	自宅に帰った時、以下のバッチファイルを実行する
+
+	pause please set lib/home FD to drive A:
+	copy a:\lib\active g:\lib
+	copy a:\home\newsrc.gw g:\home
+	gnspool -l
+
+	pause please set spool FD to drive A:
+	d:
+	cd \
+	lha x a:news.lzh
+
+	g:
+	cd \
+
+６．自宅で書いた記事／メイルをＦＤに落す
+	出社する時、以下のバッチファイルを実行する
+
+	pause please set lib/home FD to drive A:
+	copy g:\home\newsrc.gw a:\home
+
+	a:
+	mkdir \spool
+	mkdir \spool\mail.out
+	mkdir \spool\news.out
+	cd \spool
+	d:
+	cd \spool
+	copy mail.out\*.* a:mail.out
+	copy news.out\*.* a:news.out
+	del mail.out\*.*
+	rd mail.out
+	del news.out\*.*
+	rd news.out
+
+	g:
+	cd \
+
+７．自宅で書いた記事／メイルを出す
+	出社した時、以下のバッチファイルを実行する
+
+	pause please set lib/home FD to drive D:
+	copy d:\home\newsrc.gw c:\yama
+	copy c:\yama\newsrc.gw s:\sofken\yamasita
+
+	c:
+	mkdir \tmp\spool
+	mkdir \tmp\spool\mail.out
+	mkdir \tmp\spool\news.out
+	cd \tmp\spool
+
+	d:
+	cd \spool
+	copy mail.out\*.* c:mail.out
+	copy news.out\*.* c:news.out
+	del mail.out\*.*
+	rd mail.out
+	del news.out\*.*
+	rd news.out
+
+	c:
+	gnspool -n
+
+
+Copyright (C) yamasita@omronsoft.co.jp
+	Sep.12,1997
+著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。

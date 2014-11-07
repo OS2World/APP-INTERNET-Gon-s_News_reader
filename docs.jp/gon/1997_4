@@ -1,0 +1,72 @@
+メイル／ニュースともオフラインの環境を構築
+
+１９９７年４月、libretto 50 を入手した
+
+週に１回以上出張することになったため、ますますオフラインでのメイル／ニュ
+ースの環境を構築する必要に迫られた。
+なお、以前から使っているマシンは、自宅の UUCP サーバとした。Linux は 
+UUCP を使うことを主目的として使っていたため、libretto は Windows 95 オ
+ンリーとする。
+
+基本方針
+（１）メイル
+	・会社で取り込んだメイルを出先で
+	・出先で取り込んだメイルを会社で
+	参照するため、会社のメイル環境（Unix + Mule + mh-e）と同じメイ
+	ラを使うのが望ましい。
+	そこで、BOW(BSD on Windows) 上の Mule, mh-e を使用する。
+	オフラインの libretto で書いたメイルは、帰社時もしくは携帯電話
+	経由で会社と接続したときに発信する。
+	メイルスプールは
+	・外出時に Unix 環境から Bow 環境にコピー
+	・出社時に Bow 環境から Unix 環境にコピー
+	 
+
+（２）ニュース
+	従来とほぼ同様。
+	会社の unix 環境と libretto で newsrc を共用する。
+	共用するために
+	・外出時に Unix 環境から Bow 環境にコピー
+	・出社時に Bow 環境から Unix 環境にコピー
+	Windows 上の gn と BOW 上の Mule + GNUS どちらからもアクセスす
+	る。
+
+
+設定および運用
+
+（０）コンパイル
+	Windows 用(winsock.vc2) と BOW 用との２つの gn 一式をインストー
+	ルした。ただ、BOW 用は gnmail, gninews しか使っていない。
+
+（１）メイル
+	BOW 標準の MH は、sendmail daemon と通信するように設定されてお
+	り、gnmail 経由での発信には向いていない。そこで mh-6.8.3-JP2c 
+	のソースを入手し、sendmail を起動してメイルを発信するような設
+	定を行ってコンパイル、インストールした。
+	mtstailor には
+	sendmail:	/usr/local/bin/gnmail
+	と書き、発信するメイルを gnmail 経由で gnspool に渡すように設
+	定した
+
+	退社時：
+		Unix の ~/Mail をまるごと libretto の ~/Mail にコピー
+	出社時：
+		libretto の ~/Mail をまるごと Unix の ~/Mail にコピー
+
+	※実際は、まるごとではなく差分のみをコピーするツールを使用
+
+（２）ニュース
+	従来とほぼ同様。
+	BOW の GNUS 用に ~/newsrc.gw を ~/.newsrc-gw にシンボリックリ
+	ンクし GNUS では ~/.newsrc-gw を使用するようにした。
+
+	退社時：
+		Unix の newsrc.gw を libretto の ~/newsrc.gw にコピー
+		gnspool の実行
+	出社時
+		libretto の newsrc.gw を Unix の ~/newsrc.gw にコピー
+		gnspool の実行
+
+Copyright (C) yamasita@omronsoft.co.jp
+	Sep.5,1997
+著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。

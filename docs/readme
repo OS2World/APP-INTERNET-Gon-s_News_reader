@@ -1,0 +1,97 @@
+gn: Gon's News reader
+
+gn is a news reader which supports NNTP protocol with simple user
+interface.  It is ported to various platforms including various UNIX
+or UNIX-like OS's, MS-DOS/Windows etc.
+
+Unlike other general newsreaders,  gn can follow new articles threads
+by specifying subjects.  This feature enables users to follow the
+threads more easily.
+
+gn has the feature to specifically pick up control messages as well as
+other general news reader features.  It is very useful for news
+system administrators.
+
+With the attached utility--gnspool, you can retrieve unread articles
+into the local spooling disks, which enables you to read/post articles when 
+you are not connected to the Internet.  .newsrc determines the
+articles to be retrieved by gnspool.
+
+gn is known to run on the following platforms:
+	UNIX or Unix-like OS's(SunOS,NEWS-OS,UniOS,Linux...)
+	OS/2 J2.1 with OS/2 Toolkit TCP/IP for OS/2
+	OS/2 with EMX
+	Windows(3.1/95/NT) + Winsock
+	DOS + InetBIOS, PC-NFS toolkit, PathWay, Packet, LANWorkPlace,
+		PC/TCP, SLIM/TCP
+	X680x0 + Human68k
+
+On all the platforms above, gn provides the same user interface.  It
+can save administrators from educating users with the use of various
+news readers.  Installing gn as a standard newsreader in your network
+is probably a good idea.
+
+This directory stores the following document files.  
+
+readme:		This file
+
+(Following documents are written in Japanese)
+change.log:	Change History
+copyrigh.t:	Copyright Notice
+define:		Macro Definition
+faq/index:	FAQ and Ansewrs(index)
+history:	Hisotry of gn
+wanted:		Help Wanted!
+bin-dist:	About binary distribution of gn
+install:	Installation Instruction
+info:		gn mailing lists
+new:		What's New?
+
+mime:		About MIME
+jnames:		About JNAMES (Japanese Name Database)
+
+log/*:		Previous Change Logs
+
+gnspool/readme:	About gnspool
+	gnspool/gnspool.gon:	gnspool application examples
+	gnspool/gnus:		GNUS with gnspool
+	gnspool/mh:		mh with gnspool
+	gnspool/mnews:		mnews with gnspool
+	gnspool/winvn:		winvn with gnspool
+
+unix/readme:	About gn running on Unix-like OS's
+	unix/mvux:	MV/UX
+
+dos/readme:	Installation on MS-DOS
+	dos/inetbios:	InetBIOS
+	dos/lanwp:	NOVELL LAN WorkPlace for DOS
+	dos/packet:	packet driver
+	dos/pathway:	PathWay
+	dos/pc-nfs:	PC-NFS
+	dos/pctcp4:	PC/TCP
+	dos/slimtcp:	SLIM/TCP
+
+windows.31/readme:	gn/gnspool running on Windows 3.1
+	windows.31/winsock.vc:	Windows + Winsock
+	windows.31/winsock.qw:	Windows + Winsock + QuickWin
+
+windows.95/readme:	gn/gnspool running on Windows95/NT
+	windows.95/winsock.vc:	gn with winsock.vc support
+
+os2/readme:		gn/gnspool running on OS/2
+	os2/spool:	Making local spool on HPFS
+	os2/tcpip16:	gn running on OS/2(16bit interface version)
+	os2/tcpip32:	gn running on OS/2(emx/32bit interface version)
+	os2/mime:	MIME supoort on OS/2
+
+human68k/readme:	gn running on X680x0 + Human68k
+	human68k/offline:	gn with offline support
+	human68k/espx:		gn running on ESPX
+
+See ../src/gn.md for the detail manual.
+
+Copyright (C) kiroh@kh.rim.or.jp (Kiroh HARADA)
+Copyright (C) yamasita@omronsoft.co.jp
+	Feb.28,1997
+All right reserved.  You can use/distribute gn/gnspool freely except
+for commercial purposes.  See copyrigh.t for detail.

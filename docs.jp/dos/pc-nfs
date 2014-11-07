@@ -1,0 +1,119 @@
+gn for MS-DOS + JAQSYS PC-NFS について
+
+1. 動作環境
+
+gn を実行するためには以下の環境が必要です。
+
+(1)	J3100 シリーズ上で，PC-NFSが動作する環境
+	例:
+		J3100 シリーズ
+		MS-DOS
+		JAQSYS (東芝情報システム(株))
+			付属のネットワークドライバ
+
+(2)	リプライメイルを送るための smtp サーバ
+	サーバ上で、sendmail がデーモンとして動作していなければなりません
+
+(3)	ユーザ認証を行なうための pop サーバ
+	MS-DOS 上にはユーザという概念がないため、ユーザ認証を行なうた
+	めに pop プロトコルを使用しています。
+	（gnrc で AUTHSERVER を指定しない限り）smtp サーバと同じマシン
+	を pop サーバとして利用します。
+
+	デフォルトは pop3(110) となっています。pop2(109) を使う場合は、
+	configur 実行時の OPTCFLAGS として、/DAUTH_POP2 を付加します。
+
+(4)	ニュースサーバ :-)
+
+
+'93 年 6月現在、動作が確認できているのは、
+	J3100SGT/SGX + JAQSYS
+です。（過去のバージョンで確認したものを含む）
+
+
+2. コンパイル環境
+
+以下の環境が必要です。
+	o MS-C 6.00A(以降).
+	o Sunsoft が販売している“PC-NFS toolkit ver.4.0(以上)”.
+	o DOS で動作する sed (free software).
+
+(1) MS-C 6.00A(以降)
+	nmake,cl,link など、通常のコンパイルができる環境が必要です。
+	MS-C でコンパイルした場合、640KB のメモリの制限から、多数のニュー
+	スグループを購読するニュースサーバと接続した場合メモリ不足によ
+	り正常に動作しない場合があります。
+
+(注) djgpp
+	PC-NFS toolkit が gcc のライブラリ形式に対応していないため、
+	djgpp でのコンパイルはできません。
+
+3. コンパイル
+
+(1)	何らかの方法で全ソースを DOS 上にコンバートします。
+
+	ソースファイルの漢字コードは、
+	EUC のままでも、SHIFT-JIS に変換しても、どちらでも構いません。
+	ただし、全ファイルのコードを統一しておく必要があります。
+
+(2) 	copy mkfiles\dos\pc-nfs.ms6 src\makefile を実行します。
+
+(3)	nmake configur
+
+(4)	configur
+	EXTLIBDIR の指定では PC-NFS toolkit の library path を指定しま
+	す。
+
+(5)	nmake を実行します。
+	gn.exe が作成されます。
+
+
+4. 実行
+
+PC-NFS が動作できるようにします。(詳細は，JAQSYSのマニュアルを参照)
+
+(0)	必要に応じて，環境変数を設定します。
+	set pager=less			... PAGER に less を設定。
+	set editor=c:\mifes\mini	... EDITORに mini を設定。
+
+(1)	ネットワークの設定をします。特に，
+	i)  net route で，router/gate_way を設定しているか?
+	ii) net subnet で，サブネットマスクを正しく設定しているか?
+	を注意します。
+
+(2)	yp が効いていない場合，以下のファイルを編集します。
+
+	HOSTS にニュースサーバ/SMTPサーバを記述します。
+	SERVICES に
+	ftp		21/tcp
+	smtp		25/tcp
+	pop		109/tcp
+	pop3		110/tcp
+	nntp		119/tcp
+	がなければ記述します。
+
+(3)	変数
+	実行前に以下の環境変数を設定します。
+
+	HOME:		ホームディレクトリ
+	USER:		アカウント名
+	NAME:		本名
+
+	DOS のプロンプトや AUTOEXEC.BAT にて
+	set USER=yamasita
+	として設定すると良いでしょう。
+
+(4)	gn を実行します。
+
+
+----
+J3100へのポーティングは、
+	nori@ssel.toshiba.co.jp (東芝 (S研) 小山 徳章)
+が行ないました。
+----
+コンパイルには，Sunsoft の PC-NFS toolkit (C)が必要です。
+
+
+Copyright (C) yamasita@omronsoft.co.jp
+	Feb.25,1997
+著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。

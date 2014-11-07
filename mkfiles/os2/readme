@@ -1,0 +1,17 @@
+このディレクトリは、各機種用の Makefile のテンプレートを収めています。
+インストールするシステムに一番近いテンプレートを ../../src/Makefile に
+コピーし、
+	make configur
+	configur
+	make
+	make install
+して下さい。
+詳しくは docs.jp の各種ドキュメントを参照下さい。
+
+tcpip16.ms6,gn.def,gnspool.def
+		: OS/2 J2.1 + Toolkit V1.3 + TCP/IP 1.2.1 + MS-C 6.0A + nmake
+tcpip32.emx	: OS/2 + EMX
+
+Copyright (C) yamasita@omronsoft.co.jp
+	May.1,1997
+著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。

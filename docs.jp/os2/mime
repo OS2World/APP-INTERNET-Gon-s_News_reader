@@ -1,0 +1,227 @@
+gn の MIME 対応について (OS/2 編)
+
+emx を使った 32bit 版 gn では、Unix 版と同様 mimekit(旧称 
+mimehead) を用いたヘッダ部の encode/decode が可能となります。
+
+ここでは OS/2 gn で MIME を利用する場合に、通常の方法と比べ
+て異なる点について解説して行きます。説明は docs.jp/mime と対
+比させて行います。
+
+まず前提として、emx 版の gn を作る環境が準備できていることを
+仮定します。つまり emx/gcc 及び付随するツール群（詳しくは 
+emx のインストールガイドを参照してください）, gnu make, gnu
+patch がインストールされているものとします。
+
+また作成したライブラリのテストを行う場合には、sort, uniq,
+grepが必要になります。これは emx と同じ手段で gnututil.zip 
+として手に入れることができると思います。
+
+
+  >（２）mimekit1.6.tar.gz を展開します。
+
+このあと Makefile を書替える必要があります。オリジナルの 
+Makefile に対するパッチを最後に添付してあるので、これを 
+patch に食わせて下さい。
+
+
+  >（３）mimekit を make し、できあがった libmimekit.a を /usr/lib などに
+  >      置きます。
+
+libmimekit.a はemx の使用する環境変数 LIBRARY_PATH で指定した
+ディレクトリに置いて下さい。
+
+  >（４）configur 実行時に
+  >      OPTCFLAGS として、-DMIME を
+  >      OPTLIBS   として、-lmimekit を指定します。
+
+emx ではライブラリの指定が Unix と異なります。Unix ではライブラ
+リファイルは libXXXXX.a というファイル名を持ち、リンク時にオ
+プションとして -lXXXXX を指定しますが、emx の場合はファイル
+名そのもの (.a を取ったもの) を使います。従って OPTLIBS に指
+定するのは、
+
+    -llibmimekit
+
+となります。
+
+
+  >（５）make
+  >      make install
+  >
+  >以上で、ヘッダ部分に MIME が使用できる gn ができあがります。
+
+お疲れ様でした。
+
+
+  >（６）.gnrc に以下の行を追加します。
+  >       MIME_HEAD	ON
+  >       ニュースサーバ毎に使用／不使用を切替えたい時は、
+  >       .gnrc-NNTPSERVER を使用します。
+
+ここは同じです。
+
+
+なお「そこまでするか普通」という意見もあるでしょうが、
+mimekit に同梱されているパフォーマンス測定用のプログラム 
+bench も OS/2 対応にしました。パッチは本文の最後に添付してあ
+ります。
+＃このパッチは mimekit1.1 用です。1.6 にはあたらないかも知れません
+
+文責 菊池 彰 (kiku@yamato.ibm.co.jp)
+
+----------------------------------------------------------------------
+*** orig/Makefile	Fri Dec 01 23:55:06 1995
+--- Makefile	Fri Aug 16 15:49:34 1996
+***************
+*** 49,58 ****
+  		codeconv.o JIS.o html.o file.o \
+  		syslog.o
+  
+! ALL =		toMime fromMime enMime deMime test.out bench
+  
+! CC =		cc
+! CFLAGS =	-O
+  RM =		rm -f
+  RANLIB =	`./mkranlib`
+  TAR =		tar
+--- 49,58 ----
+  		codeconv.o JIS.o html.o file.o \
+  		syslog.o
+  
+! ALL =		toMime.exe fromMime.exe enMime.exe deMime.exe test.out bench.exe
+  
+! CC =		gcc
+! CFLAGS =	-O -DOS2
+  RM =		rm -f
+  RANLIB =	`./mkranlib`
+  TAR =		tar
+***************
+*** 65,92 ****
+  
+  $(LIBMKIT):	Makefile $(OBJS)
+  		$(RM) $(LIBMKIT)
+! 		ar rc $(LIBMKIT) $(OBJS)
+! 		$(RANLIB) $(LIBMKIT)
+  
+! enMime:		mmhencode.c $(LIBMKIT)
+! 		$(CC) $(PROF) -o enMime -DENMIME mmhencode.c  $(LIBMKIT)
+  
+! deMime:		mmhencode.c $(LIBMKIT)
+! 		$(CC) $(PROF) -o deMime -DDEMIME mmhencode.c  $(LIBMKIT)
+  
+! fromMime:	mmhencode.c $(LIBMKIT)
+! 		$(CC) $(PROF) -o fromMime -DMIME2LOCAL mmhencode.c  $(LIBMKIT)
+  
+! toMime:		mmhencode.c $(LIBMKIT)
+! 		$(CC) $(PROF) -o toMime -DLOCAL2MIME mmhencode.c  $(LIBMKIT)
+  
+! TEST =	./enMime<sample|./deMime|./enMime|./deMime|sort|uniq -c|grep -v '  2 '
+! test.out:	Makefile sample fromMime toMime
+! 		$(TEST)>test.out
+! 		cat test.out
+  
+! bench:		bench.o $(LIBMKIT)
+! 		$(CC) $(PROF) -o bench bench.o $(LIBMKIT)
+  
+  tar:		$(TARFILE)
+  $(TARFILE):	$(FILES)
+--- 65,92 ----
+  
+  $(LIBMKIT):	Makefile $(OBJS)
+  		$(RM) $(LIBMKIT)
+! 		ar rsc $(LIBMKIT) $(OBJS)
+! #		$(RANLIB) $(LIBMKIT)
+  
+! enMime.exe:	mmhencode.c $(LIBMKIT)
+! 		$(CC) $(PROF) -o enMime.exe -DENMIME mmhencode.c  $(LIBMKIT)
+  
+! deMime.exe:	mmhencode.c $(LIBMKIT)
+! 		$(CC) $(PROF) -o deMime.exe -DDEMIME mmhencode.c  $(LIBMKIT)
+  
+! fromMime.exe:	mmhencode.c $(LIBMKIT)
+! 		$(CC) $(PROF) -o fromMime.exe -DMIME2LOCAL mmhencode.c  $(LIBMKIT)
+  
+! toMime.exe:	mmhencode.c $(LIBMKIT)
+! 		$(CC) $(PROF) -o toMime.exe -DLOCAL2MIME mmhencode.c  $(LIBMKIT)
+  
+! TEST =	enMime<sample|deMime|sort|uniq -c|grep -v 2 > test.out
+! test.out:	Makefile sample fromMime.exe toMime.exe
+! 		$(TEST)
+! 		type test.out
+  
+! bench.exe:	bench.o $(LIBMKIT)
+! 		$(CC) $(PROF) -o bench.exe bench.o $(LIBMKIT)
+  
+  tar:		$(TARFILE)
+  $(TARFILE):	$(FILES)
+***************
+*** 93,107 ****
+  		$(TAR) cfh $(TARFILE) $(FILES)
+  files:;		ls -d $(FILES)
+  
+! Clean:;		$(RM) $(OBJS) $(LIBMKIT) toMime fromMime $(SHAREFILES)
+! clean:;		$(RM) $(OBJS) $(LIBMKIT) toMime fromMime \
+! 		enMime deMime bench.o test.out
+! 
+! install:	fromMime toMime $(LIBMKIT)
+! 		install -o bin -g bin -m 755 fromMime $(INSTDIR)
+! 		install -o bin -g bin -m 755 toMime $(INSTDIR)
+! 		install -o root -g staff -m 644 $(LIBMKIT) $(INSTDIR)
+! 		$(RANLIB) $(INSTDIR)/$(LIBMKIT)
+  
+  config.h:;	ln -s $(MMDIR)/config.h .
+  codes.c:;	ln -s $(MMDIR)/metamail/codes.c .
+--- 93,107 ----
+  		$(TAR) cfh $(TARFILE) $(FILES)
+  files:;		ls -d $(FILES)
+  
+! Clean:;		$(RM) $(OBJS) $(LIBMKIT) toMime.exe fromMime.exe $(SHAREFILES)
+! clean:;		$(RM) $(OBJS) $(LIBMKIT) toMime.exe fromMime.exe \
+! 		enMime.exe deMime.exe bench.o test.out
+! 
+! install:	fromMime.exe toMime.exe $(LIBMKIT)
+! 		copy fromMime.exe $(INSTDIR)
+! 		copy toMime.exe $(INSTDIR)
+! 		copy $(LIBMKIT) $(INSTDIR)
+! #		$(RANLIB) $(INSTDIR)/$(LIBMKIT)
+  
+  config.h:;	ln -s $(MMDIR)/config.h .
+  codes.c:;	ln -s $(MMDIR)/metamail/codes.c .
+*** orig/bench.c	Sat Oct 28 10:06:38 1995
+--- bench.c	Fri Aug 16 15:44:10 1996
+***************
+*** 1,7 ****
+--- 1,11 ----
+  #include <stdio.h>
+  int LOOPCOUNT = 1000;
+  
++ #ifdef OS2
++ static char external[128] = "fromMime.exe";
++ #else
+  static char external[128] = "fromMime";
++ #endif
+  
+  #define DUMMY	1
+  #define LINKED	2
+***************
+*** 108,117 ****
+--- 112,123 ----
+  	if( (cpid = fork()) == 0 ){
+  		close(to[1]);  close(0); dup(to[0]);  close(to[0]);
+  		close(from[0]);close(1); dup(from[1]);close(from[1]);
++ #ifndef OS2
+  		if( strncmp("exec ",command,5) != 0 ){
+  			sprintf(commandx,"exec %s",command);
+  			command = commandx;
+  		}
++ #endif
+  		system(command);
+  		exit(0);
+  	}else{
+
+
+(C) kiku@yamato.ibm.co.jp (Akira Kikuchi)
+	Aug.27,1996
+Copyright (C) yamasita@omronsoft.co.jp
+	May.30,1997
+著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。

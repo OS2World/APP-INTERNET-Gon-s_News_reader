@@ -1,0 +1,39 @@
+このディレクトリは、各機種用の Makefile のテンプレートを収めています。
+インストールするシステムに一番近いテンプレートを ../../src/Makefile に
+コピーし、
+	make configur
+	configur
+	make
+	make install
+して下さい。
+詳しくは docs.jp の各種ドキュメントを参照下さい。
+
+inetbios.dj	: MS-DOS + InetBIOS + djgpp + nmake
+inetbios.ms6	: MS-DOS + InetBIOS + MS-C 6.0A + nmake
+inetbios.tc	: MS-DOS + InetBIOS +
+			Turbo-C V2.0 | Turbo-C++ V1.01 | Borland-C++ V2.0
+lanwp.ms6	: MS-DOS + NOVELL LAN WorkPlace for DOS + MS-C 6.0A + nmake
+pathway.ms6	: MS-DOS + RICHO STARLAN TCP/IP Software + MS-C 6.0A + nmake
+pc-nfs.ms6	: MS-DOS + Sunsoft PC-NFS toolkit + MS-C 6.0A + nmake
+pctcp4.ms6	: MS-DOS + Allied Telesis PC/TCP 4.0 + MS-C 6.0A + nmake
+slimtcp.ms6	: MS-DOS + Allied Telesis SLIM/TCP + MS-C 6.0A + nmake
+wattcp.ms6	: MS-DOS + Packet Driver + MS-C 6.0A + nmake
+newwattc.ms6	: MS-DOS + Packet Driver + MS-C 6.0A + nmake
+
+winsock.qw	: WINDOWS + WINSOCK + Visual C++ 1.0 (QuickWin)
+winsock.vc	: WINDOWS + WINSOCK + Visual C++ 1.0
+winsock.vc2	: WINDOWS + WINSOCK + Visual C++ 2.0
+winsock.ms9	: Windows95(DOS) + WINSOCK + Visual C++ 2.0 (MS-C 9.0A)
+
+nonet.dj	: MS-DOS + djgpp + nmake （ネットワークコードなし）
+nonet.ms6	: MS-DOS + MS-C 6.0A + nmake（ネットワークコードなし）
+nonet.ms9	: Windows95(DOS) + MS-C 9.0A + nmake（ネットワークコードなし）
+nonet.vc	: WINDOWS + Visual C++ 1.0 （ネットワークコードなし）
+
+old にある makefile は configur に対応していません
+old/inetbios.ms5	: MS-DOS + InetBIOS + MS-C 5.0 + make
+
+
+Copyright (C) yamasita@omronsoft.co.jp
+	Jul.7,1997
+著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。

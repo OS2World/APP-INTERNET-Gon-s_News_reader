@@ -1,0 +1,26 @@
+OS/2 上で動作する gn について (16bit interface version)
+
+このバージョンの構築には以下の環境が必要です。
+
+	TCP/IP : TCP/IP Version 1.2.1 for OS/2 toolkit
+	C Compiler : MSC 6.0A
+	Make : Microsoft NMAKE
+
+コンパイラにMSCを使い、TCP/IP Version 1.2.1のソケットライブラリとリン
+クするため、生成される EXE は、いわゆる 16bit 版になります。ただし実行
+は TCP/IP Version 2.0 または Warp Connect に同梱されている TCP/IP
+Version 3.0 のもとでも可能です。
+
+OS2シンボルを新たに作り、基本的には MSDOS with INETBIOS 用のコードを使
+います (でも全部じゃない)。OS/2のソケットライブラリには、行単位のソケッ
+ト read がないので、1Kのバッファから切り出すようにしました。
+
+DOS 版をベースコードとしているので、DOS での制限をそのまま引き継いでい
+ます。DOS 版との相違等については、readme を参照してください。
+
+
+(C) kiku@yamato.ibm.co.jp (Akira Kikuchi)
+	Dec.15,1993
+Copyright (C) yamasita@omronsoft.co.jp
+	Aug.29,1996
+著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。

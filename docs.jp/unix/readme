@@ -1,0 +1,155 @@
+Unix 系の OS 上で動作する gn について
+
+１．動作環境
+
+	現在、下記の環境で動作することが（ほぼ）確認されています。
+	（過去のバージョンで確認したものを含む）
+		SX-9100		UniOS-Sigma
+		LUNA		UniOS-U/UniOS-B
+		LUNA-II		UniOS-U/UniOS-Mach
+		LUNA-88K	UniOS-Mach
+		LUNA 2010	DG/UX 5.4.3
+		AV350		DG/UX 5.4.2
+		MV		MV/UX
+		Sun3/80		SunOS 4.0.3+JLE 1.0.3
+		Sun4/690	SunOS 4.1.2+JLE 1.1.2
+		SPARC Station 1	SunOS 4.1.1
+			同    2	SunOS 4.1.1+JLE 1.1.1
+			同    2	SunOS 4.1.2
+			同  IPX	SunOS 4.1.2+JLE 1.1.2
+			同  ELC	SunOS 4.1.2+JLE 1.1.2
+			同  ELC	SunOS 4.1.3+JLE 1.1.3
+			同  10	SunOS 4.1.3
+			同  5	Solaris 2.4
+		IBM PC/AT(compatible)	Soraris 2.4 for X86
+		Sparc-LT E10	SunOS 4.0.3
+		S-4/IX		SunOS 4.1.2+JLE 1.1.2
+		Solbourne S4000	OS/MP 4.1
+		DS/90		UXP/DS V10L20
+		AS1000/G30	SunOS 4.1.1+JLE 1.1.1
+		EWS4800/60	CISC OS9.1
+		EWS4800/220	RISC OS5.2
+		EWS4800/220	RISC OS8.1
+		EWS4800/350	EWS-UX/V Release8.1 Rev.C
+		NWS 821		NEWS-OS 4.0C
+		NWS 1450	NEWS-OS 4.2C
+		NWS 1460	NEWS-OS 4.1C
+		NWS 1750	NEWS-OS 4.0.1C
+		NWS 1850	NEWS-OS 4.1.2C
+		NWS 3250	NEWS-OS 4.2R
+		NWS 3260	NEWS-OS 4.0R
+		NeXT Station	Release2.1j extended
+		PFU A50		SX/A E60
+		IBM PC/AT(compatible)	Linux 0.99.10+gcc 2.4.3+jump lib 4.4
+		HP Apollo 9000 Model 425e, Model 720	HP-UX Release 9.0
+		HP9000/750	HP-UX 9.01
+		HP9000/800 G70	HP-UX 9.04
+		HP 712/60	HP-UX 9.05
+		DECsystem5500	日本語ULTRIX V4.3
+		DEC3000/500	日本語 DEC OSF/1 V1.3
+		DEC4000		OSF/1 V1.3
+		TITAN 1500	Stardent UNIX R2.5 Beta3
+		ME200		ME/UX C00版
+		Macintosh Quadra 700	System 7.5.1 & MachTen 2.2
+		Indy		IRIX Release 5.3
+
+２．mkgn
+	mkgn は gn のコンパイルを半自動的に実行するためのスクリプトで
+	す。
+
+	mkgn は
+	・make clean を実行
+	・uname や motd から実行しているシステムに必要な Makefile を決定
+	・site.def.システム名が
+		あれば、それを site.def にコピー
+		なければ、デフォルトの設定（sitedef.cmn）から
+			site.def を作成
+	・mkfiles/unix からそのシステム用の Makefile を src に作成
+	・make configur
+	・configur
+	・make
+	・site.def を site.def.システム名にコピー
+	を実行します。
+	
+
+	以下に、mkgn を使用した gn のコンパイル方法を記述します。
+	すべての作業は src ディレクトリにておこないます。
+
+	（１） sitedef.cmn の設定
+		mkgn 実行前に、sitedef.cmn にどのマシンでも共通の設定を
+		おこないます。特に gn のソースディレクトリを各種ＯＳで共
+		有する場合に有効です。
+		リリース時の sitedef.cmn は設定可能な項目が総てコメント
+		アウトされています。設定する項目の
+			・行頭の # を消し
+			・= の右側の " でくくられた文字列を変更
+		します。
+		例：
+				:
+			# MAIL_KANJI_CODE="JIS"
+				:
+			# MAILER="SMTP"
+			# NNTPSERVER="your-nntpserver"
+			# SMTPSERVER="your-smtpserver"
+			# DOMAINNAME="your.domain.name"
+			# GENERICFROM="1"
+			# ORGANIZATION="your organization"
+				:
+				｜
+				Ｖ
+				:
+			MAIL_KANJI_CODE="JIS"
+				:
+			MAILER="SMTP"
+			NNTPSERVER="gw"
+			SMTPSERVER="gw"
+			DOMAINNAME="omronsoft.co.jp"
+			GENERICFROM="1"
+			ORGANIZATION="OMRON SOFTWARE CO., Ltd. Kyoto Japan"
+				:
+
+	（２） mkgn の実行
+		mkgn[CR] を実行します。
+		unknown system と表示された場合は、mkgn がサポートして
+		いない環境です。mkgn による gn のコンパイルはできません。
+
+		configur がコンパイルされますが、標準でない環境（gcc 
+		を使う場合など）は、Makefile を編集しなければならない
+		ことがあります。
+
+	（３） configur による設定
+		自動的に configur が起動されます。必要な設定をおこない
+		ます。詳しくは docs.jp/install を参照ください。
+
+	（４）make install の実行
+		正常にコンパイルされたなら、make install を実行します。
+
+	mkgn がサポートしていないシステムは「unknown system」もしくは
+	「unknown system システム名」と表示されます。そのシステムに対
+	しては下記３．４．の手順でコンパイルしなければなりません。
+	mkgn がサポートしていないシステムへ対応された場合は、
+	・mkgn が unknown だといったシステム名
+	・Makefile もしくは mkgn を修正された場合はその修正点
+	を山下まで連絡いただければ将来のバージョンにおいて mkgn を対応
+	させます。ご協力をお願いします。
+
+mkgn がサポートしていないシステムでは以下の手順を実行します。
+
+３．Makefile のコピー
+	mkfiles/unix 以下からシステムにもっとも近いものを src/Makefile 
+	にコピーして下さい。システムと Makefile の対応は 
+	mkfiles/unix/readme を参照してください。
+	コピーした Makefile をテンプレートに、インストールしたいシステ
+	ムにあわせて必要な修正を行ってください。
+
+４．コンパイル
+	make configur
+	configur
+	make
+	make install
+	を実行します。
+	詳しくは docs.jp/install を参照下さい。
+
+Copyright (C) yamasita@omronsoft.co.jp
+	Feb.7,1996
+著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。

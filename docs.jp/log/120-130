@@ -1,0 +1,604 @@
+-*- Mode: indented-text -*-
+
+gn 1.30
+----------------------------------------------------------------------
+Jul.1,1994
+
+Jul.1,1994	src/init.c
+コメントの typo 修正
+
+Jul.1,1994	src/configur.c
+X68k:configur.c で static`GetDisk は暗黙にexternに宣言されています
+の warning が出る不具合修正
+
+Jun.30,1994	src/gnspool.rc
+Windows: メイル／ニュースを発信確認のダイアログにおいて
+しないボタンの幅が狭く、しない(N) が途切れてしまう不具合修正
+To:/Newsgroups:/Subject: が長いと、ゴミが出る不具合修正
+
+Jun.30,1994	docs.jp/jnames
+「JNAMES ファイルは FILE_KANJI_CODE にて作成する」旨追記
+
+Jun.30,1994	src/configur.c
+DOS: configur で BINDIR または MANDIR に $DRIVE:\ または、\ と指定した
+場合、configur された Makefile を使って make できない不具合修正
+
+Jun.30,1994	src/init.c
+usage が改行されずに表示される不具合修正
+
+Jun.28,1994	src/jnames.c
+JNAMES FILE を file_kanji_code で読み込み、internal_kanji_code で処理
+するよう修正
+あわせて u_char を unsigned char に変更
+
+Jun.28,1994	mkfiles/unios-u.gns readme
+UniOS-U:MIME + gnspool 対応であった unios-u.mim を削除
+UniOS-U:gnspool 対応の unios-u.gns 作成
+
+Jun.28,1994	mkfiles/hpux
+CFLAGS に -DSYSV_TERMIO を追加
+
+Jun.28,1994	mkfiles/inetbios.tc
+main() が衝突する不具合修正
+
+Jun.28,1994	src/init.c
+DOS: TMP に $DRIVE:\ , $DRIVE: , \ と環境変数に書くことができるよう修
+正
+
+Jun.28,1994	src/gnspool.c
+DOS: TMP を空入力可能とするよう修正
+
+Jun.28,1994	docs.jp/bin-dist
+site.def、anon.ftp について追記
+
+Jun.28,1994	src/group.c subject.c article.c
+ヘルプが改行されずに表示される不具合修正
+
+Jun.27,1994	src/gnspool.c
+メッセージ変更
+	remove ng.name : 9999  -> ng.name: removing article #9999
+	ng.name: get article 9999 -> ng.name: getting article #9999
+
+Jun.24,1994	src/gn.c newsrc.c
+newsrc が存在しないと、
+	newsrc がみつかりません
+ 	テンポラリファイルの作成に失敗しました
+と表示して終了してしまう不具合修正
+
+Jun.24,1994	mkfiles/pc-nfs.ms6 unios-{ub} unios-{ub}.mim
+コメントにあるファイル名を実際のファイル名と一致させた
+
+Jun.23,1994	docs.jp/packet winsock.vc
+odipkt のバージョンを明記
+
+Jun.23,1994	src/client.c docs.jp/winsock.vc
+Windows + Winsock:Core Internet-Connect 対応
+
+Jun.23,1994	src/kanji.c
+Windows: ページャモードの時、必ずリドロウする不具合修正
+
+Jun.22,1994	mkfiles/Ｕｎｉｘ系
+configur 作成時に、$(LFLAGS) と $(LIBS) とが有効になるよう修正
+
+Jun.22,1994	mkfiles/inetbios.tc
+configur が動作しない場合がある不具合修正
+
+Jun.17,1994	docs.jp/ms-dos
+aux,con,+を使ったファイル名が使えない旨追記
+
+Jun.17,1994	docs.jp/copyrigh.t jnames
+		mkfiles/sunos.jna nonetful.x68
+		src/group.c subject.c (jfrom.c)
+jnames.c 添付
+jfrom.c を subject.c に吸収
+ニュースグループモードでグループ名を jnames を使って表示する機能追加
+
+Jun.17,1994	docs.jp/winsock.vc
+コマンドラインオプションの付加方法、コマンド行頭のスペースキーについて
+追記
+
+Jun.17,1994	src/gn.c gnspool.c
+Windows: -s オプションを付加してもパスワードを聞いてくる不具合修正
+
+Jun.16,1994	docs.jp/install src/configur
+configur 実行時、MAILER の指定順序変更
+
+Jun.16,1994	docs.jp/install
+site.def について説明を追記
+
+Jun.16,1994	docs.jp/readme
+「フリーなメイラは PC/M しかない」旨の記述削除
+
+Jun.16,1994	docs.jp/inetbois
+VC++ 1.0 + djgpp の場合は、nmaker.exe を使う旨記述
+
+Jun.16,1994	docs.jp/windows
+ネットワークコードなし版（nonet.vc）について補足説明追加
+
+Jun.16,1994	docs.jp/winsock.vc
+５．他の版との相違に、LINES/COLUMNS について記述
+
+Jun.16,1994	src/configur.c
+何らかの起動オプションを付加すると site.def があってかつ設定内容が正し
+い場合には y/n/q の入力を行なわず、y を入力されたものとする機能追加
+
+Jun.16,1994	src/client.c mkfiles/newwattc.ms6
+184373 bytes の mscwattcp.zip 対応
+うまく動かないので、docs.jp には記述なし
+
+Jun.16,1994	src/group.c subject.c article.c
+モード表示をタイトルバーに表示するよう修正
+
+Jun.16,1994	src/gn.md docs.jp/winsock.vc
+AUTOLIST が効かない旨明記
+
+Jun.16,1994	mkfiles/inetbios.dj nonet.dj
+make configur 時に "configur は更新する必要がない" 旨のメッセージが表
+示されないよう修正
+
+Jun.14,1994	src/gn.c gnspool.c init.c
+Windows 版も起動オプションをサポートした
+
+Jun.14,1994	src/subject.c
+Windows: 未読の記事が SELECT_LIMIT 以上ある場合、グループ選択時ダイア
+ログメッセージの（が閉じていない不具合修正
+
+Jun.14,1994	src/save.c
+DOS: s コマンドで表示されるデフォルトファイルのディレクトリ区切りが
+\\ になる不具合修正
+
+Jun.14,1994	src/configur.c
+djgpp でコンパイルできない不具合修正
+
+Jun.14,1994	src/configur.c
+site.def に DEFINES,CFLAGS,LFLAGS,LIBS を保存しないよう修正
+
+Jun.14,1994	src/gnspool.c
+メイルを送った後に終了してしまう不具合修正
+
+Jun.14,1994	src/init.c
+数字を指定する keyword  が 環境変数から得られない不具合修正
+
+Jun.14,1994	src/article.c gncom.c gnspool.c init.c nntp.c
+			save.c subject.c 
+expand_filename() の返値をチェックするよう修正
+
+Jun.14,1994	src/init.c
+gnrc/.gnrc を DOS/other の define で切り分けるよう修正
+
+Jun.14,1994	src/article.c
+Windows: アーティクルモードで unsub を指定しても、ニュースグループモー
+ドに移行しない不具合修正
+
+Jun.13,1994	src/client.c auth.c smtp.c gn.h gnspool.c nntp.c
+			referenc.c article.c cancel.c subject.c
+put_server() の返値を見るよう修正
+
+Jun.10,1994	docs.jp/new
+「新しくなったこと」追加
+
+Jun.10,1994	src/group.c subject.c article.c
+Windows 版：現在のニュースグループやサブジェクトをタイトルバーに表示す
+るよう修正
+
+Jun.10,1994	src/post.c reply.c wingn.h gn.rc
+Windows 版：ポスト時、メイル時のダイアログに日本語メッセージ追加
+
+Jun.10,1994	src/newsrc.c nntp.c gncom.c
+DESCRIPTION ON とした場合、説明にゴミが出たり、ニュースグループモード
+の h コマンドで、同じグループが複数回表示される不具合修正
+
+Jun.10,1994	src/gn.c gnspool.c init.c subject.c
+malloc() の返値チェック追加
+
+Jun.9,1994	src/init.c
+コンパイル時にも、gnrc でも、起動オプションでもニュースサーバが指定さ
+れていなかった場合、キーボードより入力する機能追加
+
+Jun.9,1994	docs.jp/inetbios lanwp packet pathway pc-nfs
+環境変数について追記
+
+Jun.9,1994	docs.jp/ms-dos
+環境変数について、まわりくどい表現を修正
+
+Jun.9,1994	src/subject.c
+gnrc で KILL_CONTROL に 512 のビットを立てていて、control を選択した場
+合、Control: ヘッダが２つあるとロックしてしまう不具合修正
+＃  ^^^^^^^^^^^^^^^^^^^^^^^^^ こんな記事、出すなよな。まったくぅ
+
+Jun.8,1994	docs.jp/gnspool
+USE_HISTORY ON で、ヒストリを作る旨追記
+
+Jun.8,1994	docs.jp/faq
+環境設定編 A1 に、MAILER:SMTP 追記
+
+Jun.8,1994	docs.jp/x680x0 mkfiles/readme nonetgnu.x68
+X680x0版 GNU make 対応
+ついでに、mkfiles/readme に nonetful.x68 についての記述が抜けていたの
+で追加
+
+Jun.8,1994	docs.jp/winsock.vc
+実行の手順追記
+
+Jun.8,1994	src/gn.c gn.h gnspool.c init.c subject.c article.c 
+			referenc.c auth.c nntp.c smtp.c gncom.c
+Windows の場合、時間がかかるシーンでマウスカーソルを砂時計に変えるよう
+修正
+
+Jun.8,1994	src/gnspool.c
+Windows で WM_SIZE イベントを受けた場合、カーソルを (0,0) へ移動するよ
+う修正
+
+Jun.7,1994	src/gn.c gnspool.c
+Windows で WM_SIZE イベントを受けた場合、もし桁数も行数も変わっていな
+ければバッファをとり直さないよう修正。
+これにより、gnspool をアイコン化続いて復元を実行した時に画面が書き直さ
+れない不具合修正
+
+Jun.7,1994	docs.jp/faq
+.gnrc-pix -> gnrc
+
+Jun.6,1994	src/smtp.c
+数字で始まらないレスポンスを無視するよう修正
+
+Jun.6,1994	docs.jp/ms-dos
+LAN Work Place -> LAN WorkPlace 
+
+Jun.6,1994	src/referece.c save.c
+幾つかのメッセージが  "%s に保存します" のようになる不具合修正
+
+Jun.6,1994	src/subject.c
+サブジェクトモードの l コマンドで core dump する不具合修正
+
+Jun.6,1994	src/subject.c
+gcc の warning 解消
+
+Jun.2,1994	src/follow.c post.c reply.c gnspool.c
+Windows で、notepad のように指定されたファイル名に拡張子がなければ 
+.txt をつけるようなエディタを使用すると、ポスト／メイルできない不具合
+修正
+
+May.31,1994	src/gn.h subject.c article.c gn.md
+サブジェクトモードに一つ前のニュースグループへいく P コマンド、
+アーティクルモードに一つ前のサブジェクトへいく P コマンド追加
+マニュアル追記
+
+May.31,1994	src/gn.h auth.c nntp.c smtp.c client.c
+typedef socket_t による、コードの統合
+
+May.31,1994
+Windows + Winsock 対応
+
+May.31,1994	src/configur.c docs.jp/packet
+Waterloo TCP のあるディレクトリ（WATTCP）を configur 実行時に指定でき
+るよう修正
+
+May.31,1994	src/configur.c docs.jp/pathway
+socket ライブラリのあるディレクトリ（DIR）を configur 実行時に指定でき
+るよう修正
+
+May.31,1994	src/configur.c docs.jp/lanwp
+socket ライブラリのあるディレクトリ（DIR）を configur 実行時に指定でき
+るよう修正
+
+May.31,1994	src/configur.c docs.jp/install
+site.def を読み込む前に必ず Makefile も読み込むよう修正
+先頭で ESC を入力すると空文字列を指定できる機能追加
+MAILER が SMTP 以外の場合は、SMTPSERVER の入力をスキップするよう修正
+OPTCFLAGS 指定時 confer として DEFINES,CFLAGS を
+OPTLFLAGS 指定時 confer として LFLAGS を
+OPTLIBS   指定時 confer として LIBS を
+	表示する機能追加
+
+May.30,1994
+"ん\n" など、「ん」に続く \ の前にスペースを追加
+
+May.30,1994	src/gn.c gnspool.c newsrc.c nntp.c
+newsrc 読込み時、active 取得時の malloc() エラーチェック追加
+
+May.26,1994	src/configur.c
+チェックでエラーになったデフォルト値を表示してしまう不具合修正
+
+May.26,1994	docs.jp/copyrigh.t readme ms-dos lanwp pathway
+		mkfiles/readme lansp.ms6 pathway.ms6
+		src/gn.h init.c auth.c smtp.c lwp.c pathway.c client.c
+RICOH STARLAN TCP/IP：ヘッダーの読み込みを速く
+NOVELL LAN WorkPlace for DOS 対応
+
+May.25,1994	src/init.c
+gnrc に LINES と COLUMNS が指定できない不具合修正
+
+May.25,1994	src/smtp.c
+リプライ時にヘッダと本文の間に空白行が入らないことがある不具合修正
+
+May.13,1994	mkfiles/inetbios.tc
+存在しないファイルをリンクしようとする不具合修正
+
+May.11,1994	src/smtp.c
+MAILER SMTP の場合、MIME_HEAD ON でもエンコードしていない不具合修正
+
+May.11,1994	src/nntp.c smtp.c
+MIME_HEAD ON の場合は、ポスト／リプライ／メイル時のヘッダに
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-2022-JP
+を付加するよう修正
+
+May.11,1994	src/init.c
+Sun cc で warning となる冗長なコード削除
+
+May.11,1994	docs.jp/unix
+mkfiles/readme と食い違っている部分を修正
+
+May.11,1994	docs.jp/winsock.qw
+推奨使用方法追記など。
+
+May.11,1994	src/article.c
+Sun cc でコンパイルエラーになる不具合修正
+
+May.10,1994	src/gn.h version.h init.c nntp.c mkfiles/*
+gn.h にあった VERSION/DATE を version.h に移動
+
+Apr.28,1994	src/smtp.c
+> あわせて
+> > SMTP の multiline reply に対応していなかったため、DOS の場合、
+> > リプライできないことがある不具合修正
+> がまだ完全でなかったため、追加修正
+がまだ完全でなかったため、追加修正^_^;
+
+Apr.28,1994	src/kanji.c
+一部（俗にいう）KANJI-OUT が一部 JIS-ROMAN-IN ?（ESC ( J） のままであっ
+たのを ASCII-IN ? （ESC ( B ）に修正
+
+Apr.28,1994	src/gn.c nntp.c gncom.c fgets.c gnspool.c
+二重起動の禁止機構追加
+
+Apr.28,1994	mkfiles/inetbios.dj inetbios.ms6 inetbios.tc
+			nonet.dj nonet.ms6 os2_16.ms6 wattcp.ms6 winsock.qw
+make install 時に gnspool のマニュアルがインストールされない不具合修正
+
+Apr.28,1994	docs.jp/install
+インストールされるマニュアルが、catman 形式であることを明記
+
+Apr.28,1994	src/init.c mkfiles/readme ews4800 docs.jp/copyrigh.t unix
+EWS4800/220 R5.2 対応
+
+Apr.28,1994	src/article.c
+gmt_to_jst() 入れ換え
+
+Apr.26,1994	mkfiles/inetbios.tc readme src/gnspool.c
+Turbo-C V2.0 | Turbo-C++ V1.01 | Borland-C++ V2.0 版、gnspool 対応
+
+Apr.26,1994	src/smtp.c
+gcc でコンパイルする際の warning を消すよう修正
+
+Apr.26,1994	mkfiles/inetbios.dj nonet.dj
+make clean 時に、configur も消すよう修正
+
+Apr.26,1994	src/configur.c
+メッセージ修正 create -> creating
+
+Apr.25,1994	src/group.c
+グループモードのヘルプのインデントが、一部狂っていたので修正
+
+Apr.25,1994	src/configur.c
+COLUMNS のコメントが、"lines of COLUMNS" となっていたのを、
+ "columns of display" に修正
+
+Apr.25,1994	src/configur.c mkfiles/* docs.jp/install
+使用するコンパイラ(CC)もカスタマイズできる機能追加
+
+Apr.25,1994	src/article.c gncom.c gn.md
+クロスポストの記事を読んだ直後の U コマンドでは、クロスポスト先全部を
+未読にするよう修正
+マニュアル追記
+
+Apr.25,1994	src/configur.c mkfiles/meux readme
+rename() のない System V R3 ベースの OS 用に #ifdef NO_RENAME 追加
+ME/UX 用の makefile mkfiles/meux 作成
+
+Apr.22,1994	src/gn.h init.c subject.c gn.md
+サブジェクトモードで、全部の記事がフォローでも Re: を表示しない機能追
+加
+マニュアル追記
+
+Apr.21,1994	docs.jp/faq
+その他 Q1/A1 追加
+
+Apr.21,1994	docs.jp/faq
+環境設定編 Q4/A4 削除
+
+Apr.21,1994	src/configur.c
+"crate" -> "create"
+
+Apr.20,1994	docs.jp/faq
+configur やファイル名の小文字化に伴う修正
+
+Apr.20,1994	src/article.c cancel.c nntp.c smtp.c subject.c
+MIME 関連の外部関数の extern 宣言追加
+
+Apr.20,1994	mkfiles/* docs.jp/* src/configur.c
+カスタマイズユーティリティ configur 作成
+あわせて、mkfiles/* docs.jp/* のファイル名を全部小文字に
+
+Apr.19,1994	src/gn.h init.c reply.c gn.md
+メイル送信時の Cc:/Bcc: の有無を gnrc でカスタマイズできるよう修正
+マニュアル追記
+
+Apr.19,1994	src/smtp.c config.hd gn.md
+Unix の場合も SMTP を使ってメイルを送れるようにした
+マニュアル追記
+あわせて
+> SMTP の multiline reply に対応していなかったため、DOS の場合、
+> リプライできないことがある不具合修正
+がまだ完全でなかったため、追加修正
+
+Apr.19,1994	src/init.c
+jnames_file の宣言を #ifdef USE_JNAMES 〜 #endif で囲んだ
+
+Apr.19,1994	src/nntp.c
+外部変数と同名の引数（nntpserver）を独自のもの（server）に修正
+
+Apr.18,1994	src/config.hd init.c gn.md
+LINES,COLUMNS のデフォルト値を config.h で指定するよう修正
+あわせて、OS2,DOSV の場合、環境変数 LINES/COLUMNS があれば、
+GetLines()/GetColumns() より優先されてしまう不具合修正
+
+Apr.15,1994	mkfiles/
+mkfiles/UniOS-B を gnspool 対応 に
+mkfiles/UniOS-B.MIM を MIME + gnspool 対応 に
+mkfiles/UniOS-B.gns は消去
+mkfiles/UniOS-U.MIM を MIME + gnspool 対応 に
+mkfiles/SunOS を gnspool 対応 に
+mkfiles/SunOS.gns は消去
+
+Apr.14,1994	src/config.hd
+#define	に続くホワイトスペースを tab に統一 :-)
+
+Apr.14,1994	src/nntp.c
+statement not reached の warning を消した。
+
+Apr.13,1994	src/group.c subject.c article.c reply.c gn.md
+各モードにメイルを送る m コマンドを追加
+マニュアル追記
+
+Apr.12,1994	src/init.c
+DOS の場合、カレントドライブをテンポラリディレクトリのドライブへ変更し
+ないよう修正
+
+Apr.12,1994	src/nntp.c auth.c client.c smtp.c
+SMTP の multiline reply に対応していなかったため、DOS の場合、
+リプライできないことがある不具合修正
+
+Apr.11,1994	mkfiles/nonetFUL.x68,docs.jp/x680x0
+X680x0 版 MIME, jnames 対応
+
+Apr.11,1994	src/fgets.c
+-DUSE_FGETS の場合、Sun の Openwindows のコマンドツールで Return が効
+かなくなる不具合修正
+
+Apr.5,1994	src/group.c subject.c article.c
+Fgets or fgets の切替を define で
+
+Apr.5,1994	src/gn.h init.c artcle.c gn.md
+Date: ヘッダを JST で表示する機能追加
+
+Apr.4,1994	src/* mkfiles/winsock.qw docs.jp/README winsock.qw
+Windows + Winsock 対応
+
+Apr.1,1994	src/group.c gn.md
+グループモードの S コマンドで、範囲を指定できるようにした。
+
+Apr.1,1994	src/group.c
+グループモードで、u 10-13 とし、かつ a（全部）を指定すると、範囲の最後
+＋１まで unsub になる不具合修正
+
+Mar.30,1994	src/referenc.c
+ローカルスプールモードの場合、元記事表示、M-ID による記事表示ができな
+い不具合修正
+
+Mar.30,1994	src/gncom.c nntp.c
+connection_closed() 削除
+
+Mar.30,1994	src/gn.c
+-DSAVE_MEMORY でコンパイルエラーになる不具合修正
+
+Mar.29,1994	docs.jp/log
+mv 1.00-1.10 100-110
+mv 1.10-1.20 110-120
+
+Mar.29,1994	src/subject.c
+最後のグループで N コマンドを実行すると core dump する場合がある不具合
+修正
+
+Mar.29,1994	src/gncom.c
+DOS の場合、パス名に / が現れた時は \ に変換するよう修正
+
+Mar.28,1994	mkfiles/*
+		src/gncom.c nntp.c client.c
+gncom.c client.c から、NNTP 関連部を nntp.c に移動
+
+Mar.28,1994	mkfiles/*
+		src/smtp.c gncom.c
+mail_file() を gncom.c から smtp.c へ移動
+
+Mar.28,1994	mkfiles/SunOS.gns
+私のドメインの NNTPSERVER/DOMAINNAME/ORGANIZATION が記述されていたのを
+一般的なものに修正
+
+Mar.22,1994	src/gn.h
+MSDOS の場合、NEWSLIB,NEWSSPOOL のディレクトリ区切り記号（？）を
+ / から \ に変更
+
+Mar.22,1994	src/*
+暗黙の extern int の排除。値を返さない関数の void 化
+
+Mar.17,1994	src/subject.c article.c gncom.c
+cancel されたり expire された記事の処理を最適化
+
+Mar.17,1994	src/reply.c post.c gncom.c
+		mkfiles/*.gns inetbios.dj inetbios.ms6 nonet.*
+			os2_16.ms6 wattcp.ms6
+post_file(),mail_file() を gncom.c へ移動
+gnspool は post.c reply.c を使わなくなったので、小さくなった。
+
+Mar.17,1994	src/gnspool.c
+active を作成する際、ニュースサーバの active をそのまま使うのではなく、
+ローカルの $NEWSSPOOL にある記事範囲を使うよう修正
+
+Mar.17,1994	src/init.c cancel.c save.c reply.c post.c gnspool.c
+djgpp でコンパイルできない不具合修正
+
+Mar.17,1994	src/gn.md
+gnrc に関して、洩れていた事項追加
+
+Mar.16,1994	src/gnspool.c
+スプールにそのグループの最大番号を越える記事番号のファイルがあると、
+core dump する不具合修正
+
+Mar.16,1994	src/cancel.c
+gnspool とあわせて使う場合、ニュースサーバが INN だとキャンセルできな
+い不具合修正
+
+Mar.16,1994	src/cancel.c
+ローカルスプールモードの時、キャンセルすると core dump する不具合修正
+
+Mar.15,1994	src/group.c
+u コマンドの確認入力に a（全部）追加
+
+Mar.15,1994	mkfiles/nonet.x68 inetbios.ms6 nonet.ms6 wattcp.ms6
+/ -> \
+
+Mar.11,1994	src/gn.h gnspool.c init.c 
+		group.c subject.c article.c referenc.c
+gnspool とあわせて使用する場合でも、Message-ID による記事の表示や、元
+記事の参照をできるようにした。
+
+Mar.10,1994	src/init.c
+/DDOSV の時、画面の行数と桁数を逆に取得している不具合修正
+
+Mar.9,1994	src/group.c subject.c article.c gn.md
+逆方向検索コマンド \ 追加
+
+Mar.9,1994	src/article.c
+AUTOLIST OFFの場合、アーティクルモードで検索コマンド / を使用しても結
+果が表示されない不具合修正
+
+Mar.8,1994	src/init.c gnspool.c
+ME/UX 対応
+
+Mar.7,1994	src/group.c subject.c article.c
+/ コマンドで検索文字列が見つからない時、その旨のメッセージが文字化けす
+る場合がある不具合修正
+
+Mar.7,1994	src/init.c
+debug 用の printf() 削除
+
+Mar.3,1994	src/gnspool.c
+OSF/1 で、struct direct がコンパイルエラーになる不具合修正
+
+Mar.1,1994	docs.jp/Change.log -> docs.jp/log/1.10-1.20
+1.10 〜 1.20 の変更履歴を docs.jp/log/1.10-1.20 とした。
+
+gn 1.20
+----------------------------------------------------------------------
+Mar.1,1994

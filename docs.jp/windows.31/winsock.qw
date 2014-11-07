@@ -1,0 +1,72 @@
+Windows + Winsock + QuickWin で動作する gn/gnspool について
+
+gn/gnspool は Windows + winsock + QuickWin の元でも、とりあえず動作し
+ます。
+ただ、QuickWin という Windows 上で DOS アプリケーションを動かす環境を
+使用しているため、ユーザインタフェイスのほとんどない gnspool はともか
+く、gn は使用に耐えるものではありません。
+
+Visual C++ 版（winsock.vc）を使用することをお勧めします。
+QuickWin 版は、将来サポートしなくなる可能性が大です。
+
+
+１．動作環境
+
+gn/gnspool を実行するためには以下の環境が必要です。
+
+(1)	Winsock 1.1 が動作する環境
+	例：
+		Chameleon TCP/IP
+		Trumpet Winsock
+		Microsoft Network client
+
+(2)	リプライメイルを送るための smtp サーバ
+	サーバ上で、sendmail がデーモンとして動作していなければなりません
+
+(3)	ユーザ認証を行なうための pop サーバ
+	MS-DOS 上にはユーザという概念がないため、ユーザ認証を行なうた
+	めに pop プロトコルを使用しています。
+	smtp サーバと同じマシンを pop サーバとして利用します。
+
+	デフォルトは pop3(110) となっています。pop2(109) を使う場合は、
+	configur 実行時の OPTCFLAGS として、/DAUTH_POP2 を付加します。
+
+(4)	ニュースサーバ :-)
+
+２．コンパイル環境
+
+コンパイルには下記のコンパイラ／ライブラリが必要です。
+
+(1)	Microsoft(R) Visual C++ Version 1.0(or later ?)
+(2)	Windows Sockets API 1.1, C header file/C link library
+		ftp.microsoft.com などにあります。
+
+３．コンパイル
+
+(1)	何らかの方法で全ソースを DOS 上にコンバートします。
+
+	ソースファイルの漢字コードは、EUC のままでも、SHIFT-JIS に変換
+	しても、どちらでも構いません。
+	ただし、全ファイルのコードを統一しておく必要があります。
+
+(2) 	copy mkfiles\dos\winsock.qw src\makefile を実行します。
+
+(3)	nmake configur
+
+(4)	configur
+
+(5)	nmake
+	gn.exe/gnspool.exe が作成されます。
+
+
+４．実行
+
+gn/gnspool を実行するためには Winsock が動作していることが必要です。
+詳しくは Winsock などのマニュアルを参照下さい
+
+５．その他
+	gnrc のキーワード CLS は効きません。
+
+Copyright (C) yamasita@omronsoft.co.jp
+	Feb.1,1996
+著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。

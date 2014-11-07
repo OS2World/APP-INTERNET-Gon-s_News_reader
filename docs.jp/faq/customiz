@@ -1,0 +1,112 @@
+gn FAQ ユーザカスタマイズ編
+
+Q1.	ニュースサーバはどうやって指定すればよいのでしょう？
+
+A1.	-h オプションか、gnrc で指定します。
+
+	ニュースサーバが１台しかない場合は、gnrc に
+	NNTPSERVER	ニュースサーバのホスト名
+	と書いておくとよいでしょう。gn[CR] とするだけで指定したニュー
+	スサーバと接続します。
+
+	ニュースサーバが２台以上ある場合は gn もしくは gnspool の起動
+	時に
+		gn -h ニュースサーバのホスト名[CR]
+	の様に -h オプションでニュースサーバを指定するとよいでしょう。
+
+
+Q2.	自分のメイルアドレスはどうやって指定すればよいのでしょう？
+
+A2.	gnrc で指定します
+
+	yamasita@omronsoft.co.jp
+	~~~~~~~~ ~~~~~~~~~~~~~~~
+	  (1)      (2)
+
+	（１）ユーザ名
+		・UNIX 系
+			ログイン名が使われます
+		・DOS 系
+			gnrc に
+				USER	yamasita
+			と指定します。
+	（２）ドメイン名
+		gnrc に
+			DOMAINNAME	omronsoft.co.jp
+		と指定します。
+
+	UNIX 系でメイルアドレスにホスト名が入る場合は gnrc に
+		GENERICFROM	OFF
+	と指定します。GENERICFROM OFF とすると、
+	・ユーザ名が yamasita、
+	・gn を実行したマシンのホスト名が gw、
+	・DOMAINNAME が omronsoft.co.jp
+	の場合、投稿した記事やメイルの From: は
+		From: yamasita@gw.omronsoft.co.jp
+	となります。（フルネーム略）
+
+
+Q3.	自分のフルネームはどうやって指定すればよいのでしょう？
+
+A3.	gnrc で指定します
+	gnrc で
+		NAME	Yasunari GON Yamasita
+	と指定すると、投稿した記事やメイルの From: は
+		From: yamasita@omronsoft.co.jp (Yasunari GON Yamasita)
+	となります。                            ~~~~~~~~~~~~~~~~~~~~~
+
+	Unix 系では NAME の指定を省略するとパスワードファイル
+	(/etc/passwd) の GECOS フィールドが使われます。
+
+
+Q4.	自分の組織名はどうやって指定すればよいのでしょう？
+
+A4.	gnrc で指定します
+	gnrc で
+		ORGANIZATION	OMRON SOFTWARE Co., Ltd. Kyoto, Japan.
+	と指定すると、投稿した記事の Organization: は
+		Organization: OMRON SOFTWARE Co., Ltd. Kyoto, Japan.
+	となります。
+
+
+Q5.	gnrc に書いた設定が効かないんですが、、、
+
+A5.	同一名の環境変数がありませんか？
+		gnrc より環境変数が優先されます
+		gnrc-nntpserver に書くと環境変数より優先されます
+	gnrc-nntpserver に同一エントリの記述がありませんか？
+		gnrc-nntpserver はコマンドラインオプションの次に優先されます
+	HOME 環境変数は、きちんと設定されていますか？
+		実は gnrc が見つからないだけでは？
+
+	設定の優先順位については、gn のマニュアルを参照のこと
+
+
+Q6.	kill file の機能はありますか？
+
+A6.	ありません。
+	ただしＳＰＡＭを既読にするための K コマンドがあります
+
+
+Q7.	SMTPSERVER の設定は正しいはずなのに、"unknown host" というエラー
+	が出ます。
+
+A7.	.gnrc では keyword に対する value を空白で区切り
+
+		keyword value
+
+	という形式で指定しますが。両者を区切る空白以降、全ての文字を 
+	value として使用します。そのため、例えば
+
+		SMTPSERVER   mail.hogehoge.or.jp    # smtp server
+
+	という記述がなされていた場合、SMTPSERVER として
+
+		"mail.hogehoge.or.jp    # smtp server"
+
+	という文字列が使われることになります。value として必要最小限の
+	ものだけを記述して下さい。行末の不要な空白にも注意しましょう。
+----------------------------------------------------------------------
+Copyright (C) yamasita@omronsoft.co.jp
+	Sep.12,1997
+著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。

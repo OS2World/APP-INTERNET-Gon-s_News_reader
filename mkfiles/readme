@@ -1,0 +1,14 @@
+このディレクトリ以下は、各機種用の Makefile のテンプレートを収めています。
+
+dos/*		DOS 系向け
+os2/*		OS/2 向け
+unix/*		Unix 系向け
+human68k/*	X680x0 + Human68k 向け
+win16/*		Windows 3.1 向け
+win32/*		Windows 95/NT 向け
+
+各ディレクトリの readme を参照してください。
+
+(C) yamasita@omronsoft.co.jp
+	Jul.7,1997
+著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。

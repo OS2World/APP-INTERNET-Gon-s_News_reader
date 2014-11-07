@@ -1,0 +1,26 @@
+ＯＳを Windows 95 に入れ換えた
+
+１９９６年１月、所有のサブノートＰＣのハードディスクを 720MB のドライ
+ブに入れ換え、Windows95 をインストールした。
+
+・会社では
+	Unix マシン上で samba を動作させ、Unix のホームディレクトリが
+	ドライブ h:\ に見えるようにしてある。
+
+	出勤時
+		copy c:\yama\newsrc.gw h:\
+		c:\gn\bin\winsock.ms9\gnspool -h gw -y -e -m -p
+	退社時
+		copy h:\newsrc.gw c:\yama
+		c:\gn\bin\winsock.ms9\gnspool -h gw -y
+
+	gnspool は winsock.ms9 版を使用している
+
+・会社の外では
+	nonet.ms9 版の gn で記事の読み書きをおこなっている
+
+・gnrc の設定：以前から変更なし
+
+Copyright (C) yamasita@omronsoft.co.jp
+	Aug.28,1997
+著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。

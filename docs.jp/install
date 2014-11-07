@@ -1,0 +1,281 @@
+gn インストールの手引
+
+（０）unix 系の場合
+	unix 系の場合、ほとんどのシステムでは mkgn というスクリプト一
+	発で gn, gnspool をコンパイルすることが可能です。
+	詳しくは docs.jp/unix をご覧下さい。
+
+（１）Makefile のコピー
+	mkfiles にある Makefile のテンプレートから、インストールしよう
+	としているシステムに最も近いものを src/Makefile にコピーします。
+	詳しくは mkfiles/*/readme を参照下さい。
+	決して旧バージョンの Makefile をそのまま使わないで下さい。
+
+	例：cp mkfiles/unix/unios-b src/Makefile[CR]
+
+（２）configur の make
+	src ディレクトリに移動後、configur を make します。
+
+	例：cd src[CR]
+	    make configur[CR]
+                         ^ configure にあらず
+
+	MS-C の nmake.exe を使用する場合は、make を nmake に読み換えて
+	下さい。（以後、同様）
+
+（３）site.def のコピー
+	以前のバージョン用の site.def が違うディレクトリにある場合は
+	src ディレクトリにコピーします。
+
+	例：cp ../../gn-1.30/src/site.def .
+
+（４）configur の実行
+	configur を実行します。
+	configur は Makefile と、もしあれば site.def を読み込みます。
+
+（５）各キーワードの指定
+	初回の実行時（site.def が存在しない場合）、configur は
+		キーワード = 簡単な説明 ?
+		(default:デフォルト値)
+	と（へたくそな英語で）順に聞いてきます。
+	各キーワードに正しい値を入力します。
+	[CR] だけを入力すると、表示されているデフォルト値が採用されま
+	す。
+	[TAB][CR] と入力すると既に入力されている項目をキャンセルし、
+	空文字列を入力したものと扱います。
+
+	BUGS:
+		・デフォルトに追加したい場合
+		・デフォルトの一部を変更したい場合
+		は、全部を入力しないといけません X-<
+
+	２回目以降の実行時（site.def が存在する場合）で、かつ各項目が
+	（ある程度:-）正しく入力されている場合、
+	この各キーワードの指定はスキップされます。
+	修正する場合は、次の「確認入力」で、n を入力します。
+
+	以下に各キーワードとその説明、例を記述します。
+	これらの設定はコンパイル時に使用される値です。gnrc や実行時オ
+	プション、環境変数などで変更可能なものもあります。
+	また、プラットホームによっては指定のないもの、ここに記述してい
+	るもの以外に指定が可能なものもあります。
+
+	なお、以下の記述で「DOS 系」とあるのは、
+	MS-DOS,OS/2,Human68k,Windows を意味します。
+
+	BINDIR:		実行形式をインストールするディレクトリを
+			指定します。
+			存在するディレクトリを絶対パスで指定します。
+			例：/usr/local/bin
+
+	MANDIR:		マニュアルをインストールするディレクトリを
+			指定します。
+			存在するディレクトリを絶対パスで指定します。
+			例：/usr/man/cat1
+			なお、インストールされるマニュアルはいわゆる
+			catman 形式で、nroff 形式ではありません。
+
+	MANEXT:		マニュアルの拡張子を指定します。
+			マニュアルに拡張子を付けない場合は、空文字列
+			（[TAB][CR]）でも構いません。
+			例：.1
+
+	CC:		C コンパイラを指定します。
+			コンパイラは、必ず指定しなければなりません。
+			例：cc
+
+	OPTCFLAGS:	CFLAGS に追加するオプションを指定します。
+			追加するオプションがない場合は、空文字列でも構
+			いません。
+			例：-DMIME -DUSE_FGETS
+			OPTCFLAGS が関連する DEFINES と CFLAGS が
+			which will be used as として表示されます。
+
+	OPTGNOBJS:	gn に追加するオブジェクトを指定します。
+			追加するオブジェクトがない場合は、空文字列でも
+			構いません。
+			例：jnames.o
+
+	OPTGNSPOOLOBJS:	gnspool 対応の Makefile の場合、
+			gnspool に追加するオブジェクトを指定します。
+			追加するオブジェクトがない場合は、空文字列でも
+			構いません。
+			例：jnames.o
+
+	OPTLFLAGS:	LFLAGS に追加するオプションを指定します。
+			追加するオプションがない場合は、空文字列でも構
+			いません。
+			OPTLFLAGS が関連する LFLAGS が
+			which will be used as として表示されます。
+
+	OPTLIBS:	追加するライブラリを指定します。
+			追加するライブラリがない場合は、空文字列でも構
+			いません。
+			例：-lmms
+			OPTLIBS が関連する LIBS が
+			which will be used as として表示されます。
+
+
+	以下のキーワードは、gnrc や実行時オプション、環境変数などで変
+	更可能なものです。
+
+	NEWSSPOOL:	ニュースの記事用のディレクトリ
+
+	NEWSLIB:	ニュースの管理用のディレクトリ
+
+	MAIL_KANJI_CODE:	メイルの漢字コードを指定します。
+		漢字コードは、EUC、JIS、SJIS のいずれかを指定します。
+
+	PROCESS_KANJI_CODE:	ページャ、エディタの漢字コードを
+				指定します。
+
+	FILE_KANJI_CODE:	ファイルの入出力時の漢字コードを
+				指定します。
+
+	DISPLAY_KANJI_CODE:	画面表示時の漢字コードを指定します。
+
+	LINES:		画面行数を指定します。
+			例：24
+
+	COLUMNS:	画面桁数を指定します。
+			例：80
+
+	MAILER:		DOS 系以外の場合、
+			メイルを送るためのプログラムを指定します。
+			SMTP を指定すると、SMTPSERVER に SMTP を使って
+			送信します。
+			例：/usr/lib/sendmail -t
+
+	NNTPSERVER:	ニュースサーバのホスト名を入力します。
+			例：omsofgw
+
+	SMTPSERVER:	メイルサーバのホスト名を入力します。
+			DOS 系の場合、必須ですが、
+			DOS 系でない場合は、MAILER に SMTP を指定した
+			時のみ有効になります。
+			例：omsofgw
+
+	DOMAINNAME:	ドメイン名を入力します。
+			例：slab.kyoto.omronsoft.co.jp
+
+	GENERICFROM:	From: にホスト名を入れるかどうかを
+			1 か 0 で指定します。
+		1:From にホスト名を入れない
+			From: は
+			yamasita@slab.kyoto.omronsoft.co.jp
+			のように
+			username@domainname
+			となります。
+		0:From にホスト名を入れる
+			From: は
+			yamasita@host.slab.kyoto.omronsoft.co.jp
+			のように
+			username@hostname.domainname
+			となります。
+
+	ORGANIZATION:	組織名を入力します。
+			例：OMRON SOFTWARE Co., Ltd. Kyoto, Japan.
+
+	NEWSRC:		既読情報を保存するファイル名を指定します。
+			例：.newsrc
+		DOS 系の場合も、ディレクトリの区切りは / を使います。
+
+	SIGNATURE:	署名ののファイル名を指定します。
+			例：.signature
+		DOS 系の場合も、ディレクトリの区切りは / を使います。
+
+	AUTHORCOPY:	ポストした記事を保存するファイル名を指定します。
+			例：author_copy
+		DOS 系の場合も、ディレクトリの区切りは / を使います。
+
+	SAVEDIR:	記事を保存するディレクトリを指定します。
+			例：news
+		DOS 系の場合も、ディレクトリの区切りは / を使います。
+
+	TMPDIR:		テンポラリファイルを作成するディレクトリ名を
+			指定します。
+			例：/tmp
+		DOS 系の場合も、ディレクトリの区切りは / を使います。
+
+	PAGER:		ページャを指定します。
+			例：less -c -m -e
+
+	RETURN_AFTER_PAGER:	ページャが最終ページで
+				プロンプトを出さない場合１を指定します。
+		1:最終ページでプロンプトを出さないページャを使う場合
+		0:最終ページでプロンプトを出すページャを使う場合
+
+	EDITOR:		エディタを指定します。
+			例：vi
+
+
+（６）確認入力
+	各キーワードとその値を表示した後、
+	OK? (y:Yes/n:No/q:Quit)
+	と確認入力を行ないます。
+
+	各キーワードとその値が正しい場合は y を
+	各キーワードとその値が正しくなく、再指定をする場合は n を
+	configur を中断する場合は q を
+	入力します。
+
+	y を指定すると、
+
+	Makefile.sv があれば消す
+	Makefile があれば Makefile.sv に rename
+	カスタマイズされた Makefile の作成
+
+	config.sv があれば消す
+	config.h があれば config.sv に rename
+	カスタマイズされた config.h の作成
+
+	gn.sv があれば消す
+	gn.man があれば gn.sv に rename
+	カスタマイズされた gn.man を FILE_KANJI_CODE で作成
+
+	gnspool.sv があれば消す
+	gnspool.man があれば gnspool.sv に rename
+	カスタマイズされた gnspool.man を FILE_KANJI_CODE で作成
+
+	site.sv があれば消す
+	site.def があれば、site.def を site.sv に rename
+	各カスタマイズ項目を site.def に保存
+
+	が実行されます。
+
+（７）make
+	make[CR]
+	を実行し、問題がなければ
+	make install[CR]
+	を実行します。
+
+	Unix 系の OS で gnspool のコンパイル時に 
+	opendir()/readdir()/closedir() がない（DIR や dirp がエラーに
+	なる）場合には、MH 6.8 の miscellany/libndir をインストールし、
+	Makefile に
+		OPTCFLAGS	= -DNDIR
+		OPTLIBS		= -lndir
+	を追加すると良いでしょう。
+	
+（８）site.def について
+	site.def には、（５）で説明した各キーワードとそのキーワードに
+	対して指定した値が
+		キーワード[TAB]=[TAB]値
+	というフォーマットで保管されます。
+
+	site.def をテキストエディタで編集することはあまりお勧めしませ
+	ん。
+	しかたなく、site.def をテキストエディタで編集した場合は、必ず
+	configur を実行し、Makefile、config.h などへ反映させます。
+
+
+注：
+	src/Makefile は configur が変更します。
+	できれば、テキストエディタなどで編集しないで下さい。
+	編集結果は失われる可能性があります。
+	また、Makefile のテンプレートを変更しても（例：SunOS -> SunOS.jna）
+	その変更は反映されない可能性があります。
+
+Copyright (C) yamasita@omronsoft.co.jp
+	Oct.31,1996
+著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。

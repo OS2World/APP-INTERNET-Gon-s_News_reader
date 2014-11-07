@@ -1,0 +1,70 @@
+JNAMES (日本語データベース)の利用方法
+
+JNAMES を使用すると gn に以下の３つの機能が追加されます。
+
+i) ニュースグループモードのグループ名の欄が日本語で表示される。
+ii) アーティクルモードの投稿者の欄が日本語で表示される。
+iii) フォローの記事を出す時に、日本語のメッセージが付加される。
+
+
+以下に具体的な JNAMES 利用方法を示します。
+
+1) configur 時に
+	OPTCFLAGS として -DUSE_JNAMES を、
+	OPTGNOBJS として jnames.o を指定します。
+
+2) 使用するマシンで共有する jnames データベースファイル名を指定します。
+	jnames.c の中で JNAMES を define することで指定可能です。
+	ディフォルトでは
+	#define JNAMES "/usr/local/lib/jnames"
+	となっています。
+
+3) JNAMES ファイルを作ります。
+	一行目は必ず次の行にします。
+
+	familyname.news	"news"
+
+	２行目からはメールアドレスと、それに対応する日本語名を、それぞ
+	れダブルコーティションで括って書きます。２つの単語は一個以上の
+	タブで分離します。
+	例
+	   "takuma@msr.mei.co.jp"		"宅間"
+	   "yamasita@omronsoft.co.jp"		"山下"
+
+	日本語名も半角のダブルコーテイションで括る事に注意してください。
+	なお、JNAMES ファイルは configur 時（もしくは gnrc）で指定した
+	FILE_KANJI_CODE にて作成します。
+
+	ニュースグループ名を表示する場合には、
+	newsgroupname.news "news"
+	続いてニュースグループ名と、それに対応する日本語名を、それぞれ
+	ダブルコーティションで括って書きます。２つの単語は一個以上のタ
+	ブで分離します。
+	例：
+	   "junk"               "junk         :ニュースグループがない記事"
+	   "control"            "control      :コントロールメッセージ"
+	   "local.test"		"local.test   :ポスト、フォローのテスト用"
+
+4) ここまでで一応 jnames を使用することが可能となります。
+	さらに、個人専用の jnames データベースを使用することも可能です。
+	そのためには、まず自分用のデータベースファイルを作成します。
+	この場合も一行目は
+
+	familyname.news	"news"
+
+	とします。次に gnrc に次の様な一行を追加します。
+
+	JNAMESFILE	FILENAME
+
+	FILENAME は自分用のデータベースファイル名です。ファイル名は絶
+	対パスを指定します。 ~ や $HOME などは受け付けません。
+
+	自分用のデータベースファイルも、JNAMES ファイルと同様
+	FILE_KANJI_CODE にて作成します。
+
+			以上
+
+(C) kiyoshi@isys3.eei.metro-u.ac.jp
+Copyright (C) yamasita@omronsoft.co.jp
+	Aug.29,1995
+著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。

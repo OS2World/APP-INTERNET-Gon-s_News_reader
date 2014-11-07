@@ -1,0 +1,132 @@
+gn for MS-DOS の SLIM/TCP 版について
+
+１．動作環境
+
+gn を実行するためには以下の環境が必要です．
+
+(1)	Allied Telesis SLIM/TCP が動作する環境
+	例：
+		PC-98 シリーズ
+		(MS-DOSについては未確認)
+		Allied Telesisネットワークボード
+		Allied Telesisネットワークドライバ
+		(pdのみ確認済み)
+		Allied Telesis SLIM/TCP
+
+(2)	SLIM/TCP は
+	The Wollongong Group社の PathWay for DOS と
+	互換性があるので，ここに書いてない事項はpathwayを参考にされたい．
+
+'94年7月現在、動作が確認できているのは，
+	PC-9801NS(i386DX/12)(MS-DOS 5.00A) + SLIM/TCP
+		MS-C 6.00A
+
+２．コンパイル環境
+
+コンパイルには下記のコンパイラが必要です．
+
+(1) MS-C 6.00A
+	nmake,cl,link など，通常のコンパイルができる環境が必要です．
+
+	MS-C でコンパイルした場合，640KB のメモリの制限から，多数のニュー
+	スグループを購読するニュースサーバと接続した場合メモリ不足によ
+	り正常に動作しない場合があります。docs.jp/dos/readme を参照のこと
+
+(2) djgpp, Turbo-C, Turbo-C++, Borland-C++
+	コンパイルおよび動作を確認していません．
+
+(3) socket ライブラリ
+	使用したライブラリは以下の通りです．
+	Development Kit for DOS
+
+３．コンパイル
+
+(1)	何らかの方法で全ソースを DOS 上にコンバートします。
+	ソースファイルの漢字コードは、EUC のままでも、SHIFT-JIS に変換
+	しても、どちらでも構いません。
+	ただし、全ファイルのコードを統一しておかなければなりません。
+
+(2) 	copy mkfiles\dos\slimtcp.ms6 src\makefile を実行します。
+
+(3)	nmake configur
+
+(4)	configur
+	DIR の指定では socket ライブラリのあるディレクトリを指定します。
+
+(5)	nmake
+	gn.exe が作成されます。
+
+４．実行
+
+gn を実行するためには SLIM/TCPカーネル が動作していることが必要です。
+詳しくはネットワークボードおよび SLIM/TCP software のマニュアルを参照
+して下さい。
+
+５．確認事項・例など(path等は環境に依存するはず)
+
+(1)	config.sysに
+
+	device=b:\slimtcp\slimtcp.sys
+
+	の記述があること．
+
+(2)	起動のための，gn-slim.batの例
+
+	echo off
+	set tmp=b:\comm
+	set home=b:\comm
+	set user=yamasita
+	b:\slimtcp\pd -m:d0 -b:0d0 -i:5
+	b:\slimtcp\emslim -i:5
+	b:\slimtcp\slimtcp
+	b:\comm\gn
+	b:\slimtcp\slimrm
+	b:\slimtcp\emslim -u
+	b:\slimtcp\pd -u
+	set home=
+	set user=resume-user
+	set tmp=b:\msc
+
+(3)	binary kit用のgnrcの例
+	(最低，右項がYもしくはyで始まるものは各siteで設定のこと)
+
+	TMPDIR		b:/comm
+	SAVEDIR		b:/news
+	EDITOR		mifes
+	NNTPSERVER	your-nntp-server
+	SMTPSERVER	your-stmp-server
+	DOMAINNAME	your.domain.name.ac.jp
+	ORGANIZATION	Your Organization, Co., Ltd.
+	NAME		Your RealName
+	NEWSRC		b:/comm/newsrc
+	SIGNATURE	b:/comm/signatur
+	USER		yamasita
+	LOGNAME		yamasita
+	HOST		your-terminal-hostname
+	ARTICLE_LIMIT	100
+	ARTICLE_LEAVE	80
+
+(4)	hostsファイル
+	\SLIMTCP\hosts ファイルに少なくとも下記の行を追加して下さい．
+	ただし，左項はIPアドレス，右項はホスト名で，
+	各siteに合わせること．
+
+	111.222.33.44	your-nntp-hostname
+	111.222.33.55	your-smtp-hostname
+	111.222.33.66	your-terminal-hostname
+
+(5)	services ファイル(install programでinstallされない)
+	\SLIMTCP\services ファイルに少なくとも下記の行を追加して下さい．
+
+	smtp	25/tcp
+	pop3	110/tcp
+	nntp	119/tcp
+
+--------
+山崎伸彦
+九大航空
+yamasaki@aero.kyushu-u.ac.jp
+
+Copyright (C) yamasita@omronsoft.co.jp
+	Mar.29,1996
+著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。

@@ -1,0 +1,308 @@
+#
+# Makefile for gn
+# @(#)nonet.vc	1.40 Sep.24,1997
+# 著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。
+# Copyright (C) yamasita@omronsoft.co.jp
+#
+
+MAIL_KANJI_CODE		= JIS
+PROCESS_KANJI_CODE	= SJIS
+FILE_KANJI_CODE		= SJIS
+DISPLAY_KANJI_CODE	= SJIS
+LINES		= 24
+COLUMNS		= 80
+
+BINDIR		= c:\bin
+MANDIR		= c:\man
+MANEXT		= .1
+
+NEWSSPOOL	= /usr/spool/news
+NEWSLIB		= /usr/lib/news
+
+NEWSRC		= newsrc
+SIGNATURE	= signatur
+AUTHORCOPY	= author_c
+SAVEDIR		= /news
+TMPDIR		= /
+EDITOR		= notepad
+
+CC		= cl
+OPTCFLAGS	= 
+OPTGNOBJS	= 
+OPTGNSPOOLOBJS	= 
+OPTLFLAGS	=
+OPTLIBS		= 
+
+OSDEFINES	= /DWINDOWS
+NETWORKDEFINES	= /DNO_NET
+COMPILERDEFINES	= /DMSC
+DEFINES		= $(OSDEFINES) $(NETWORKDEFINES) $(COMPILERDEFINES)
+HEADER_DEFINES	= /DHAS_STRING_H /DHAS_STDLIB_H /DHAS_IO_H -DSYS_TYPES_H /DHAS_CONIO_H /DHAS_DIRECT_H
+CFLAGS		= $(DEFINES) $(HEADER_DEFINES) $(OPTCFLAGS) /AL /GA
+LFLAGS		= $(OPTLFLAGS) /NOD /ONERROR:NOEXE /stack:10240
+LIBS		= $(OPTLIBS) oldnames libw llibcew commdlg.lib olecli.lib olesvr.lib winnls.lib shell.lib toolhelp.lib
+RCDEFINES	= 
+RCFLAGS		= /nologo
+######################################################################
+all:	gn.exe \
+	gnspool.exe \
+	$(FRC)
+
+GNOBJS=	gn.obj \
+	wingn.obj \
+	init.obj \
+	newsrc.obj \
+	group.obj \
+	subject.obj \
+	article.obj \
+	pager.obj \
+	follow.obj \
+	reply.obj \
+	cancel.obj \
+	post.obj \
+	referenc.obj \
+	save.obj \
+	shell.obj \
+	getopt.obj \
+	nntp.obj \
+	smtp.obj \
+	auth.obj \
+	client.obj \
+	gncom.obj \
+	key.obj \
+	kanji.obj \
+	$(OPTGNOBJS) \
+	$(FRC)
+
+
+gn.exe:	$(GNOBJS) gn.res ..\mkfiles\win16\wingn.def
+	link $(GNOBJS),gn $(LFLAGS),nul,$(LIBS),..\mkfiles\win16\wingn.def
+	$(RC) $(RCFLAGS) -k $(RCDEFINES) gn.res gn.exe
+
+gn.res:	gn.rc gn.ico wingn.h version.h
+	$(RC) $(RCFLAGS) $(RCDEFINES) -r gn.rc 
+
+gn.obj: \
+	gn.c \
+	nntp.h \
+	gn.h \
+	wingn.h \
+	$(FRC)
+
+wingn.obj: \
+	wingn.c \
+	nntp.h \
+	gn.h \
+	wingn.h \
+	$(FRC)
+
+init.obj: \
+	init.c \
+	version.h \
+	nntp.h \
+	gn.h \
+	config.h \
+	$(FRC)
+
+newsrc.obj: \
+	newsrc.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+group.obj: \
+	group.c \
+	nntp.h \
+	gn.h \
+	wingn.h \
+	$(FRC)
+
+subject.obj: \
+	subject.c \
+	nntp.h \
+	gn.h \
+	wingn.h \
+	$(FRC)
+
+article.obj: \
+	article.c \
+	nntp.h \
+	gn.h \
+	wingn.h \
+	$(FRC)
+
+pager.obj: \
+	pager.c \
+	nntp.h \
+	gn.h \
+	wingn.h \
+	$(FRC)
+
+follow.obj: \
+	follow.c \
+	nntp.h \
+	gn.h \
+	wingn.h \
+	$(FRC)
+
+reply.obj: \
+	reply.c \
+	nntp.h \
+	gn.h \
+	wingn.h \
+	$(FRC)
+
+cancel.obj: \
+	cancel.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+post.obj: \
+	post.c \
+	nntp.h \
+	gn.h \
+	wingn.h \
+	$(FRC)
+
+referenc.obj: \
+	referenc.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+save.obj: \
+	save.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+shell.obj: \
+	shell.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+getopt.obj: \
+	getopt.c \
+	$(FRC)
+
+nntp.obj: \
+	nntp.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+smtp.obj: \
+	smtp.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+auth.obj: \
+	auth.c \
+	gn.h \
+	wingn.h \
+	$(FRC)
+
+client.obj: \
+	client.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+gncom.obj: \
+	gncom.c \
+	nntp.h \
+	gn.h \
+	wingn.h \
+	$(FRC)
+
+key.obj: \
+	key.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+kanji.obj: \
+	kanji.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+#-------------------------------------------------------------
+GNSPOOLOBJS=	gnspool.obj \
+		wingnsp.obj \
+		init.obj \
+		newsrc.obj \
+		getopt.obj \
+		nntp.obj \
+		smtp.obj \
+		auth.obj \
+		client.obj \
+		gncom.obj \
+		key.obj \
+		kanji.obj \
+		$(OPTGNSPOOLOBJS) \
+		$(FRC)
+
+gnspool.exe:	$(GNSPOOLOBJS) gnspool.res ..\mkfiles\win16\wingnsp.def
+	link $(GNSPOOLOBJS),gnspool $(LFLAGS),nul,$(LIBS),..\mkfiles\win16\wingnsp.def
+	$(RC) $(RCFLAGS) -k $(RCDEFINES) gnspool.res gnspool.exe
+
+gnspool.res:	gnspool.rc gnspool.ico wingnsp.h version.h
+	$(RC) $(RCFLAGS) $(RCDEFINES) -r gnspool.rc 
+
+gnspool.obj: \
+	gnspool.c \
+	nntp.h \
+	gn.h \
+	wingnsp.h \
+	$(FRC)
+
+wingnsp.obj: \
+	wingnsp.c \
+	nntp.h \
+	gn.h \
+	wingnsp.h \
+	$(FRC)
+#-------------------------------------------------------------
+configur:	configur.exe
+configur.exe:	configur.obj
+	$(CC) -o configur.exe configur.obj
+#-------------------------------------------------------------
+install:	all \
+	$(BINDIR)\gn.exe \
+	$(BINDIR)\gnspool.exe \
+	$(MANDIR)\gn$(MANEXT) \
+	$(MANDIR)\gnspool$(MANEXT) \
+	$(FRC)
+
+$(BINDIR)\gn.exe:	gn.exe
+	copy $? $@
+
+$(BINDIR)\gnspool.exe:	gnspool.exe
+	copy $? $@
+
+$(MANDIR)\gn$(MANEXT):	gn.man
+	copy $? $@
+
+$(MANDIR)\gnspool$(MANEXT):	gnspool.man
+	copy $? $@
+
+clean:
+	-del *.obj
+	-del *.map
+
+clobber:	clean
+	-del gn.exe
+	-del gn.man
+	-del gn.res
+	-del gnspool.exe
+	-del gnspool.man
+	-del gnspool.res
+	-del config.h
+	-del configur.exe
+	-del *.aps
+	-del *.vcw
+	-del *.wsp

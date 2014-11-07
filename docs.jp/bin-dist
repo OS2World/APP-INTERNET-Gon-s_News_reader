@@ -1,0 +1,180 @@
+gn をバイナリで配布する際の注意事項について
+
+1.  配布する側
+	配布者のドメイン名／組織名が配布先で誤って使われないように、
+	configur はできるだけデフォルトを指定し、コンパイルして下さい。
+		NNTPSERVER には、your-nntpserver を
+		SMTPSERVER には、your-smtpserver を
+		DOMAINNAME には、your.domain.name を
+		ORGANIZATION には、your organization を
+	指定しておくと良いでしょう。これには、あらかじめ下記の
+	site.def を用意しておき、configur, make すると簡単です。
+	------------------------------------------------------------
+		NNTPSERVER	=	your-nntpserver
+		SMTPSERVER	=	your-smtpserver
+		DOMAINNAME	=	your.domain.name
+		GENERICFROM	=	1
+		ORGANIZATION	=	your organization
+	------------------------------------------------------------
+
+	また、オリジナルと異なる部分がある場合はその旨を記述したドキュ
+	メントを必ず添付して下さい。configur が作成した site.def を添
+	付しておくと、簡単で良いかも知れません。
+
+	配布するバイナリに関して、
+	・ウィルスなどが混入していないこと
+	・ランタイムライブラリも配布可能なこと
+	を配布者が責任を持って確認して下さい。
+
+2.  配布を受ける側
+	バイナリで配布を受けた gn は実行時カスタマイズが必要になります。
+	必ず必要になるカスタマイズは
+		・ドメイン名
+		・組織名
+	です。その他にも
+		・ニュースサーバ名
+		・エディタ
+	などを自サイトに合わせてカスタマイズしておくと使いやすくなるで
+	しょう。
+
+	まちがっても、配布元のドメイン名をかたって記事を出したりするこ
+	とのないように十分注意して下さい。local.test など、テスト用の
+	ニュースグループにテスト記事をポストし、詳しい方にチェックして
+	もらうことをお勧めします。
+
+3.   実行時カスタマイズの方法
+	$HOME/.gnrc に
+	「キーワード」	「値」
+	というフォーマットで記述します。
+	各キーワード、値に関しては、オンラインマニュアル（gn.man）およ
+	び後述の例を参照下さい。
+
+4.   DOS 系のバイナリの実行前準備
+     ・$HOME
+	ホームディレクトリを環境変数 HOME に設定します。
+	DOS なら、AUTOEXEC.BAT に
+	set HOME=c:\home
+	のように記述しておくと良いでしょう。
+
+     ・その他のカスタマイズ
+	実行時には、USER, NAME, HOST が最低限必要です。
+
+	USER:	アカウント名
+	NAME:	本名
+	HOST:	PC のホスト名
+
+	DOS のプロンプトや AUTOEXEC.BAT にて
+	set USER=yamasita
+	として設定するか、gnrc にて
+	USER	yamasita
+	のように指定します。gnrc は $HOME に置きます。
+
+	以上に加えて、
+		・ドメイン名
+		・組織名
+		・ニュースサーバ名
+		・エディタ
+	なども gnrc で設定しておくと良いでしょう。
+
+5. gnrc の例
+	山下は
+	・ftp.omronsoft.co.jp に置くバイナリ
+	・山下が使用するバイナリ
+	２つのバイナリを作成するのが手間なので、サイト固有のカスタマイ
+	ズを一切おこなわないバイナリを使用しています。つまりバイナリの
+	配布を受ける方と全く同じ条件でカスタマイズをおこなっているわけ
+	です。
+
+	以下は山下が個人所有のＰＣ（Windows 95）上で Mar.29,1996 現在
+	使用している gnrc（に解説を加えたもの）です。
+	必要に応じて修正するとよいでしょう。決してこのままは使用しない
+	でください。
+----------------------------------------------------------------------
+# 使用者／使用場所によるカスタマイズが必要な項目 #####################
+#
+# ユーザ名。必ずカスタマイズしてください
+#USER		yamasita
+USER		your user name
+# ドメイン名。必ずカスタマイズしてください
+#DOMAINNAME	omronsoft.co.jp
+DOMAINNAME	your.domain.name
+# 名前。必ずカスタマイズしてください
+#NAME		Yasunari GON Yamasita
+NAME		your full name
+# ＰＣのホスト名。必ずカスタマイズしてください
+#HOST		hsp254
+HOST		your host
+# 組織名。必ずカスタマイズしてください
+#ORGANIZATION	OMRON SOFTWARE Co., Ltd. Kyoto, Japan.
+ORGANIZATION	your organization
+# ニュースサーバ。必ずカスタマイズしてください
+#NNTPSERVER	gw
+NNTPSERVER	your-nntpserver
+# メイルサーバ／pop サーバ。必ずカスタマイズしてください
+#SMTPSERVER	gw.omronsoft.co.jp
+SMTPSERVER	your-smtpserver
+#
+# 以下は、好みと環境に合わせて必要な修正を ###########################
+#
+# 起動時未読記事数が多くても確認をおこなわない
+ARTICLE_LIMIT	0
+# ニュースグループ選択時、最初の記事の番号と最後の記事の番号の差が
+# 100 より大きいと確認入力をおこなう
+SELECT_LIMIT	100
+# newsrc には飛び飛びの既読情報も残す
+GNUS_FORMAT	YES
+# 山下は control/junk も読んでます。
+# でも Cancel コントロールメッセージは読まない
+# control ではコントロールメッセージを、junk ではニュースグループ名を
+# Subject: の代わりに表示させる。
+KILL_CONTROL	1539
+# アーティクルモードでは投稿者リストを最初だけ表示する
+AUTOLIST	OFF
+# DOS Prompt からは edit を使って記事／メイルを書く
+EDITOR		edit
+# VC++ 版は notepad を使って記事／メイルを書く
+WIN_EDITOR	notepad
+# DOS Prompt から使用するページャは less
+PAGER		less -m -c -e
+# 記事を保存するディレクトリ
+SAVEDIR		c:\yama\news
+# gnspool で取り寄せた記事を置いておくところ
+NEWSSPOOL	c:\usr\spool\news
+# gnspool で取り寄せた管理ファイルを置いておくところ
+NEWSLIB		c:\usr\lib\news
+# ヘッダを MIME エンコード／デコードする
+MIME_HEAD	ON
+# VC++ 版が開くWindow の行数（おや？こんなには出ないな）
+WIN_LINES	80
+# VC++ 版が開くWindow の桁数
+WIN_COLUMNS	80
+# DOS Prompt の時、ansi.sys は８０カラム目ぴったりまで使うと
+# 改行してしまって見づらくなるので７９カラム目までだけ使う
+COLUMNS		79
+# 長い行を折り曲げて複数行に表示しない。
+# スクロールアップしてしまうのを防ぐ
+SHOW_TRUNCATE	OFF
+# 日本語サブジェクト（X-Nsubject:）を使用する
+NSUBJECT	ON
+# モードが変わったとき画面をクリアする
+CLS		ON
+# 新しいニュースグループができたときカテゴリ毎にソートする
+NG_SORT		2
+# スペースキーで読み進める
+USE_SPACE	ON
+# サブジェクトモードに入ったとき全部の記事を読出しディスクキャッシュに
+# キャッシュさせる。
+# 記事を読んでいるときはほとんどハードディスクにアクセスしない。
+POWER_SAVE	2
+# alt.*, bionet.*, bit.*, biz.*, cern.*,（略）は読まない
+UNSUBSCRIBE	alt.,bionet.,bit.,biz.,cern.,（略）
+# gnspool は取り寄せた記事を SJIS で保存する
+GNSPOOL_LANG    SJIS
+# gn は必ず gnspool 経由で NetNews にアクセスする
+WITH_GNSPOOL    ON
+# その外にも多くの設定項目があります。詳しくは gn.man を
+----------------------------------------------------------------------
+
+Copyright (C) yamasita@omronsoft.co.jp
+	Mar.30,1996
+著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。

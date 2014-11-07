@@ -1,0 +1,23 @@
+Windows95/NT で動作する gn/gnspool について
+
+Windows95/NT 上では、以下の構成で gn/gnspool が動作します。
+
+（１）16bit 版
+	1) Windows 3.1 用の winsock.vc 版
+		詳細は docs.jp/windows.95/winsock.vc を御覧下さい。
+	2) Windows 3.1 用の nonet.vc 版
+	3) Windows 3.1 用の winsock.qw 版
+	4) DOS 用の nonet.* 版
+
+（２）DOS Prompt + Winsock 版
+	使用する Makefile は mkfiles/dos/winsock.ms9 です。
+
+（３）DOS Prompt + Nonet 版
+	使用する Makefile は mkfiles/dos/nonet.ms9 です。
+
+（４）32bit 版
+	使用する Makefile は mkfiles/dos/winsock.vc2 です。
+
+Copyright (C) yamasita@omronsoft.co.jp
+	Jul.7,1997
+著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。

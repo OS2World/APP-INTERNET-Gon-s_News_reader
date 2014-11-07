@@ -1,0 +1,21 @@
+Windows で動作する gn/gnspool について
+
+Windows 上では、以下の構成で gn/gnspool が動作します。
+
+（１）Winsock 版
+	詳細は docs.jp/windows.31/winsock.vc を御覧下さい。
+
+（２）ネットワークコードなし版
+	ほとんど Winsock 版と同じですが、Winsock を必要としません。
+	docs.jp/windows.31/winsock.vc から Winsock に関する記述および
+	ネットワークに関する記述を無視して御覧下さい。
+	使用する Makefile は mkfiles/dos/nonet.vc です。
+
+（３）QuickWin + Winsock 版
+	あまりお勧めではありません。
+	将来は、サポートしなくなる可能性が大です。
+	詳細は docs.jp/windows.31/winsock.qw を御覧下さい。
+
+Copyright (C) yamasita@omronsoft.co.jp
+	Jan.31,1996
+著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。

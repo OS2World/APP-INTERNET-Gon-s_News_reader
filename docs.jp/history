@@ -1,0 +1,150 @@
+gn の歴史
+
+1990 夏頃、昼休みの工作として作成開始
+
+	このあたり、もう記録が残ってません
+
+Feb.4,1991:	0.93
+	オムロングループ内にβリリース
+	対応機種は LUNA シリーズのみ
+
+Mar.2,1991:	0.94
+
+Jun.19,1991:	1.00
+	オムロングループ内に正式リリース
+	対応機種は LUNA シリーズのみ
+
+May.22,1992	1.01
+Jul.11,1992	1.02
+Jul.23,1992	1.03
+	オムロングループ内部リリース
+	ひたすら基本機能の追加、バグフィックス
+
+Aug.22,1992	1.04
+	スレッド対応
+
+Sep.3,1992
+	1.04 を fj.sources にポスト。オムロングループ外にデビュー
+---- その記事 --------------------------------------------------------
+Newsgroups: fj.sources
+Path: gw.omronsoft.co.jp!yamasita
+From: yamasita@omronsoft.co.jp (Yasunari Gon Yamasita)
+Subject: News reader 'gn' V 1.04 (1/3)
+Message-ID: <YAMASITA.92Sep3175554@hsl024.omronsoft.co.jp>
+Followup-To: fj.sources.d
+Sender: news@gw.omronsoft.co.jp (News Manager)
+Nntp-Posting-Host: hsl024.slab.kyoto.omronsoft.co.jp
+Organization: Software Lab. OMRON SOFTWARE Co., Ltd. Kyoto, Japan.
+Distribution: fj
+Date: Thu, 3 Sep 1992 08:55:54 GMT
+Lines: 524
+
+オムロンソフトウェアの山下と申します。
+
+昼休みの工作で gn というニュースリーダを作って近所に配ったところ、結構
+使っていただいたので、ずにのって fj にもポストします。
+
+gn は、「ニュースグループ」「サブジェクト」毎に分類する nntp 対応の初
+心者向けニュースリーダです。一応スレッドにも対応しています。
+
+なお、御近所向けですので、ローカルな用語がたくさん出てきますし、マニュ
+アルもあまり親切ではありません。
+
+職業柄、OMRON LUNA シリーズでしか動いた実績はありません。一応 SYS-V 系、
+BSD 系両方で動作していますから、移植もそれほど難しくはないと思います。
+
+まだまだ改良の途上です。
+改善提案、移植情報、不具合情報などがありましたら、フィードバックいただ
+ければ幸いです。
+
+＃以下 uuencode されたデータ：略
+----------------------------------------------------------------------
+
+Sep.21,1992	1.05
+	SunOS,NEWS-OS 対応
+
+	このころからムライ電気工業(株)の沢田どのと DOS への移植開始
+
+Feb.4,1993	1.06
+	gnrc による初期設定機能追加
+	MVUX,DG/UX 対応
+
+Sep.1,1993	1.10
+	PC-UX/V 対応
+	DOS + InetBIOS 対応
+	DOS + PC-NFS 対応
+	DOS + PathWay 対応
+
+	DOS に対応した最初のバージョン
+
+Nov.1,1993	1.11
+	DOS + Packet Driver 対応
+	DOS + InetBIOS,Turbo-C(Borland-C) 対応
+	jnames 対応
+
+Mar.1,1994	1.20
+	MIME ヘッダ対応
+	localspool 対応
+	gnspool 追加
+	POWER_SAVE mode 追加
+	ネットワークコードのない gn/gnspool
+	HP-UX 対応
+	NEWS-OS 6.0 対応
+	OS/2 対応
+	OSF/1 対応
+	X680x0 対応
+
+Mar.1,1994
+	gn メイリングリスト(gn@gw.omronsoft.co.jp)開設
+
+Jul.1,1994	1.30
+	ME/UX 対応
+	EWS4800 対応
+	NOVELL LAN WorkPlace for DOS 対応
+	Windows + Winsock 対応（しなきゃ良かったぁ、、、）
+	configur 追加
+
+Oct.1,1994	1.31
+	CASIO SX-V 対応
+
+Aug.1,1995
+	fj.news.reader.gn 開設
+
+Sep.1,1995	1.32
+	gninews 追加
+	mkgn 追加
+	Solaris 2.x 対応
+	HI-UX 対応
+	CAIOS-UX 対応
+
+Sep.1,1995
+	http://www.omronsoft.co.jp/~yamasita/ 開設
+
+Nov.1,1995	1.33
+	FreeBSD 対応
+
+Nov.11,1995
+	日経ＭＩＸの標準ニュースリーダとして採用
+
+Mar.1,1996	1.34
+	Linux 対応
+	MS-C V9.01(32bit) 対応
+
+Sep.1.1996	1.35
+	AIX 4.1
+	Digital Unix 3.2
+	BSD/OS 対応
+	NetBSD 対応
+	OS/2 + EMX 対応
+	X680x0 + Human68k + Ethernet Starter Pack for X680x0 (ESPX)
+
+Jun.1.1997	1.36
+
+???.1.199?	1.40
+	GUI 版、Win32(Windows95/NT) 対応
+	gnloops 追加
+	
+
+Copyright (C) yamasita@omronsoft.co.jp
+	Sep.19,1997
+著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。

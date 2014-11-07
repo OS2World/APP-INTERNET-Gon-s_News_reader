@@ -1,0 +1,268 @@
+#
+# Makefile for gn
+# @(#)espx	1.40 Sep.24,1997
+# 著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。
+# (C) knok@da2.so-net.or.jp
+# (C) sakanaga@pln.kyoto.omronsoft.co.jp
+# Copyright (C) yamasita@omronsoft.co.jp
+#
+
+MAIL_KANJI_CODE		= JIS
+PROCESS_KANJI_CODE	= SJIS
+FILE_KANJI_CODE		= SJIS
+DISPLAY_KANJI_CODE	= SJIS
+LINES		= 31
+COLUMNS		= 96
+
+BINDIR		= a:\bin
+MANDIR		= a:\tmp
+MANEXT		= .1
+
+NEWSSPOOL	= /usr/spool/news
+NEWSLIB		= /usr/lib/news
+
+NEWSRC		= newsrc
+SIGNATURE	= signature
+AUTHORCOPY	= author_copy
+SAVEDIR		= a:/tmp
+TMPDIR		= g:/
+PAGER		= more <
+RETURN_AFTER_PAGER = 1
+EDITOR		= ed
+MAILER		= /bin/mail
+
+CC		= gcc
+OPTCFLAGS	= -DUSE_JNAMES
+OPTGNOBJS	= jnames.o
+OPTGNSPOOLOBJS	= 
+OPTLFLAGS	= 
+OPTLIBS		= 
+
+ESPX		= ..\\..
+OSDEFINES	= -DMSDOS
+NETWORKDEFINES	= -DESPX -I$(ESPX)\\include
+COMPILERDEFINES	= 
+DEFINES		= $(OSDEFINES) $(NETWORKDEFINES) $(COMPILERDEFINES)
+HEADER_DEFINES	= -DHAS_STRING_H -DHAS_STDLIB_H -DHAS_IO_H -DHAS_SYS_TYPES_H -DHAS_CONIO_H
+CFLAGS		= $(DEFINES) $(HEADER_DEFINES) $(OPTCFLAGS) -funsigned-char -O
+LFLAGS		= $(OPTLFLAGS)
+LIBS		= $(ESPX)\\lib\\networklib.l $(OPTLIBS) -lsignal
+######################################################################
+%.o: %.c
+	$(CC) -c $(CFLAGS) $<
+
+all: gn.x gnspool.x
+
+GNOBJS=	gn.o \
+	auth.o \
+	init.o \
+	newsrc.o \
+	group.o \
+	subject.o \
+	article.o \
+	follow.o \
+	reply.o \
+	cancel.o \
+	post.o \
+	referenc.o \
+	save.o \
+	shell.o \
+	nntp.o \
+	smtp.o \
+	client.o \
+	getopt.o \
+	gncom.o \
+	key.o \
+	kanji.o \
+	$(OPTGNOBJS) \
+	$(FRC)
+
+
+gn.x: $(GNOBJS)
+	$(CC) -O -ogn.x $(GNOBJS) $(LFLAGS) $(LIBS)
+
+gn.o: \
+	gn.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+init.o: \
+	init.c \
+	version.h \
+	nntp.h \
+	gn.h \
+	config.h \
+	$(FRC)
+
+newsrc.o: \
+	newsrc.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+group.o: \
+	group.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+subject.o: \
+	subject.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+article.o: \
+	article.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+follow.o: \
+	follow.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+reply.o: \
+	reply.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+cancel.o: \
+	cancel.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+post.o: \
+	post.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+referenc.o: \
+	referenc.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+save.o: \
+	save.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+shell.o: \
+	shell.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+nntp.o: \
+	nntp.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+smtp.o: \
+	smtp.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+auth.o: \
+	auth.c \
+	gn.h \
+	$(FRC)
+
+client.o: \
+	client.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+getopt.o: \
+	getopt.c \
+	$(FRC)
+
+gncom.o: \
+	gncom.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+key.o: \
+	key.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+kanji.o: \
+	kanji.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+#-------------------------------------------------------------
+GNSPOOLOBJS=	gnspool.o \
+		init.o \
+		newsrc.o \
+		nntp.o \
+		smtp.o \
+		auth.o \
+		client.o \
+		getopt.o \
+		gncom.o \
+		key.o \
+		kanji.o \
+		$(OPTGNSPOOLOBJS) \
+		$(FRC)
+
+gnspool.x: $(GNSPOOLOBJS)
+	$(CC) -O -ognspool.x $(GNSPOOLOBJS) $(LFLAGS) $(LIBS)
+
+gnspool.o: \
+	gnspool.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+#-------------------------------------------------------------
+configur:	configur.x
+configur.x:	configur.o
+	$(CC) -oconfigur.x configur.o  $(LIBS)
+
+configur.o:	configur.c
+#-------------------------------------------------------------
+install:	all \
+	$(BINDIR)\gn.x \
+	$(BINDIR)\gnspool.x \
+	$(MANDIR)\gn$(MANEXT) \
+	$(MANDIR)\gnspool$(MANEXT) \
+	$(FRC)
+
+$(BINDIR)\gn.x:	gn.x
+	copy $? $@
+
+$(BINDIR)\gnspool.x:	gnspool.x
+	copy $? $@
+
+$(MANDIR)\gn$(MANEXT):	gn.man
+	copy $? $@
+
+$(MANDIR)\gnspool$(MANEXT):	gnspool.man
+	copy $? $@
+
+clean:
+	del /y *.o
+
+clobber:	clean
+	del /y gn.x
+	del /y gn.man
+	del /y gnspool.x
+	del /y gnspool.man
+	del /y config.h
+	del /y configur.x

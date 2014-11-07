@@ -1,0 +1,37 @@
+# 
+# @(#)sitedef.cmn	1.36 Oct.31,1996
+# 著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。
+# Copyright (C) yamasita@omronsoft.co.jp
+
+# MAIL_KANJI_CODE="JIS"
+# PROCESS_KANJI_CODE="EUC"
+# FILE_KANJI_CODE="EUC"
+# DISPLAY_KANJI_CODE="EUC"
+# LINES="24"
+# COLUMNS="80"
+# BINDIR="/usr/local/bin"
+# MANDIR="/usr/local/man/man1"
+# MANEXT=".1"
+# NEWSSPOOL="/usr/spool/news"
+# NEWSLIB="/usr/lib/news"
+# NEWSRC=".newsrc"
+# SIGNATURE=".signature"
+# AUTHORCOPY="author_copy"
+# SAVEDIR="News"
+# TMPDIR="/tmp"
+# PAGER="less -c -m -e"
+# RETURN_AFTER_PAGER="0"
+# EDITOR="vi"
+# MAILER="SMTP"
+# CC="cc"
+# OPTCFLAGS=""
+# OPTGNOBJS=""
+# OPTGNSPOOLOBJS=""
+# OPTLFLAGS=""
+# OPTLIBS=""
+
+# NNTPSERVER="your-nntpserver"
+# SMTPSERVER="your-smtpserver"
+# DOMAINNAME="your.domain.name"
+# GENERICFROM="1"
+# ORGANIZATION="your organization"

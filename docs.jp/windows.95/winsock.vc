@@ -1,0 +1,76 @@
+Windows 95 上で gn を動作させる方法
+
+winsock.vc 版の gn を試行錯誤の上 Windows95 上にて動作確認しました。
+
+以下に私がやったことを示します。
+
+まず gnrun.bat をgn.exe を置いたディレクトリに用意しました。
+（環境変数は autoexec.bat で指定しても良いのですが
+リブートしなくても良いように bat ファイルを作成しました。)
+---- gnrun.bat ----
+@echo off
+set HOME=c:\users\iwabuc
+set USER=iwabuc
+set LOGNAME=iwabuc
+set NAME=Kazunori Iwabuchi
+
+start gn.exe -h your_nntpserver -g
+---- gnrun.bat ----
+your_nntpserver のIPアドレスは，Windowsディレクトリの
+hosts ファイルに記述します。(hosts.sam からコピーして作る)
+gnrun.bat の PIFファイルは，gnrun.bat の
+プロパティを開けば作成できます。
+PIF で注意することは，作業用ディレクトリを
+ gn.exe を置いたディレクトリに指定します。
+HOME には gnrc や signature を置くディレクトリを指定します。
+USER,LOGNAME は，お使いになる方のSMTPサーバのID，
+NAME には 氏名を記述します。
+
+続いて，HOME で指定したディレクトリに gnrc ファイルを置きます。
+---- gnrc ----
+MAIL_KANJI_CODE		JIS
+PROCESS_KANJI_CODE	SJIS
+FILE_KANJI_CODE		SJIS
+DISPLAY_KANJI_CODE	SJIS
+LINES			24
+COLUMNS			80
+NNTPSERVER		your_nntpserver
+SMTPSERVER		your_smtpserver
+DOMAINNAME		yourdomainname.xx.jp
+GENERICFROM		1
+ORGANIZATION		xx, Ltd.
+NEWSRC			newsrc
+SIGNATURE		sign
+AUTHORCOPY		author_c
+SAVEDIR			c:\users\iwabuc\news
+TMPDIR			c:\temp
+EDITOR			notepd16.exe
+---- gnrc ----
+NNTPSERVER,SMTPSERVER には，ニュースサーバと
+メールサーバ(POP3が動作しているサーバ)のhost名を記述します。
+DOMAINNAME,ORGANIZATION も個人のものに変更してください。
+SIGNATURE に指定したsign ファイルは いわゆる
+シグネチャファイルでオリジナルでは signature となっていた
+ものです。
+このファイルはHOMEで指定したディレクトリに置きます。
+(漢字コードはJIS)
+EDITOR に指定した notepd16.exe は Windows3.1 の notepad.exe
+の名前を変更して，windowsディレクトリに置いた物です。
+現在のバージョンのgn.exe では 32bitコードで書かれた
+エディタの終了を認識できないことを回避するための処置です。
+SAVEDIR はニュースを保存する際の格納ディレクトリの指定です。
+ディレクトリ(フォルダー)自体は用意しておく必要があると
+思います。
+
+最後に，先に作った gnrun.bat の PIF ファイルの
+ショートカットを スタートメニューとかに登録すれば
+実行できます。
+
+PIFファイルのショートカットでは，アイコンが gn.exe の
+ものとは異なるため，プロパティで gn.exe のアイコンと
+なるよう変更した方が良いでしょう。
+
+Copyright (C) iwabuc@sdl.hitachi.co.jp
+Copyright (C) yamasita@omronsoft.co.jp
+	Dec.26,1995
+著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。

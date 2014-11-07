@@ -1,0 +1,163 @@
+#
+# Makefile for gn
+# @(#)inetbios.ms5	1.31 Jul.8,1994
+# 著作権は放棄しません。ただし、使用／配布に制限は設けません。
+# (C) mizutani@nips.ac.jp
+# Copyright (C) yamasita@omronsoft.co.jp
+
+NET=INETBIOS
+
+gn.obj: \
+	gn.c \
+	nntp.h \
+	gn.h \
+	cl /c /AL /J /D$(NET) /DUSG /DMSDOS gn.c
+
+init.obj: \
+	init.c \
+	nntp.h \
+	gn.h \
+	config.h 
+	cl /c /AL /J /D$(NET) /DUSG /DMSDOS init.c
+	lib gn -+ init.obj;
+
+newsrc.obj: \
+	newsrc.c \
+	nntp.h \
+	gn.h 
+	cl /c /AL /J /D$(NET) /DUSG /DMSDOS newsrc.c
+	lib gn -+ newsrc.obj;
+
+group.obj: \
+	group.c \
+	nntp.h \
+	gn.h 
+	cl /c /AL /J /D$(NET) /DUSG /DMSDOS group.c
+	lib gn -+ group.obj;
+
+subject.obj: \
+	subject.c \
+	nntp.h \
+	gn.h 
+	cl /c /AL /J /D$(NET) /DUSG /DMSDOS subject.c
+	lib gn -+ subject.obj;
+
+article.obj: \
+	article.c \
+	nntp.h \
+	gn.h 
+	cl /c /AL /J /D$(NET) /DUSG /DMSDOS article.c
+	lib gn -+ article.obj;
+
+follow.obj: \
+	follow.c \
+	nntp.h \
+	gn.h 
+	cl /c /AL /J /D$(NET) /DUSG /DMSDOS follow.c
+	lib gn -+ follow.obj;
+
+reply.obj: \
+	reply.c \
+	nntp.h \
+	gn.h 
+	cl /c /AL /J /D$(NET) /DUSG /DMSDOS reply.c
+	lib gn -+ reply.obj;
+
+cancel.obj: \
+	cancel.c \
+	nntp.h \
+	gn.h 
+	cl /c /AL /J /D$(NET) /DUSG /DMSDOS cancel.c
+	lib gn -+ cancel.obj;
+
+post.obj: \
+	post.c \
+	nntp.h \
+	gn.h 
+	cl /c /AL /J /D$(NET) /DUSG /DMSDOS post.c
+	lib gn -+ post.obj;
+
+referenc.obj: \
+	referenc.c \
+	nntp.h \
+	gn.h 
+	cl /c /AL /J /D$(NET) /DUSG /DMSDOS referenc.c
+	lib gn -+ referenc.obj;
+
+save.obj: \
+	save.c \
+	nntp.h \
+	gn.h 
+	cl /c /AL /J /D$(NET) /DUSG /DMSDOS save.c
+	lib gn -+ save.obj;
+
+shell.obj: \
+	shell.c \
+	nntp.h \
+	gn.h 
+	cl /c /AL /J /D$(NET) /DUSG /DMSDOS shell.c
+	lib gn -+ shell.obj;
+
+kanji.obj: \
+	kanji.c \
+	gn.h 
+	cl /c /AL /J /D$(NET) /DUSG /DMSDOS kanji.c
+	lib gn -+ kanji.obj;
+
+client.obj: \
+	client.c \
+	nntp.h \
+	inetbios.h 
+	cl /c /AL /J /D$(NET) /DUSG /DMSDOS client.c
+	lib gn client.obj;
+
+inetbios.obj: \
+	inetbios.c \
+	inetbios.h 
+	cl /c /AL /J /D$(NET) /DUSG /DMSDOS inetbios.c
+	lib gn -+ inetbios.obj;
+
+getopt.obj: \
+	getopt.c 
+	cl /c /AL /J /D$(NET) /DUSG /DMSDOS getopt.c
+	lib gn -+ getopt.obj;
+
+auth.obj: \
+	auth.c \
+	gn.h \
+	$(NET).h 
+	cl /c /AL /J /D$(NET) /DUSG /DMSDOS auth.c
+	lib gn -+ auth.obj;
+
+nntp.obj: \
+	nntp.c \
+	gn.h \
+	$(NET).h 
+	cl /c /AL /J /D$(NET) /DUSG /DMSDOS nntp.c
+	lib gn -+ nntp.obj;
+
+smtp.obj: \
+	smtp.c \
+	gn.h \
+	$(NET).h 
+	cl /c /AL /J /D$(NET) /DUSG /DMSDOS smtp.c
+	lib gn -+ smtp.obj;
+
+key.obj: \
+	key.c \
+	gn.h \
+	$(NET).h 
+	cl /c /AL /J /D$(NET) /DUSG /DMSDOS key.c
+	lib gn -+ key.obj;
+
+gncom.obj: \
+	gncom.c \
+	gn.h \
+	$(NET).h 
+	cl /c /AL /J /D$(NET) /DUSG /DMSDOS gncom.c
+	lib gn -+ gncom.obj;
+
+gn.exe: \
+	gn.obj \
+	gn.lib
+	LINK /NOI gn.obj,gn,,gn /ST:10240;

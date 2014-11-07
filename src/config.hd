@@ -1,0 +1,38 @@
+/*	 -*- Mode: c -*-
+ * @(#)config.hd	1.36 Mar.27,1997
+ *
+ * 著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。
+ * Copyright (C) yamasita@omronsoft.co.jp
+ */
+
+/* デフォルト値 */
+
+#define	DEFAULT_NEWSRC			"keyword-newsrc"
+#define	DEFAULT_SIGNATURE		"keyword-signature"
+#define	DEFAULT_AUTHORCOPY		"keyword-authorcopy"
+#define	DEFAULT_SAVEDIR			"keyword-savedir"
+#define	DEFAULT_TMPDIR			"keyword-tmpdir"
+#define	DEFAULT_PAGER			"keyword-pager"
+#define	DEFAULT_RETURN_AFTER_PAGER	keyword-return_after_pager
+#define	DEFAULT_EDITOR			"keyword-editor"
+#define	DEFAULT_MAILER			"keyword-mailer"
+
+#define	DEFAULT_NNTPSERVER		"keyword-nntpserver"
+#define	DEFAULT_SMTPSERVER		"keyword-smtpserver"
+#define	DEFAULT_DOMAINNAME		"keyword-domainname"
+#define	DEFAULT_GENERICFROM		keyword-genericfrom
+#define	DEFAULT_ORGANIZATION		"keyword-organization"
+
+#define	DEFAULT_NEWSSPOOL		"keyword-newsspool"
+#define	DEFAULT_NEWSLIB			"keyword-newslib"
+#define	DEFAULT_POSTPROC		"/usr/lib/news/inews -h"
+
+#define	DEFAULT_MAIL_KANJI_CODE		keyword-mail_kanji_code
+#define	DEFAULT_PROCESS_KANJI_CODE	keyword-process_kanji_code
+#define	DEFAULT_FILE_KANJI_CODE		keyword-file_kanji_code
+#define	DEFAULT_DISPLAY_KANJI_CODE	keyword-display_kanji_code
+
+#define	DEFAULT_LINES			keyword-lines
+#define	DEFAULT_COLUMNS			keyword-columns
+
+#define	DEFAULT_JNAMESFILE		""

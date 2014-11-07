@@ -1,0 +1,710 @@
+#! /bin/sh
+# @(#)mkgn	1.36 Nov.7,1996
+# 著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。
+# Copyright (C) yamasita@omronsoft.co.jp
+
+umask 2
+
+if [ -f Makefile ]
+then
+	make clobber
+	echo
+fi
+
+############################################################################
+
+for un in /bin/uname /usr/bin/uname /usr/5bin/uname /sbin/uname
+do
+	if [ -f $un ]
+	then
+		UNAME=$un
+		SYSTEM=`$UNAME`
+		VERSION=`$UNAME -r`
+		if [ `$UNAME -s` = `$UNAME -n` ]	# RISC/os
+		then
+			SYSTEM=UMIPS
+		fi
+		break
+	fi
+done
+
+if [ -z "$UNAME" ]
+then
+	if [ -f /vmunix -a -f /etc/motd ]
+	then
+		MOTD=`head -1 /etc/motd`
+		if [ -z "$MOTD" ]
+		then
+			echo unknown system
+			exit
+		fi
+
+		set $MOTD
+		SYSTEM="$1"
+
+		case "$SYSTEM" in
+		NEWS-OS)
+			VERSION="$3"
+			;;
+		OMRON)	# UniOS-Mach
+			SYSTEM="$2"
+			VERSION="$6"
+			;;
+		UNIOS-B)
+			VERSION="$4"
+			;;
+		esac
+	fi
+fi
+
+if [ -z "$SYSTEM" -o -z "$VERSION" ]
+then
+	echo unknown system
+	exit
+fi
+
+echo "System   = $SYSTEM"
+echo "Version  = $VERSION"
+
+############################################################################
+
+MAIL_KANJI_CODE='JIS'
+
+LINES='24'
+COLUMNS='80'
+
+NEWSRC='.newsrc'
+SIGNATURE='.signature'
+AUTHORCOPY='author_copy'
+SAVEDIR='~/News'
+TMPDIR='/tmp'
+
+case "$SYSTEM" in
+SunOS)
+	case "$VERSION" in
+	4.*)
+		MAKEFILE=sunos
+
+		PROCESS_KANJI_CODE='EUC'
+		FILE_KANJI_CODE='EUC'
+		DISPLAY_KANJI_CODE='EUC'
+
+		BINDIR='/usr/bin'
+		MANDIR='/usr/catman/u_man/man1'
+		MANEXT='1'
+
+		NEWSSPOOL='/usr/spool/news'
+		NEWSLIB='/usr/lib/news'
+
+		PAGER='less -c -m'
+		RETURN_AFTER_PAGER='0'
+		EDITOR='vi'
+		MAILER='/usr/lib/sendmail -t'
+
+		CC='cc'
+
+		SHELL='/bin/sh'
+		DEFINES='-DUNIX -DUSG'
+		CFLAGS='$(DEFINES) $(HEADER_DEFINES) $(OPTCFLAGS) -O'
+		LFLAGS='$(OPTLFLAGS)'
+		LIBS='$(OPTLIBS)'
+
+		;;
+	5.*)
+		MAKEFILE=solaris
+
+		PROCESS_KANJI_CODE='EUC'
+		FILE_KANJI_CODE='EUC'
+		DISPLAY_KANJI_CODE='EUC'
+
+		BINDIR='/usr/local/bin'
+		MANDIR='/usr/share/man/man1'
+		MANEXT='.1'
+
+		NEWSSPOOL='/usr/spool/news'
+		NEWSLIB='/usr/lib/news'
+
+		PAGER='pg'
+		RETURN_AFTER_PAGER='0'
+		EDITOR='vi'
+		MAILER='/usr/lib/sendmail -t'
+
+		CC='cc'
+
+		SHELL='/bin/sh'
+		DEFINES='-DUNIX -DUSG -DSVR4'
+		CFLAGS='$(DEFINES) $(HEADER_DEFINES) $(OPTCFLAGS)'
+		LFLAGS='$(OPTLFLAGS)'
+		LIBS='$(OPTLIBS) -lsocket -lnsl'
+		;;
+	esac
+	;;
+HP-UX)
+	MAKEFILE=hpux
+
+	PROCESS_KANJI_CODE='SJIS'
+	FILE_KANJI_CODE='SJIS'
+	DISPLAY_KANJI_CODE='SJIS'
+
+	BINDIR='/usr/local/bin'
+	MANDIR='/usr/local/man/cat1'
+	MANEXT='.1'
+
+	NEWSSPOOL='/usr/spool/news'
+	NEWSLIB='/usr/lib/news'
+
+	PAGER='more -c'
+	RETURN_AFTER_PAGER='0'
+	EDITOR='vi'
+	MAILER='/usr/lib/sendmail -t'
+
+	CC='cc'
+
+	SHELL='/bin/sh'
+	DEFINES='-DUNIX -DUSG -DHPUX'
+	CFLAGS='$(DEFINES) $(HEADER_DEFINES) $(OPTCFLAGS)'
+	LFLAGS='$(OPTLFLAGS)'
+	LIBS='$(OPTLIBS)'
+	;;
+dgux)
+	MAKEFILE=dgux
+
+	PROCESS_KANJI_CODE='EUC'
+	FILE_KANJI_CODE='EUC'
+	DISPLAY_KANJI_CODE='EUC'
+
+	BINDIR='/usr/bin'
+	MANDIR='/usr/catman/u_man/man1'
+	MANEXT='.1'
+
+	NEWSSPOOL='/usr/spool/news'
+	NEWSLIB='/usr/lib/news'
+
+	PAGER='less -c -m'
+	RETURN_AFTER_PAGER='0'
+	EDITOR='vi'
+	MAILER='/usr/lib/sendmail -t'
+
+	CC='cc'
+
+	SHELL='/bin/sh'
+	DEFINES='-DUNIX -DUSG'
+	CFLAGS='$(DEFINES) $(HEADER_DEFINES) $(OPTCFLAGS)'
+	LFLAGS='$(OPTLFLAGS)'
+	LIBS='$(OPTLIBS)'
+	;;
+NEWS-OS)
+	case "$VERSION" in
+	4.*)
+		MAKEFILE=news-os
+
+		PROCESS_KANJI_CODE='SJIS'
+		FILE_KANJI_CODE='SJIS'
+		DISPLAY_KANJI_CODE='SJIS'
+
+		BINDIR='/usr/local/bin'
+		MANDIR='/usr/man/cat1'
+		MANEXT='.1'
+
+		NEWSSPOOL='/usr/spool/news'
+		NEWSLIB='/usr/lib/news'
+
+		PAGER='less -c -m'
+		RETURN_AFTER_PAGER='0'
+		EDITOR='vi'
+		MAILER='/usr/lib/sendmail -t'
+
+		CC='cc'
+
+		SHELL='/bin/sh'
+		DEFINES='-DUNIX'
+		CFLAGS='$(DEFINES) $(HEADER_DEFINES) $(OPTCFLAGS) -O'
+		LFLAGS='$(OPTLFLAGS)'
+		LIBS='$(OPTLIBS)'
+		;;
+	6.*)
+		MAKEFILE=news-os.6
+
+		PROCESS_KANJI_CODE='SJIS'
+		FILE_KANJI_CODE='SJIS'
+		DISPLAY_KANJI_CODE='SJIS'
+
+		BINDIR='/usr/local/bin'
+		MANDIR='/usr/man/cat1'
+		MANEXT='.1'
+
+		NEWSSPOOL='/usr/spool/news'
+		NEWSLIB='/usr/lib/news'
+
+		PAGER='less -c -m'
+		RETURN_AFTER_PAGER='0'
+		EDITOR='vi'
+		MAILER='/usr/lib/sendmail -t'
+
+		CC='cc'
+
+		SHELL='/bin/sh'
+		DEFINES='-DUNIX -DUSG -DSVR4'
+		CFLAGS='$(DEFINES) $(HEADER_DEFINES) $(OPTCFLAGS) -O'
+		LFLAGS='$(OPTLFLAGS)'
+		LIBS='$(OPTLIBS) -lsocket -lnsl'
+		;;
+	esac
+	;;
+IRIX)
+	MAKEFILE=irix
+
+	PROCESS_KANJI_CODE='EUC'
+	FILE_KANJI_CODE='EUC'
+	DISPLAY_KANJI_CODE='EUC'
+
+	BINDIR='/usr/local/bin'
+	MANDIR='/usr/share/catman/u_man/cat1'
+	MANEXT='.1'
+
+	NEWSSPOOL='/usr/spool/news'
+	NEWSLIB='/usr/lib/news'
+
+	PAGER='pg'
+	RETURN_AFTER_PAGER='0'
+	EDITOR='vi'
+	MAILER='/usr/lib/sendmail -t'
+
+	CC='cc'
+
+	SHELL='/bin/sh'
+	DEFINES='-DUNIX -DUSG -DSVR4'
+	CFLAGS='$(DEFINES) $(HEADER_DEFINES) $(OPTCFLAGS)'
+	LFLAGS='$(OPTLFLAGS)'
+	LIBS='$(OPTLIBS)'
+	;;
+HI-UX)
+	MAKEFILE=hiux
+
+	PROCESS_KANJI_CODE='EUC'
+	FILE_KANJI_CODE='EUC'
+	DISPLAY_KANJI_CODE='EUC'
+
+	BINDIR='/usr/local/bin'
+	MANDIR='/usr/share/catman/u_man/cat1'
+	MANEXT='.1'
+
+	NEWSSPOOL='/usr/spool/news'
+	NEWSLIB='/usr/lib/news'
+
+	PAGER='pg'
+	RETURN_AFTER_PAGER='0'
+	EDITOR='vi'
+	MAILER='/usr/lib/sendmail -t'
+
+	CC='cc'
+
+	SHELL='/bin/sh'
+	DEFINES='-DUNIX -DUSG -DHIUX'
+	CFLAGS='$(DEFINES) $(HEADER_DEFINES) $(OPTCFLAGS)'
+	LFLAGS='$(OPTLFLAGS)'
+	LIBS='$(OPTLIBS)'
+	;;
+UNIX_SV|UNIX_System_V)	# NEC EWS4800, Fujitsu DS/90 UXP/DS
+	MAKEFILE=ews4800
+
+	PROCESS_KANJI_CODE='EUC'
+	FILE_KANJI_CODE='EUC'
+	DISPLAY_KANJI_CODE='EUC'
+
+	BINDIR='/usr/local/bin'
+	if [ -d /usr/share/man/man1 ]
+	then
+		MANDIR='/usr/share/man/man1'	# EWS 4800
+	else
+		MANDIR='/usr/local/man/man1'	# UXP/DS
+	fi
+	MANEXT='.1'
+
+	NEWSSPOOL='/usr/spool/news'
+	NEWSLIB='/usr/lib/news'
+
+	PAGER='pg'
+	RETURN_AFTER_PAGER='0'
+	EDITOR='vi'
+	MAILER='/usr/ucblib/sendmail -t'
+
+	CC='cc'
+
+	SHELL='/bin/sh'
+	DEFINES='-DUNIX -DUSG -DSVR4'
+	CFLAGS='$(DEFINES) $(HEADER_DEFINES) $(OPTCFLAGS)'
+	LFLAGS='$(OPTLFLAGS)'
+	LIBS='$(OPTLIBS) -lsocket -lnsl'
+	;;
+CAIOS-UX)
+	MAKEFILE=caios-ux
+
+	PROCESS_KANJI_CODE='SJIS'
+	FILE_KANJI_CODE='SJIS'
+	DISPLAY_KANJI_CODE='SJIS'
+
+	BINDIR='/usr/local'
+	MANDIR='/usr/man/cat1'
+	MANEXT='.0'
+
+	NEWSSPOOL='/usr/spool/news'
+	NEWSLIB='/usr/lib/news'
+
+	PAGER='less -c -m -e'
+	RETURN_AFTER_PAGER='0'
+	EDITOR='vi'
+	MAILER='/usr/lib/sendmail -t'
+
+	CC='cc'
+
+	SHELL='/bin/sh'
+	DEFINES='-DUNIX -DUSG -DCASIO -DNO_RENAME'
+	CFLAGS='$(DEFINES) $(HEADER_DEFINES) $(OPTCFLAGS) -O -I$(ROOT)/usr/include/bsd -I$(ROOT)/usr/include/sysv'
+	LFLAGS='$(OPTLFLAGS)'
+	LIBS='$(OPTLIBS)'
+	;;
+AIX)	# AIX 4.1
+	MAKEFILE=aix
+
+	PROCESS_KANJI_CODE='SJIS'
+	FILE_KANJI_CODE='SJIS'
+	DISPLAY_KANJI_CODE='SJIS'
+
+	BINDIR='/usr/local/bin'
+	MANDIR='/usr/share/man/man1'
+	MANEXT='.1'
+
+	NEWSSPOOL='/usr/spool/news'
+	NEWSLIB='/usr/lib/news'
+
+	PAGER='pg'
+	RETURN_AFTER_PAGER='0'
+	EDITOR='vi'
+	MAILER='/usr/sbin/sendmail -t'
+
+	CC='cc'
+
+	SHELL='/bin/sh'
+	DEFINES='-DUNIX -DUSG -DAIX'
+	CFLAGS='$(DEFINES) $(HEADER_DEFINES) $(OPTCFLAGS)'
+	LFLAGS='$(OPTLFLAGS)'
+	LIBS='$(OPTLIBS)'
+	;;
+OSF1)	# DEGITAL Unix 3.2
+	MAKEFILE=osf1
+
+	PROCESS_KANJI_CODE='EUC'
+	FILE_KANJI_CODE='EUC'
+	DISPLAY_KANJI_CODE='EUC'
+
+	BINDIR='/usr/local/bin'
+	MANDIR='/usr/share/ja_JP/man/man1'
+	MANEXT='.1'
+
+	NEWSSPOOL='/usr/spool/news'
+	NEWSLIB='/usr/lib/news'
+
+	PAGER='pg'
+	RETURN_AFTER_PAGER='0'
+	EDITOR='vi'
+	MAILER='/usr/sbin/sendmail -t'
+
+	CC='cc'
+
+	SHELL='/bin/sh'
+	DEFINES='-DUNIX -DUSG -DSVR4'
+	CFLAGS='$(DEFINES) $(HEADER_DEFINES) $(OPTCFLAGS)'
+	LFLAGS='$(OPTLFLAGS)'
+	LIBS='$(OPTLIBS)'
+	;;
+FreeBSD|NetBSD|BSD/OS|BSD/386|4.4BSD)
+	MAKEFILE=freebsd
+
+	PROCESS_KANJI_CODE='EUC'
+	FILE_KANJI_CODE='EUC'
+	DISPLAY_KANJI_CODE='EUC'
+
+	BINDIR='/usr/local/bin'
+	MANDIR='/usr/share/man/man1'
+	MANEXT='.1'
+
+	NEWSSPOOL='/var/news'
+	NEWSLIB='/usr/local/news/lib'
+
+	PAGER='less'
+	RETURN_AFTER_PAGER='0'
+	EDITOR='vi'
+	MAILER='/usr/sbin/sendmail -t'
+
+	CC='cc'
+
+	SHELL='/bin/sh'
+	DEFINES='-DUNIX -DUSE_OLD_TTY'
+	CFLAGS='$(DEFINES) $(HEADER_DEFINES) $(OPTCFLAGS)'
+	LFLAGS='$(OPTLFLAGS)'
+	LIBS='$(OPTLIBS)'
+	;;
+UNIOS-B|LUNA-II|LUNA-88K)
+	MAKEFILE=unios-b
+
+	PROCESS_KANJI_CODE='EUC'
+	FILE_KANJI_CODE='EUC'
+	DISPLAY_KANJI_CODE='EUC'
+
+	BINDIR='/usr/local/bin'
+	MANDIR='/usr/man/cat1'
+	MANEXT='.1'
+
+	NEWSSPOOL='/usr/spool/news'
+	NEWSLIB='/usr/lib/news'
+
+	PAGER='less -c -m'
+	RETURN_AFTER_PAGER='0'
+	EDITOR='jvi'
+	MAILER='/usr/lib/sendmail -t'
+
+	CC='cc'
+
+	SHELL='/bin/sh'
+	DEFINES='-DUNIX'
+	CFLAGS='$(DEFINES) $(HEADER_DEFINES) $(OPTCFLAGS) -O'
+	LFLAGS='$(OPTLFLAGS)'
+	LIBS='$(OPTLIBS)'
+	;;
+#name)
+#	MAKEFILE=makefile
+#
+#	MAIL_KANJI_CODE='JIS'
+#	PROCESS_KANJI_CODE='EUC'
+#	FILE_KANJI_CODE='EUC'
+#	DISPLAY_KANJI_CODE='EUC'
+#	LINES='24'
+#	COLUMNS='80'
+#	
+#	BINDIR='/usr/local/bin'
+#	MANDIR='/usr/local/man/man1'
+#	MANEXT='.1'
+#	
+#	NEWSSPOOL='/usr/spool/news'
+#	NEWSLIB='/usr/lib/news'
+#	
+#	NEWSRC='.newsrc'
+#	SIGNATURE='.signature'
+#	AUTHORCOPY='author_copy'
+#	SAVEDIR='~/News'
+#	TMPDIR='/tmp'
+#	PAGER='more'
+#	RETURN_AFTER_PAGER='0'
+#	EDITOR='vi'
+#	MAILER='/usr/lib/sendmail -t'
+#	
+#	CC='cc'
+#	
+#	SHELL='/bin/sh'
+#	DEFINES='-DUNIX'
+#	CFLAGS='$(DEFINES) $(HEADER_DEFINES) $(OPTCFLAGS)'
+#	LFLAGS='$(OPTLFLAGS)'
+#	LIBS='$(OPTLIBS)'
+#	;;
+
+Linux)
+	MAKEFILE=linux
+	;;
+unix)	# UniOS-U X-<
+	MAKEFILE=unios-u
+	;;
+*)
+	echo unknown system $SYSTEM
+	exit
+	;;
+esac
+
+if [ -z "$MAKEFILE" ]
+then
+	echo unknown system
+	exit
+fi
+
+############################################################################
+
+if [ -f ../mkfiles/unix/$MAKEFILE ]
+then
+	cp ../mkfiles/unix/$MAKEFILE Makefile
+else
+	sed \
+	-e "s;^\(MAIL_KANJI_CODE[ 	]*=\).*$;\1 $MAIL_KANJI_CODE;" \
+	-e "s;^\(PROCESS_KANJI_CODE[ 	]*=\).*$;\1 $PROCESS_KANJI_CODE;" \
+	-e "s;^\(FILE_KANJI_CODE[ 	]*=\).*$;\1 $FILE_KANJI_CODE;" \
+	-e "s;^\(DISPLAY_KANJI_CODE[ 	]*=\).*$;\1 $DISPLAY_KANJI_CODE;" \
+	-e "s;^\(LINES[ 	]*=\).*$;\1 $LINES;" \
+	-e "s;^\(COLUMNS[ 	]*=\).*$;\1 $COLUMNS;" \
+	-e "s;^\(BINDIR[ 	]*=\).*$;\1 $BINDIR;" \
+	-e "s;^\(MANDIR[ 	]*=\).*$;\1 $MANDIR;" \
+	-e "s;^\(MANEXT[ 	]*=\).*$;\1 $MANEXT;" \
+	-e "s;^\(NEWSSPOOL[ 	]*=\).*$;\1 $NEWSSPOOL;" \
+	-e "s;^\(NEWSLIB[ 	]*=\).*$;\1 $NEWSLIB;" \
+	-e "s;^\(NEWSRC[ 	]*=\).*$;\1 $NEWSRC;" \
+	-e "s;^\(SIGNATURE[ 	]*=\).*$;\1 $SIGNATURE;" \
+	-e "s;^\(AUTHORCOPY[ 	]*=\).*$;\1 $AUTHORCOPY;" \
+	-e "s;^\(SAVEDIR[ 	]*=\).*$;\1 $SAVEDIR;" \
+	-e "s;^\(TMPDIR[ 	]*=\).*$;\1 $TMPDIR;" \
+	-e "s;^\(PAGER[ 	]*=\).*$;\1 $PAGER;" \
+	-e "s;^\(RETURN_AFTER_PAGER[ 	]*=\).*$;\1 $RETURN_AFTER_PAGER;" \
+	-e "s;^\(EDITOR[ 	]*=\).*$;\1 $EDITOR;" \
+	-e "s;^\(MAILER[ 	]*=\).*$;\1 $MAILER;" \
+	-e "s;^\(CC[ 	]*=\).*$;\1$CC;" \
+	-e "s;^\(SHELL[ 	]*=\).*$;\1 $SHELL;" \
+	-e "s;^\(DEFINES[ 	]*=\).*$;\1 $DEFINES;" \
+	-e "s;^\(CFLAGS[ 	]*=\).*$;\1 $CFLAGS;" \
+	-e "s;^\(LFLAGS[ 	]*=\).*$;\1 $LFLAGS;" \
+	-e "s;^\(LIBS[ 	]*=\).*$;\1 $LIBS;" \
+	../mkfiles/unix/common > Makefile
+fi
+
+############################################################################
+
+SITEDEF="site.def.$MAKEFILE"
+echo "site.def = $SITEDEF"
+
+if [ -f $SITEDEF ]
+then
+	cp $SITEDEF site.def
+else
+	echo "$SITEDEF not found."
+
+	. ./sitedef.cmn
+
+	(
+	if [ -n "$BINDIR" ]
+	then
+		echo "BINDIR = $BINDIR"
+	fi
+	if [ -n "$MANDIR" ]
+	then
+		echo "MANDIR = $MANDIR"
+	fi
+	if [ -n "$MANEXT" ]
+	then
+		echo "MANEXT = $MANEXT"
+	fi
+	if [ -n "$CC" ]
+	then
+		echo "CC = $CC"
+	fi
+	if [ -n "$OPTCFLAGS" ]
+	then
+		echo "OPTCFLAGS = $OPTCFLAGS"
+	fi
+	if [ -n "$OPTGNOBJS" ]
+	then
+		echo "OPTGNOBJS = $OPTGNOBJS"
+	fi
+	if [ -n "$OPTGNSPOOLOBJS" ]
+	then
+		echo "OPTGNSPOOLOBJS = $OPTGNSPOOLOBJS"
+	fi
+	if [ -n "$OPTLFLAGS" ]
+	then
+		echo "OPTLFLAGS = $OPTLFLAGS"
+	fi
+	if [ -n "$OPTLIBS" ]
+	then
+		echo "OPTLIBS = $OPTLIBS"
+	fi
+	if [ -n "$NEWSSPOOL" ]
+	then
+		echo "NEWSSPOOL = $NEWSSPOOL"
+	fi
+	if [ -n "$NEWSLIB" ]
+	then
+		echo "NEWSLIB = $NEWSLIB"
+	fi
+	if [ -n "$MAIL_KANJI_CODE" ]
+	then
+		echo "MAIL_KANJI_CODE = $MAIL_KANJI_CODE"
+	fi
+	if [ -n "$PROCESS_KANJI_CODE" ]
+	then
+		echo "PROCESS_KANJI_CODE = $PROCESS_KANJI_CODE"
+	fi
+	if [ -n "$FILE_KANJI_CODE" ]
+	then
+		echo "FILE_KANJI_CODE = $FILE_KANJI_CODE"
+	fi
+	if [ -n "$DISPLAY_KANJI_CODE" ]
+	then
+		echo "DISPLAY_KANJI_CODE = $DISPLAY_KANJI_CODE"
+	fi
+	if [ -n "$LINES" ]
+	then
+		echo "LINES = $LINES"
+	fi
+	if [ -n "$COLUMNS" ]
+	then
+		echo "COLUMNS = $COLUMNS"
+	fi
+	if [ -n "$MAILER" ]
+	then
+		echo "MAILER = $MAILER"
+	fi
+	if [ -n "$NNTPSERVER" ]
+	then
+		echo "NNTPSERVER = $NNTPSERVER"
+	fi
+	if [ -n "$SMTPSERVER" ]
+	then
+		echo "SMTPSERVER = $SMTPSERVER"
+	fi
+	if [ -n "$DOMAINNAME" ]
+	then
+		echo "DOMAINNAME = $DOMAINNAME"
+	fi
+	if [ -n "$GENERICFROM" ]
+	then
+		echo "GENERICFROM = $GENERICFROM"
+	fi
+	if [ -n "$ORGANIZATION" ]
+	then
+		echo "ORGANIZATION = $ORGANIZATION"
+	fi
+	if [ -n "$NEWSRC" ]
+	then
+		echo "NEWSRC = $NEWSRC"
+	fi
+	if [ -n "$SIGNATURE" ]
+	then
+		echo "SIGNATURE = $SIGNATURE"
+	fi
+	if [ -n "$AUTHORCOPY" ]
+	then
+		echo "AUTHORCOPY = $AUTHORCOPY"
+	fi
+	if [ -n "$SAVEDIR" ]
+	then
+		echo "SAVEDIR = $SAVEDIR"
+	fi
+	if [ -n "$TMPDIR" ]
+	then
+		echo "TMPDIR = $TMPDIR"
+	fi
+	if [ -n "$PAGER" ]
+	then
+		echo "PAGER = $PAGER"
+	fi
+	if [ -n "$RETURN_AFTER_PAGER" ]
+	then
+		echo "RETURN_AFTER_PAGER = $RETURN_AFTER_PAGER"
+	fi
+	if [ -n "$EDITOR" ]
+	then
+		echo "EDITOR = $EDITOR"
+	fi
+	) > site.def
+fi
+
+make configur
+./configur $* || exit
+cp site.def $SITEDEF
+
+make

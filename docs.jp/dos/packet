@@ -1,0 +1,156 @@
+Crynwr Packet Driver 上で、動作する gn について
+
+Crynwr Packet Driver は、ほとんどのネットワークボードをサポートしてい
+るので、ほとんどの PC で gn は動作することになります。（ほんまかいな）
+また、ODI 上に Packet Driver API を実現する ODIPKT というドライバも
+あるため、NetWare と共存することもできます。
+
+１．動作環境
+
+gn を実行するためには以下の環境が必要です。
+
+(1) Crynwr Packet Driver が動作する環境
+	例１：
+		PC-AT 互換機
+		ネットワークボード
+		パケットドライバ
+	例２：
+		PC-AT 互換機
+		ネットワークボード
+		ODI
+		ODIPKT.COM
+
+	なお、gn が利用している Waterloo TCP ライブラリは、PC-AT の
+	BIOS を利用している（ような）ので PC-98 シリーズなどでは動作し
+	ません。
+
+(2) リプライメイルを送るための smtp サーバ
+	サーバ上で、sendmail がデーモンとして動作していなければなりません
+
+(3) ユーザ認証を行なうための pop サーバ
+	MS-DOS 上にはユーザという概念がないため、ユーザ認証を行なうた
+	めに pop プロトコルを使用しています。
+	（gnrc で AUTHSERVER を指定しない限り）smtp サーバと同じマシン
+	を pop サーバとして利用します。
+
+	デフォルトは pop3(110) となっています。pop2(109) を使う場合は、
+	configur 実行時の OPTCFLAGS として、/DAUTH_POP2 を付加します。
+
+(4) name server
+	Waterloo TCP ライブラリはデフォルトで name server を必要とします。
+	name server がなくても、ローカルに hosts を持つことも可能です。
+	configur 実行時の OPTCFLAGS として、/DNO_DNS を付加します。
+
+(5) ニュースサーバ :-)
+
+現在、動作が確認できているのは（過去のバージョンで確認したものを含む）
+	PC-AT 互換機 + 3Com 3C509 + Packet Driver + MS-C 6.00A
+	PC-AT 互換機 + 3Com 3C509 + ODI + ODIPKT 3.0 + MS-C 6.00A
+	PC-AT 互換機 + EAGLE NE2000 + Packet Driver + MS-C 6.00A
+	PC-AT 互換機 + D-LINK DE-600 + Packet Driver + MS-C 6.00A
+	J-3100SS001 + CONTEC C-NET(DB) + ODI + ODIPKT 1.2 + MS-C 6.00A
+	MAXY NOTE + Xircom Pocket Ethernet Adapter II + pe2pktdr.com
+	GATAWAY2000 HB486DX2 + D-LINK DE-600 + Packet Driver + VC++1.0
+	GATAWAY2000 HB486DX2 + D-LINK DE-600 + ODI + ODIPKT 1.2 + VC++1.0
+です。
+
+２．コンパイル環境
+
+(1) コンパイラ
+	MS-C 6.00A（以降？）
+
+(2) ライブラリ
+	gn のコンパイルには、Waterloo TCP ライブラリが必要です。
+	私は、ftp.hitachi-sk.co.jp(133.107.1.2) の
+	/pub/msdos/network/wattcp/mscwattcp.zip.Z を
+	取り寄せ、使わせていただいています。
+	＃ .Z なのに、実は compress されていなかったりします。
+
+	archie でヒットする mscwattcp.zip には
+		・184373 バイトのもの
+		・547891 バイトのもの
+	が有りますが、gn のコンパイルには、どちらかが必要です。
+
+	前者（184373 バイトのもの）の方が新しいようです。
+
+３．コンパイル
+
+(1)	何らかの方法で全ソースを DOS 上にコンバートします。
+
+	ソースファイルの漢字コードは、EUC のままでも、SHIFT-JIS に変換
+	しても、どちらでも構いません。
+	ただし、全ファイルのコードを統一しておかなければなりません。
+
+(2) 	184373 バイトの mscwattcp.zip を使用するなら
+		copy mkfiles\dos\newwattc.ms6 src\makefile を、
+	547891 バイトの mscwattcp.zip を使用するなら
+		copy mkfiles\dos\wattcp.ms6 src\makefile を
+	実行します。
+	＃さらに新しいのが出たら、どうするんだろう。
+
+(3)	nmake configur
+
+(4)	configur
+	WATTCP の指定では Waterloo TCP ライブラリのあるディレクトリを
+	指定します。
+	name server がない場合、もしくは各種ホストが name server から
+	引けない場合は OPTCFLAGS で /DNO_DNS を指定します。
+
+(5)	nmake
+	gn.exe, gnspool.exe が作成されます。
+
+
+４．実行
+
+gn を実行するためには Crynwr Packet Driver が動作していることが必要です。
+
+(1)	wattcp.cfg を作成します。
+	詳しくは Waterloo TCP ライブラリに附属のドキュメントを参照下さい。
+
+	wattcp.cfg の例：決してこのまま使わないで下さい。
+	--------------------------------------------------
+	print="Waterloo WATTCP Configuration File for hsl091"
+	my_ip=133.122.6.91
+	netmask=255.255.255.0
+	nameserver=133.122.6.40
+	nameserver=133.122.6.23
+
+	gateway=133.122.6.40
+	domainslist="slab.kyoto.omronsoft.co.jp"
+	--------------------------------------------------
+
+(2)	set wattcp.cfg=dir を実行します。
+	dir には、wattcp.cfg の存在するディレクトリを指定します。
+
+(3)	Crynwr Packet Driver をロードします。
+
+(4)	画面が２５行でない場合、行数を環境変数 LINES に設定します。
+	DOS/V の場合は configur 時の OPTCFLAGS に /DDOSV を指定してコ
+	ンパイルすると V-Text 対応になります。
+
+(5)	name server がない場合、もしくは各種ホストが name server から
+	引けない場合は hosts を作成し、そのディレクトリを 環境変数
+	hosts に設定します。
+	set hosts=dir
+
+(6)	変数
+	実行前に以下の環境変数を設定します。
+
+	HOME:		ホームディレクトリ
+	USER:		アカウント名
+	NAME:		本名
+
+(7)	gn を実行します。
+
+(2)-(6) は autoexec.bat に記述しておくと良いでしょう。
+
+５. その他
+	シリアル回線など遅い回線を使用している場合、突然接続が切られて
+	しまうことがあります。頻繁に切られてしまう場合は wattcp.cfg に
+	SOCKDELAY=60
+	と書いてタイムアウトになるまでの時間を長め（デフォルトは３０秒）
+	にしておくと改善する場合があるようです。
+
+Copyright (C) yamasita@omronsoft.co.jp
+	Feb.25,1997
+著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。

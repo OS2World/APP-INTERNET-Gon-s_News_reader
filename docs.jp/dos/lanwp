@@ -1,0 +1,85 @@
+gn for MS-DOS の NOVELL LAN WorkPlace for DOS 版について
+
+１．動作環境
+
+gn を実行するためには以下の環境が必要です。
+
+(1)	NOVELL社 LAN WorkPlace for DOS 4.1J が動作する環境
+	以降LWPと省略する。
+
+(2)	他の環境,機能は InetBIOS 版と同じです。
+
+’９４年５月現在、動作が確認できているのは、
+	PC-9801RA(i386DX/16)(MS-DOS 5.00A) + RICOH STARLAN10 NAU
+		MS-C 6.00A
+	PC/AT互換機(i486DX/33)(PC DOS J6.10/V) + NOVELL NE2000
+		MS-C 6.00A
+	PS/55 5551-V(i386DX/25)(PC DOS J6.10/V) + AT&T MC200 NAU
+		MS-C 6.00A
+	で動作を確認しました。
+
+
+２．コンパイル環境
+
+コンパイルには下記のコンパイラが必要です。
+
+(1) MS-C 6.00A
+	nmake,cl,link など、通常のコンパイルができる環境が必要です。
+
+	MS-C でコンパイルした場合、640KB のメモリの制限から、多数のニュー
+	スグループを購読するニュースサーバと接続した場合メモリ不足によ
+	り正常に動作しない場合があります。docs.jp/dos/readme を参照のこと
+
+(2) djgpp, Turbo-C, Turbo-C++, Borland-C++
+	コンパイルおよび動作を確認していません。
+
+(3) socket ライブラリ
+	使用したライブラリのバージョンは以下の通りです。
+	NOVELL LAN WorkPlace for DOS ToolKit SDK
+		Version 4.1 Rev B
+
+３．コンパイル
+
+(1)	何らかの方法で全ソースを DOS 上にコンバートします。
+	ソースファイルの漢字コードは、EUC のままでも、SHIFT-JIS に変換
+	しても、どちらでも構いません。
+	ただし、全ファイルのコードを統一しておかなければなりません。
+
+(2) 	copy mkfiles\dos\lanwp.ms6 src\makefile を実行します。
+
+(3)	nmake configur
+
+(4)	configur
+	DIR の指定では socket ライブラリのあるディレクトリを指定します。
+
+(5)	nmake
+	gn.exe が作成されます。
+
+４．実行
+
+gn を実行するためには TCP/IPカーネル TCPIP.EXE が動作していることが必要です。
+詳しくは LAN WorkPlace for DOS のマニュアルを参照下さい
+
+(1)	初期設定
+	services ファイルに下記のようにpop3を定義しておく。(nntpは定義済み)
+	DNSを使わない環境ではhostsファイルにSMTPSERVERとNNTPSERVERと
+	"localhost"を定義しておく。
+	pop3	110/tcp
+
+(2)	変数
+	実行前に以下の環境変数を設定します。
+
+	HOME:		ホームディレクトリ
+	USER:		アカウント名
+	NAME:		本名
+
+	DOS のプロンプトや AUTOEXEC.BAT にて
+	set USER=yamasita
+	として設定すると良いでしょう。
+---
+koba@cs.ricoh.co.jp
+	May.26.1994
+
+Copyright (C) yamasita@omronsoft.co.jp
+	Jan.31,1996
+著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。

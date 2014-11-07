@@ -1,0 +1,54 @@
+gn の MIME 対応について
+
+電総研の佐藤さんが作られた mimekit(旧称 mimehead) を使用することにより、
+gn でヘッダ部分に MIME が使用できるようになります。
+以下にその手順を記述します。
+
+なお、mimekit は sizeof(int) = 16 の環境（MS-C 等）では使用できません。
+
+（１）	etlport.etl.go.jp:/pub/mime/mimekit1.6.tar.gz を入手します。
+	もっと近くにあるかも知れません。
+
+（２）	mimekit1.6.tar.gz を展開します。
+
+（３）	mimekit を make し、できあがった libmimekit.a を /usr/lib などに
+	置きます。
+
+（４）	configur 実行時に
+	OPTCFLAGS として、-DMIME を
+	OPTLIBS   として、-lmimekit を指定します。
+
+	なお、/usr/lib などに libmimekit.a を置きたくない場合は、
+	OPTLIBS で libmimekit.a のパス名を指定する方法もあります。
+
+（５）	make
+	make install
+
+	Nov.16,1993 より古い mimehead.tar.Z や mimekit 1.6 を使うと、
+	マシンによってはリンク時に ftruncate() がエラーになる場合が
+	あります。その場合は mimekit 1.1 をお試しください。
+
+以上で、ヘッダ部分に MIME が使用できる gn ができあがります。
+
+（６）	.gnrc に以下の行を追加します。
+	エンコード、デコード共にする場合
+		MIME_HEAD	ON
+	デコードだけをする場合
+		MIME_HEAD	2
+	エンコードだけをする場合
+		MIME_HEAD	4
+
+	ニュースサーバ毎に使用／不使用を切替えたい時は、
+	.gnrc-NNTPSERVER を使用します。
+
+BUGS
+	MIME_HEAD ON の場合、元記事のヘッダが、JIS7 なのか MIME なのか
+	区別がつきません。フォロー／リプライ時には元記事がどちらであろ
+	うが MIME になります。
+
+なお、ヘッダ部分に MIME を使うことに関して、賛否両論（？）の議論があり
+ます。詳しくは fj.mail などを御覧下さい。
+
+Copyright (C) yamasita@omronsoft.co.jp
+	May.30,1997
+著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。

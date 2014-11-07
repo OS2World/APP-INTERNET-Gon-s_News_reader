@@ -1,0 +1,827 @@
+-*- Mode: text -*-
+
+gn 1.10
+----------------------------------------------------------------------
+Sep.1,1993
+
+Aug.23,1993	mkfiles/* src/fgets.c article.c group.c subject.c
+#ifdef USE_FGETS 部追加
+Copyrigh.t, FAQ 追記
+
+Aug.20,1993	src/cancel.c
+GENERICFROM 0 の場合、cancel できない不具合修正
+
+Aug.20,1993	docs.jp/MS-DOS
+DEFAULT_GENERICFROM の説明を一部修正
+
+Aug.20,1993	src/follw.c
+DOS + InetBIOS で、genericfrom = 1 のとき、ポストできない不具合修正
+
+Aug.18,1993	mkfiles/*
+使用していない KANJI_CODE の定義削除。
+
+Aug.18,1993	src/follow.c subject.c article.c cancel.c group.c
+		referenc.c
+nntpd が timeout を返してきた際の処理追加
+
+Aug.9,1993	src/init.c
+テンポラリディレクトリが存在しない場合、（勝手にX-<）作成するよう修正
+
+Aug.4,1993
+Makefile.* README.* が多くなってきたので、
+	src, mkfiles, docs.jp
+の３ディレクトリに整理
+
+Aug.3,1993	init.c
+記事が多過ぎて切捨てしても .newsrc に保存しない不具合修正
+
+Aug.3,1993	article.c, auth.c, follow.c, group.c, newsrc.c,
+		post.c, save.c, smtp.c, subject.c 
+static 関数のプロトタイプ宣言（？）追加
+	
+Aug.3,1993	gn.h init.c
+LOGNAME, USER を両方見るように修正
+
+Aug.3,1993	init.c
+初期化時に savedir は存在しなくても良いことにした
+
+Aug.3,1993	Copyrigh.t Makefile.pat README.PAT
+		auth.c client.c follow.c init.c save.c smtp.c 
+リコー STARLAN TCP/IP (PathWay for DOS) 対応
+
+Jul.26,1993	Copyrigh.t Makefile.nfs README.PCNFS 
+		auth.c client.c gn.h pcnfs.h smtp.c
+PC-NFS toolkit ver.4.0 対応
+
+Jul.26,1993	save.c
+Unix の場合、記事を保存する場合のデフォルトが、
+savedir//news.group.name になってしまう不具合修正
+
+Jul.20,1993	subject.c
+Subject に \n という文字列がある場合そこで改行してしまう不具合修正
+
+Jul.20,1993	init.c save.c
+MS-DOS の場合 savedir として \ を指定すると、保存時のデフォルトとして 
+\\fj\news\b というふうに最初が \\ になる不具合修正
+
+Jul.20,1993	gn.h subject.c newsrc.c init.c
+キャンセルキュー関連の #if 0 〜 #endif を消去
+
+Jul.20,1993	init.c gn.md
+gnrc の（ホワイトスペースを除いた）行頭が # の場合は、コメントとみなす
+よう修正
+
+gn 1.07 Beta3
+----------------------------------------------------------------------
+Jul.14,1993
+
+Jul.13,1993	gn.c gn.h newsrc.c README.DOS
+unsubscribe したニュースグループの情報をテンポラリファイルに書きだし、
+メモリを有効に（？）使うよう修正
+
+Jul.13,1993	init.c README.DOS
+DOS の場合、テンポラリディレクトリとして、TEMP,TMP も使用できるように
+した。
+
+Jul.13,1993	gn.h grops.c article.c newsrc.c subject.c init.c
+記事番号を扱う変数が int であったため、MS-C の場合記事番号が 32767 を
+越えると正常に動作しなかった。long に修正。大変更となった。
+ただし、long でも、まだ足りない。でも、発覚するのは当分先 :-)
+
+Jul.8,1993	gn.h subject.c newsrc.c init.c
+キャンセルされた記事を取り扱うアルゴリズム変更。
+ニュースグループあたり、ポインタ一つ分のメモリ節約。（たかだか数ＫＢ）
+
+Jul.8,1993	save.c
+savedir, savedir/news/group/name  がない場合は（勝手に X-<）作成するよ
+う修正
+
+Jul.7,1993	subject.c, article.c gn.h
+記事表示時、テンポラリファイルの作成に失敗しても既読にしてしまう不具合
+修正
+
+Jul.7,1993	init.c
+tmpdir, savedir がディレクトリであるかどうかのチェックを追加
+
+Jul.7,1993	gn.c init.c
+analize_option() の名称変更 gn_init()
+
+Jul.2,1993	save.c, kanji.c README.DOS
+DOS の場合、savedir として、\n を含むディレクトリを指定すると記事保存
+時の表示が改行されてしまう不具合修正
+あわせて、記事保存時のデフォルトを savedir\news.group.name から
+savedir\news\group\name に変更
+
+Jul.2,1993	Makefile.dj Makefile.dos auth.c README.DOS
+認証サーバとして、pop2 サーバも使えるよう修正
+
+Jul.2,1993	inetbios.c
+puts() -> mc_puts()
+
+Jul.2,1993	inetbios.c inetbios.h
+沢田どのにいただいた、最新版と入れ換え。これにより
+INETBIOS 時、gn 終了後も TCP のコネクションが FIN_WAIT_2 のままになる
+場合がある不具合
+djgpp かつ INETBIOS 時、find_inet() がロックしてしまう不具合
+pop3 サーバ名が hosts ファイルの別名欄に書かれていると、サーバに接続で
+きない不具合
+が、修正された。
+
+Jul.1,1993	gn.c gn.h init.c, config.hd Makefile.* README, README.DOS
+MAIL_LANG などが指定されていない場合 LANG で上書きしていたため、コンパ
+イル時指定が意味のないものになっていた。LANG で上書きしないようにした。
+これにともない不要になった lang, kanji_code, KANJI_CODE 削除
+
+Jul.1,1993	group.c subject.c
+未使用変数の削除
+
+Jul.1,1993	cancel.c
+Distribution: のない記事をキャンセルすると、Distribution: (null) とな
+る場合がある不具合修正
+
+Jun.30,1993	cancel.c
+INETBIOS 時、記事をキャンセルできない不具合修正
+
+Jun.30,1993	init.c
+MSDOS かつ INETBIOS 時、InetBIOS の常駐チェック追加
+
+Jun.29,1993	group.c subject.c article.c
+各モードのヘルプにおいて、DOS 版の場合も ! が 「Unix コマンド」になっ
+ていたため、DOS 版の場合は「DOS コマンド」と表示するよう修正
+
+Jun.28,1993	init.c
+初期化テーブルに MAIL_LANG が２行あったため１行削除
+
+Jun.28,1993	save.c gn.md
+記事をファイルに保存する時、ファイル名を指定すると $HOME からの相対に
+なっていたのを savedir からの相対になるよう修正
+マニュアル修正
+
+gn 1.07 Beta2
+----------------------------------------------------------------------
+Jun.14,1993
+
+Jun.1,1993	subject.c gn.md
+サブジェクトモードの a コマンドが help/manual に反映されていなかったた
+め追加。
+あわせて
+	サブジェクトモード c コマンドの範囲指定について記述
+	アーティクルモードの a コマンドについて中止できる旨記述
+など。
+
+Jun.1,1993	group.c
+ニュースグループモードで、全く一致しないニュースグループ名を入力した場
+合"ニュースグループの番号を入力して下さい:"をスキップするよう修正
+
+gn 1.07 Beta1
+----------------------------------------------------------------------
+May.31,1993
+
+May.25,1993	subject.c gn.md
+junk を読む時は、どんなニュースグループが junk なのか知りたいため、
+（勝手な決めつけ）Subject の変わりに Newsgroups を表示する機能追加
+マニュアル追記
+
+May.18,1993	subject.c article.c
+各モードの a コマンドを実行してしまうと、抜けられなくなるため、
+１０記事読むごとに確認入力をおこなう機能追加
+
+May.18,1993	README.DOS
+setenv -> set に修正
+LINES 環境変数について追記
+
+May.18,1993	reply.c
+MS-DOS の場合、reply に To: yamasita とだけするとリプライできない不具
+合修正
+
+May.18,1993	FAQ
+FAQ 追記
+
+May.13,1993	README.DOS
+djgpp の場合はソースコードの漢字コードが EUC でなければならない旨追記
+
+May.11,1993	subject.c
+範囲を正しく入力しても受け付けられない不具合修正
+
+May.11,1993	Makefile.dj Makefile.dos
+SMTPSERVER のカスタマイズ洩れ修正
+
+gn 1.07 Alpha
+----------------------------------------------------------------------
+May.11,1993
+
+Apr.27,1993 group.c
+指定したニュースグループ名がなかった場合、（gn が）近い（と思ってる）
+ニュースグループの一覧を表示し番号で選択できる機能追加
+
+Apr.23,1993
+MS-DOS + inetbios 対応
+
+Apr.23,1993 group.c subject.c article.c gn.md
+検索コマンド追加
+マニュアル追記
+
+Apr.12,1993 init.c
+gnrc を読み込む時点では、漢字コードが決定していない場合があるので、
+gnrc を読み込むメッセージを reading gnrc に変更
+
+Apr.1,1993 group.c gn.md
+c(catchup) コマンドの引数として範囲を指定可能に
+マニュアル追記
+
+Mar.15,1993 group.c
+GROUP コマンドがエラーで帰ってきた場合の処理追加
+
+Mar.11,1993 init.c follow.c reply.c cancel.c
+本名などを初期処理で決定するように修正
+
+Mar.4,1993 subject.c
+サブジェクトモードで l コマンドを実行し、読む範囲で q を入力した場合無
+限ループする不具合修正
+
+Mar.3,1993 gn.h subject.c
+ニュースグループから抜けた時は、必ずキューを破棄するように変更
+
+Mar.3,1993 
+最後に読んだ記事の情報をストアする領域を静的に確保し、malloc()/free() 
+を少なくした。
+
+Mar.2,1993
+ファイル名変更
+Changelog -> Change.log
+Copyright -> Copyrigh.t
+
+Feb.26,1993	
+マルチコード対応
+
+Feb.22,1993	post.c
+記事の post の際の Distribution: ヘッダをデフォルトではつけないように
+修正
+
+#if 0
+Feb.19,1993	gn.c group.c init.c
+グループモードの h コマンドが正常に動作しない場合があるため、
+一旦接続を切って再接続するように修正
+#endif
+
+Feb.19,1993	gn.c gn.h init.c subject.c gn.md
+gnrc のキーワード KILL_CANCEL を KILL_CONTROL に変更し、ビット毎に既読
+とするコントロールメッセージを指定できるようにした。
+マニュアル追記
+
+Feb.18,1993	Makefile.*
+sed のスクリプトを１本化
+
+Feb.18,1993	init.c
+apollo DOMAIN の //host/dir/file/name に対応
+
+Feb.18,1993	gn.c init.c
+カスタマイズを行なうと、領域を free() していない箇所があったため、正し
+く free() するよう修正
+
+Feb.18,1993	init.c
+domainname や organization が、リリース時の Makefile.* をそのままであっ
+た場合、警告を出して終了するよう修正
+
+Feb.17,1993	Makefile.* config.hd gn.c gn.h init.c gn.md README
+最終ページで止まらないページャに対応するため、
+ページャ終了時にリターンキー入力待ちにするかどうかをカスタマイズ可能に
+マニュアル追記、README 追記
+
+Feb.17,1993	Makefile.PCUXV README init.c COPYRIGHT
+PC-9801 シリーズおよび PC-H98 シリーズの
+日本語 OpenDesktop PC-UX/V(Rel3.2B) 対応
+by kazu@oa2.kb.nec.co.jp (Kazuki Tsukuda)
+
+Feb.17,1993	Makefile.U Makefile.B README FAQ
+ファイル名に 14 文字しか使えない環境のために
+Makefile.UniOS-B -> Makefile.B
+Makefile.UniOS-U -> Makefile.U
+と、名称変更
+README,FAQ 修正
+
+Feb.14,1993	init.c gn.md
+gnrc のフラグ類に 0/1 以外にも ON/OFF, YES/NO を使用可能に
+マニュアル追記
+
+Feb.14,1993	Makefile.* README gn.c gn.h config.hd init.c follow.c gn.md
+gnrc に GENERICFROM 0  を記述することにより、ポストする記事の From: に
+ホスト名を入れるように修正
+マニュアル追記
+また、コンパイル時にも指定可能なように、Makefile.* にキーワード
+GENERICFROM 追加。アッパーコンパチのためデフォルトは１
+
+Feb.13,1993	gn.c gn.h init.c article.c gn.md
+gnrc に AUTOLIST 0 を指定することにより、アーティクルモードで投稿者名
+を最初だけ表示する機能追加
+これに伴い、アーティクルモードにリストを表示する d コマンド追加。
+マニュアル追記
+
+Feb.12,1993	group.c
+ニュースグループモードの u コマンドの引数として、999-999 だけでなく、
+ 999- や -999 も指定できるよう修正
+
+Feb.12,1993	gn.c, init.c, group.c
+newsrc を読み込まなかった場合は、「ニュースグループ xxx が作られました」
+を表示しないように修正
+
+Feb.11,1993	subject.c
+サブジェクトモードの c コマンドに範囲引数追加
+マニュアル追記
+
+Feb.10,1993	subject.c
+読む範囲を指定して下さい（デフォルト：全部(1234-5678),q:読まない）：
+マニュアル追記                                       ^^^^^^^^^^^追加
+
+Feb.10,1993	Makefile*
+-D を DEFINES で定義するよう修正
+
+Feb.10,1993	init.c
+gnrc の読み込みルーチン修正
+#if 0
+	# より右はコメントとする
+#endif
+	ホワイトスペースだけの行を読み飛ばす
+	keyword に先行するホワイトスペースの無視
+
+Feb.9,1993	follow.c reply.c
+複数行の Subject:, X-Nsubject: を持つ記事にフォロー／リプライした時、
+１行目のみを使用する不具合（？）修正。
+
+Feb.9,1993	article.c kanji.c
+ESC の脱落した X-Nsubject: があった場合、ESC を補う機能追加
+
+gn 1.06
+----------------------------------------------------------------------
+Feb.4,1993
+
+Feb.3,1993	README
+動作確認機種追記
+
+Feb.3,1993	Copyright
+謝辞追記
+
+Feb.3,1993	README.MVUX
+MV/UX で 1.06 の動作が確認されたため、バージョン／日付変更
+渡辺どのに報告済み
+
+Feb.3,1993	reply.c
+free() した領域を二重に free() することがあるため、core dump する場合
+がある不具合修正
+
+Jan.25,1993	init.c
+サーバとの接続に時間がかかる場合「$HOME/.gnrc を読み込んでいます」のメッ
+セージが出たままだと読み込みに時間がかかっているように見えるため
+「$NNTPSERVER と接続しています」のメッセージを表示するよう修正
+
+Jan.25,1993	kanji.c
+NEWS-OS 4.xR で #elif がエラーになるため #else - #if に変更
+
+Jan.25,1993	subject.c
+gnrc に KILL_CANCEL 1 を指定した場合、control のサブジェクトモードで
+記事数がマイナスになる場合がある不具合修正
+
+Jan.23,1993	subject.c
+異常な .newsrc を読み込んだ時、サブジェクトモードからグループモードに
+戻る時に core dump する不具合修正
+
+Jan.22,1993	init.c
+異常な .newsrc を読み込んだ時、グループモードでの表示がマイナスになる
+ことがある不具合修正
+
+Jan.22,1993	save.c
+各モードの s コマンドの引数として ~/file  のように ~/ を使った場合 ~/ 
+をホームディレクトリに展開しない不具合修正
+
+Jan.22,1993	subject.c, follow.c reply.c
+strcmp() 回数低減により、
+	グループモードからサブジェクトモードへの移行
+	フォロー、リプライ
+高速化（場合によっては、前者で３０％程度高速化になった）
+
+gn 1.06 御近所リリース
+----------------------------------------------------------------------
+Jan.21,1993
+
+Jan.21,1993	Makefile.DGUX README
+Makefile.DGUX 新規作成
+
+Jan.19,1993	gn.c gn.h init.c subject.c gn.md
+gnrc に、キーワード KILL_CANCEL 追加
+マニュアル追記
+
+Jan.18,1993	post.c
+ポスト時に指定したニュースグループにホワイトスペースがあった場合、正常
+にポストできない場合があるので、警告を出して再入力するように修正
+
+Jan.18,1993	post.c
+「フォローアップするグループを指定して下さい」にリターンだけを指定した
+場合、Followup-To: がつかない不具合修正
+
+Jan.18,1993	article.c
+クロスポストの記事を読んだ時、今読んでいるグループでない方の未読数など
+が狂う不具合修正。あわせて free() 忘れの領域の free()
+
+Jan.15,1993	gn.c group.c init.c gn.md
+newsgroups  の内容を表示する機能追加
+マニュアル追記
+
+Jan.14,1993	article.c
+"指定の記事が存在しません"というメッセージを一本化（無意味？）
+
+Jan.14,1993	article.c gn.md
+アーティクルモードで、記事が２画面分以上あって、かつ１画面目を全部読ん
+だ（つぎの記事を読んだ）時、自動的に２画面目を表示するよう修正
+
+Jan.14,1993	article.c gn.md
+アーティクルモードで、同一の Subject: に Re: 付きのものしかなかった場
+合、Re: 付きで表示するよう変更
+
+Jan.14,1993	group.c
+help の .newsrc を実際に読み込んだ .newsrc を表示するよう修正
+
+Jan.14,1993	gn.md
+.newsrc を $NEWSRC とか、newsrc とか、.newsrc とかバラバラな表記があっ
+たのを .newsrc に統一
+
+Jan.11,1993	gn.h subject.c gn.md
+サブジェクトモードで、同一の Subject: に Re: 付きのものしかなかった場
+合、Re: 付きで表示するよう変更
+マニュアル追記
+
+Jan.11,1993	follow.c,reply.c
+フォロー時、リプライ時 In-Reply-To: ヘッダをつけるよう変更
+
+Jan.11,1993	follow.c
+フォローする元記事に Distribution: がある場合にのみ Distribution: をつ
+けるように修正
+
+#if 0
+Jan.11,1993	post.c
+フォローアップするグループを問い合わせるのはクロスポストの時（ニュース
+グループに , がある場合）のみに修正
+#endif
+
+Jan.9,1993	group.c subject.c article.c gn.md
+ヘルプからコマンドができるよう修正。でもリターンのみはできない
+マニュアル追記
+
+Jan.9,1993
+コネクションが切れた時の処理修正（大改造になった）
+
+Jan.9,1993	gn.c
+サーバと接続できないのに newsrc を読み込んでもしかたがないので、
+newsrc 読み込み前にサーバと接続するよう修正
+
+Jan.9,1993	group.c gn.md
+ニュースグループモードに newsrc を更新する w コマンド追加
+マニュアル追記
+
+Jan.8,1993	follow.c
+未初期化領域にアクセスすることがあるため
+follow 時に正常にヘッダが出ない不具合修正
+
+Jan.8,1993	gn.c gn.h init.c follow.c post.c gn.md
+X-Nsubject に対応するため
+	gnrc にキーワード NSUBJECT 追加
+	ポスト時に日本語サブジェクト入力追加
+	フォロー時に X-Nsubject: ヘッダの解析追加
+マニュアル追記
+
+Jan.7,1993	Copyright
+新規作成
+
+Jan.7,1993	Makefile*
+継続行の行末に \ が抜けていて make 時に (null command) と表示されるこ
+とがあった不具合(?)修正
+
+Jan.7,1993	init.c gn.md
+gnrc にキーワード GNUS_FORMAT 追加
+マニュアル追記
+
+Jan.6,1993
+ファイル名変更
+mv clientlib.c client.c
+mv gn_article.c article.c
+mv gn_cancel.c cancel.c
+mv gn_config.h-dist config.hd
+mv gn_follow.c follow.c
+mv gn_group.c group.c
+mv gn_init.c init.c
+mv gn_kanji.c kanji.c
+mv gn.man-dist gn.md
+mv gn_newsrc.c newsrc.c
+mv gn_post.c post.c
+mv gn_reference.c referenc.c
+mv gn_reply.c reply.c
+mv gn_save.c save.c
+mv gn_shell.c shell.c
+mv gn_subject.c subject.c
+これに伴い Makefile*, #include 修正
+
+Jan.6,1993	gn.c gn.h gn_init.c gn_subject.c gn.man-dist
+記事が多い時の「警告する記事数」と「消す時に残す数」を別々に定義できる
+機能追加
+マニュアル追記
+
+Dec.18,1992	gn_group.c gn.man-dist
+ニュースグループモードの u コマンドの引数として、範囲を指定できるよう
+修正
+マニュアル追記
+
+Dec.18,1992	
+各キーボード入力時 ctrl-D を押すと正常に動作しなくなる不具合修正のため、
+キーボード入力ルーチンを共通ルーチン化
+あわせて、suspend 時のメッセージ再表示機能追加
+
+Dec.17,1992	gn_follow.c
+References: ヘッダがつぶれている場合に警告メッセージ／確認入力する機能
+追加
+
+Dec.15,1992	gn.man-dist
+一部「ですます調」があったのを「である調」に修正
+
+Dec.15,1992	gn_group.c gn_subject.c gn_article.c gn.man-dist
+各モードの p コマンド、n コマンドに数を引数としてとるよう修正
+マニュアル修正
+
+Dec.14,1992	Makefile.MVUX,README.MVUX,cliantlib.c
+オムロンデータゼネラル社のミニコンの OS、MV/UX 対応
+by watanabe@cc.saga-u.ac.jp,kohe-t@eco.wakayama-u.ac.jp
+
+Dec.10,1992	gn_init.c gn.man-dist
+$HOME/.gnrc, $HOME/.gnrc-NNTPSERVER を読み込む機能追加
+マニュアル追記
+
+Dec.10,1992	gn_init.c
+環境変数解析のテーブル化
+
+Dec.10,1992
+rcfile の外部変数化
+
+Nov.28,1992	gn_follow.c,gn_cancel.c
+nntp への書き込時の行末コードを LF から RFC どおりの CR-LF に変更
+フラッシュ回数低減による高速化
+
+Nov.28,1992	gn_post.c
+不要な extern 変数宣言削除
+
+Nov.11,1992	gn_subject.c
+ニュースグループの全記事を読んだ時は、サブジェクトキュー、アーティクル
+キューを破棄し、メモリを節約するよう修正
+
+Oct.28,1992	clientlib.c 
+ニュースサーバが意味不明のコードを返した時のメッセージの日本語化ミスで
+コードを正常に表示しない不具合修正
+
+Oct.7,1992
+Makefile.* に LIBS 追加
+
+Oct.1,1992
+指定された記事が存在しない時ロックする不具合修正
+
+
+gn 1.05
+----------------------------------------------------------------------
+Sep.21,1992
+
+Sep.21,1992
+一度スレッド表示されたサブジェクトをシーケンシャルモードで表示しようと
+しても、スレッド表示のままである不具合修正。
+
+Sep.18,1992
+アーティクルモードで N コマンドを使った時、スレッド表示されない不具合
+修正
+
+Sep.9,1992
+パイプでコマンドに記事を渡す時 SIGPIPE を無視するように修正
+
+Sep.9,1992
+アーティクルモード U コマンドで未読にならない場合がある不具合修正
+
+Sep.8,1992
+Makefile.SUN, Makefile.NEWS 作成。自信なし
+
+Sep.8,1992
+last_art 構造体のメンバ初期化洩れを念のため修正
+
+Sep.8,1992
+マニュアルから、「.signature を JIS に変換しなくてもよい」旨の記述削除
+
+Sep.8,1992
+漢字コードを変更可能に。また、リプライ時の漢字コードも設定可能に
+README 修正
+
+Sep.7,1992
+ポスト、リプライ、フォローの確認入力時、明示的に n を入力した時のみ中
+止するよう修正
+
+Sep.7,1992
+SIGWINCH,SIGCONT に対応
+
+Sep.7,1992
+Makefile* の cc を $(CC) に修正
+
+Sep.7,1992
+ioctl (0, TIOCGWINSZ, &buf) したとき、buf.ws_{row|col} が０になる場合
+（マシン）があるので、０以外の時のみ代入するよう修正
+
+Sep.4,1992
+.newsrc が : で終っている場合に警告を出さないように修正
+
+Sep.4,1992
+クロスポストされた記事を読んだ時、core dump する不具合修正
+
+Sep.4,1992
+ニュースグループモード、サブジェクトモードに状態遷移の説明をマニュアル
+に追加
+
+Sep.3,1992
+Followup-To: poster がある記事にフォローしようとした場合、確認入力後リ
+プライモードへ移る機構追加。マニュアル追記
+
+Sep.3,1992
+ニュースグループモードから、サブジェクトモードにはいる時、取り寄せるヘッ
+ダの数が多い場合、取り寄せる記事番号の範囲を指定する機構追加
+
+Sep.2,1992
+ニュースグループモードで h コマンドを入力した際、必ず０から表示するよ
+う修正
+
+Aug.31,1992
+外部参照のない関数を static に
+
+Aug.31,1992
+クロスポストの記事を読んだ時、server に問い合わせず、newsrc だけを更新
+するよう修正
+
+Aug.28,1992
+グループの全記事を読んだ後同じグループを選択した場合全サブジェクトが表
+示されない不具合修正
+
+gn 1.04
+----------------------------------------------------------------------
+Aug.22,1992
+
+Aug.22,1992
+Version, Date を gn_config.h から、gn.h に移動
+
+Aug.22,1992
+アーティクルモードが複数ページに渡り、自動的に次のページに移る時、２画
+面め以降の最初の記事がクロスポストであった場合に、記事数がマイナスにな
+る不具合修正
+
+Aug.22,1992
+マニュアルに、起動追加
+
+Aug.18,1992
+フォロー時に References: ヘッダに空白が２つ入ってしまう不具合修正
+
+Aug.13,1992
+マニュアルにある例があまりにも実在人物を想像できる例だったので、少々修
+正。（あんまり変わらんか）
+
+Aug.13,1992
+未読記事数のチェックの際、y を指定した時に消すように修正。
+
+Aug.13,1992
+アーティクルモードに l コマンドを追加し、スレッド表示と、順次表示を切
+替えるようにした。
+マニュアル追記
+
+Aug.12,1992
+-n オプションを付加した時には、未読記事数のチェック、確認入力機構をス
+キップするよう修正
+
+Aug.10,1992
+アーティクルモードにスレッド追加
+マニュアル追記
+
+Aug.7,1992
+コンパイル時 gn_follow.c で warning が出ていたためキャスト追加
+
+gn 1.03
+----------------------------------------------------------------------
+Jul.23,1992
+
+Jul.23,1992
+1.02 の修正で、キャンセルできなくなった不具合修正。
+
+Jul.23,1992
+マニュアルに「GNUS フォーマット」のただし書き追加
+OSK -> OMRON SOFTWARE
+
+Jul.23,1992
+Version, Date を Makefile からはずし、gn_config.h にハードコートした
+
+Jul.22,1992
+未読記事がない場合、ニュースグループモードでリターンのみを入力した時、
+「未読の記事がありません」と表示し、ニュースグループモードに戻るよう修
+正
+
+Jul.17,1992
+サブジェクトが同じか比較する際に、ＥＵＣに変換してから比較するように修
+正
+
+Jul.17,1992
+このファイルのファイル名を Cangelog から、Changelog に変更 ^_^;
+
+gn 1.02
+----------------------------------------------------------------------
+Jul.11,1992
+
+Jul.8,1992
+マニュアル誤植「読めまない」->「読めない」修正
+
+Jul.8,1992
+ポスト／フォロー時の full name に
+	NAME 環境変数を使用できるように、
+	GECOS を使う場合、, ; 以降は無視し、かつ & を展開するように
+修正
+NAME 環境変数 について、マニュアル追加
+
+Jun.16,1992
+ニュースグループモード時指定した｛名前｜番号｝のニュースグループが存在
+しない場合のメッセージに続いて確認入力を行なうよう修正
+
+Jun.12,1992
+SIGWINCH に対応。でもチョンボしたので、効くのは次の画面書換え時
+
+Jun.12,1992
+未読記事数が５０を越えた場合、確認入力後捨てるような機構を追加
+
+Jun.6,1992
+unix mail format に保存する際、author_copy に保存する際、最初に空白行
+を出力せず、保存後に空白行を出力するよう修正
+
+May.27,1992
+unsub 時、cancel 時の確認メッセージを日本語化し、かつ大文字の Y も使え
+るように変更
+
+May.26,1992
+フォロー／ポスト／リプライの最終確認のメッセージを日本語化し、かつ大文
+字の Y,E も使えるように変更
+
+May.26,1992
+SIGINT を無視するタイミングを起動直後から、ニュースグループモード直前
+に変更
+
+gn 1.01
+----------------------------------------------------------------------
+May.22,1992
+Makefile の NNTPSERVER,DOMAINNAME,ORGANIZATION を実在しないものに変更
+
+May.11,1992
+get_server() の戻り値をチェックし、エラーの（コネクションが切れた）場
+合 .newsrc をセーブして終了するよう修正
+
+May.8,1992
+newsrc の読み書きのメッセージ、clientlib.c 内のメッセージの一部、
+active file を読む際のメッセージを日本語化
+
+May.8,1992
+clientlib.c,nntp.h を nntp 1.5.11 のものと入れ換えた
+
+May.8,1992
+ポスト時のヘッダ漢字対応
+
+May.8,1992
+Cnews フォーマットの Date: ヘッダを持つ記事を保存すると core dump する
+不具合修正
+
+May.8,1992
+保存した unix mail 形式のファイルの１行目の曜日がづれていた不具合を修
+正
+
+Apr.22,1992
+ヘッダの漢字対応
+
+Mar.20,1992
+Lines: ヘッダのない記事の行数を０と表示するよう修正
+
+Mar.5,1992
+GNUS フォーマットの .newsrc を使い、かつ -n オプションをつけて起動した
+時の未読記事数が正しく表示されるよう修正
+
+Feb.4,1992
+マニュアルに kmail に対応する方法を追加
+
+Jan.21,1992
+gn_reference.c のソース中のファイル名が gn_follow.c になっていたのを修
+正 :-)
+
+Jan.21,1992
+gn_reference.c のソース中のメッセージ１本化
+
+Jan.21,1992
+キャンセル時、 Path: に NNTPSERVER のホスト名をつけていたのをつけない
+ように修正
+
+Sep.5,1991
+リプライ時に、From: より Reply-To: を優先するよう修正
+
+Jun.23,1991
+ヘルプのインデント修正。
+
+gn 1.00
+----------------------------------------------------------------------

@@ -1,0 +1,51 @@
+X680x0 + Human68k + ESPX 上で動作する gn について
+
+  (株)計測技研がフリーで提供している Human68k 用の TCP/IP スタック 
+ESPX と、それに対応したハードウェア層ドライバ(Ether+, IIJ-PPP, Neptune 
+など)を用いる事で、ネットワークを介した利用を行なう事ができます。
+
+  以下に、注意事項を記述します。
+
+1. 動作環境
+
+  現在動作が確認できているのは、
+       X68000 SUPER + Human68k Ver3.02 + command.x + Neptune-X
+のみです。一応、10MHz から 16MHz にクロックアップした状態での動作も確
+認しています。
+
+2. コンパイル環境
+
+  以下の組合せのもので動作を確認しました。
+
+	GCC Ver1.20
+	libc Ver 1.1.32
+	has Ver3.08
+	hlk Ver3.01
+	GNU-make Ver3.62(X6_7)
+
+  また、これらにくわえて(株)計測技研が配付している ESPX 開発者向けキッ
+ト(ESPX PACK-B)が必要です。
+
+3. コンパイル
+
+  基本的にはネットワークを使わない場合でのコンパイル方法と同じですが、
+Makefile には mkfiles\human68k\espx を利用して下さい。
+  make configur をして生成される configur.x を実行すると Makefile が生
+成されますが、このとき ESPX 関係のライブラリは networklib.l という名前
+でリンクされるようになっています。名前が違う場合は、これを変更して下さ
+い。
+
+4. 実行
+
+  実行には、ESPX の設定ファイル services に、nntp と smtp (と必要なら
+pop3) のエントリが必要です。これらの記述が無い場合は、次のようなエント
+リを追加して下さい。
+
+smtp		25/tcp		mail
+pop3		110/tcp
+nntp		119/tcp		readnews untp
+
+Copyright (C) knok@da2.so-net.or.jp
+Copyright (C) yamasita@omronsoft.co.jp
+	Feb.7,1997
+著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。

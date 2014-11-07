@@ -1,0 +1,234 @@
+#
+# Makefile for gn
+# @(#)MVUX	1.34 Nov.21,1995
+# 著作権は放棄しません。ただし、営利目的以外の使用／配布に制限は設けません。
+# (C) watanabe@cooper.cc.saga-u.ac.jp,kohe-t@eco.wakayama-u.ac.jp
+# Copyright (C) yamasita@omronsoft.co.jp
+
+
+NNTPSERVER	= your-nntpserver
+GENERICFROM	= 1
+DOMAINNAME	= your.domain.name
+ORGANIZATION	= your organization
+
+MAIL_KANJI_CODE		= EUC
+PROCESS_KANJI_CODE	= EUC
+FILE_KANJI_CODE		= EUC
+DISPLAY_KANJI_CODE	= EUC
+
+BINDIR		= /usr/bin
+MANDIR		= /usr/catman/u_man/man1
+MANEXT		= .1
+
+NEWSRC		= .newsrc
+SIGNATURE	= .signature
+AUTHORCOPY	= author_copy
+SAVEDIR		= ~/News
+TMPDIR		= /tmp
+PAGER		= more
+RETURN_AFTER_PAGER = 1
+EDITOR		= vi
+MAILER		= /usr/lib/sendmail -t
+
+SHELL		= /bin/sh
+SED		= /bin/sed
+DEFINES		= -DUNIX -DUSG -DMVUX
+CFLAGS		= $(DEFINES) -Zs
+######################################################################
+OBJ=	gn.o \
+	init.o \
+	newsrc.o \
+	group.o \
+	subject.o \
+	article.o \
+	follow.o \
+	reply.o \
+	cancel.o \
+	post.o \
+	referenc.o \
+	save.o \
+	shell.o \
+	kanji.o \
+	nntp.o \
+	smtp.o \
+	client.o \
+	gncom.o \
+	key.o \
+	$(FRC)
+
+
+all:	gn \
+	gn.man \
+	$(FRC)
+
+gn:	$(OBJ)
+	cli "sea :util :; \
+	ccl gn init newsrc group subject article \
+	follow reply cancel post referenc \
+	save shell kanji smtp client gncom key \
+	:lib:sockit.lb :lib:lib3.lb"
+
+gn.o: \
+	gn.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+init.o: \
+	init.c \
+	nntp.h \
+	gn.h \
+	config.h \
+	$(FRC)
+
+newsrc.o: \
+	newsrc.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+group.o: \
+	group.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+subject.o: \
+	subject.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+article.o: \
+	article.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+follow.o: \
+	follow.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+reply.o: \
+	reply.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+cancel.o: \
+	cancel.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+post.o: \
+	post.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+referenc.o: \
+	referenc.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+save.o: \
+	save.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+shell.o: \
+	shell.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+kanji.o: \
+	kanji.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+nntp.o: \
+	nntp.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+smtp.o: \
+	smtp.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+client.o: \
+	client.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+gncom.o: \
+	gncom.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+key.o: \
+	key.c \
+	nntp.h \
+	gn.h \
+	$(FRC)
+
+SEDSCRIPT= \
+	-e 's;keyword-newsrc;$(NEWSRC);' \
+	-e 's;keyword-signature;$(SIGNATURE);' \
+	-e 's;keyword-authorcopy;$(AUTHORCOPY);' \
+	-e 's;keyword-savedir;$(SAVEDIR);' \
+	-e 's;keyword-tmpdir;$(TMPDIR);' \
+	-e 's;keyword-pager;$(PAGER);' \
+	-e 's;keyword-return_after_pager;$(RETURN_AFTER_PAGER);' \
+	-e 's;keyword-editor;$(EDITOR);' \
+	-e 's;keyword-mailer;$(MAILER);' \
+	-e 's;keyword-nntpserver;$(NNTPSERVER);' \
+	-e 's;keyword-domainname;$(DOMAINNAME);' \
+	-e 's;keyword-genericfrom;$(GENERICFROM);' \
+	-e 's;keyword-organization;$(ORGANIZATION);' \
+	-e 's;keyword-mail_kanji_code;$(MAIL_KANJI_CODE);' \
+	-e 's;keyword-process_kanji_code;$(PROCESS_KANJI_CODE);' \
+	-e 's;keyword-file_kanji_code;$(FILE_KANJI_CODE);' \
+	-e 's;keyword-display_kanji_code;$(DISPLAY_KANJI_CODE);' \
+	$(FRC)
+
+gn.man:	gn.md Makefile
+	$(SED) $(SEDSCRIPT) < gn.md > $@
+
+config.h:	config.hd Makefile
+	$(SED) $(SEDSCRIPT) < config.hd > $@
+
+
+#-------------------------------------------------------------
+install:	all \
+	$(BINDIR)/gn \
+	$(MANDIR)/gn$(MANEXT) \
+	$(FRC)
+
+$(BINDIR)/gn:	gn
+	cp $? $@
+	chmod 755 $@
+
+$(MANDIR)/gn$(MANEXT):	gn.man
+	cp $? $@
+	chmod 644 $@
+
+clean:
+	-rm -f *.o core
+
+clobber:	clean
+	-rm -f gn gn.man config.h
+
+lint:
+	lint $(CFLAGS) *.c
